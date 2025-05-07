@@ -1,0 +1,22 @@
+.memberLists {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px 20px;
+}
+.memberList {
+  height: 30px;
+  padding: 10px;
+  margin: 5px;
+  border: 1px #ccc solid;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: fit-content;
+}
+.memberName {
+  color: #666;
+}
+.removeButton {
+  color: #666;
+}

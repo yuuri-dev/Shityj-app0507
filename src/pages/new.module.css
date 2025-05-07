@@ -1,0 +1,54 @@
+.page {
+  min-height: 100vh; /* 全体で画面の高さをカバー */
+  display: flex;
+  flex-direction: column;
+}
+.main {
+  flex: 1;
+}
+.form {
+  text-align: center;
+}
+.input_wrapper {
+  padding: 15px 0;
+}
+.p {
+  justify-self: start;
+  padding-left: 10px;
+  color: #333;
+}
+.input {
+  height: 40px;
+  background-color: rgba(243, 244, 246, 0.8);
+  border-color: rgba(243, 244, 246, 0.656);
+  border-style: solid;
+  font-size: 20px;
+  padding-left: 10px;
+}
+.input_w80 {
+  width: 90%;
+}
+.input_w70 {
+  width: calc(90% - 70px);
+}
+
+.addButton {
+  width: 70px;
+  height: 40px;
+  border: none;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: #fff;
+  background-color: rgba(238, 123, 103, 1);
+}
+
+.createButton {
+  width: 90%;
+  height: 60px;
+  border: none;
+  border-radius: 7px;
+  color: #fff;
+  font-size: 17px;
+  background-color: rgba(238, 123, 103, 1);
+  margin-top: 50px;
+}

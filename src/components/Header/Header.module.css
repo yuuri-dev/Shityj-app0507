@@ -1,0 +1,10 @@
+.header {
+  background-color: rgba(238, 123, 103, 1);
+}
+
+.title {
+  font-size: 35px;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}

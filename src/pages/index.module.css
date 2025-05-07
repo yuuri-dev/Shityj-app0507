@@ -1,0 +1,36 @@
+.page {
+  background-color: rgba(238, 123, 103, 1);
+  min-height: 100vh; /* 全体で画面の高さをカバー */
+  display: flex;
+  flex-direction: column;
+}
+.main {
+  flex: 1;
+}
+.mainDocuments {
+  padding: 0 10%;
+}
+.mainDocument {
+  font-size: 30px;
+  color: white;
+}
+.subDocument {
+  color: white;
+  width: 80%;
+  margin: 20px auto;
+}
+.button {
+  display: flex;
+  width: 60%;
+  height: 40px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 20px;
+  color: rgba(238, 123, 103, 1);
+}
+.start {
+  margin: auto;
+}
+.image {
+  width: 100%;
+}
