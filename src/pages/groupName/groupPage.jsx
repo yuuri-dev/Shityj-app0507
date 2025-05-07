@@ -15,10 +15,14 @@ const GroupPage = () => {
     '3限（13:15〜14:45）',
   ];
 
-  const shiftData = [
-    ['山田, 佐藤', '佐藤', '', '', '田中', '', '佐藤'],
-    ['山田', '', '佐藤, 鈴木', '', '', '', ''],
-    ['', '', '鈴木', '山田', '', '', '田中'],
+  const shiftCandidates = [
+    [['田中', '佐藤'], ['佐藤'], ['田中']],
+    [['鈴木'], [], ['山田']],
+    [['山田'], ['田中', '山田'], ['佐藤', '伊藤']],
+    [[], ['鈴木'], ['鈴木']],
+    [['高橋'], [], []],
+    [['中村', '佐々木'], ['高橋'], []],
+    [['伊藤'], ['中村'], ['高橋']],
   ];
 
   return (
@@ -39,7 +43,11 @@ const GroupPage = () => {
           );
         })}
 
-        <ShiftOverview days={days} timeSlots={timeSlots} shiftData={shiftData} />
+        <ShiftOverview
+          days={days}
+          timeSlots={timeSlots}
+          shiftCandidates={shiftCandidates}
+        />
       </div>
       <Link href="addShift">シフト入力</Link>
     </div>
