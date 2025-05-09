@@ -1,5 +1,5 @@
 .page {
-  background-color: rgba(238, 123, 103, 1);
+  background-color: #51C7CC;
   min-height: 100vh; /* 全体で画面の高さをカバー */
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@
   margin: 0 auto;
   background-color: white;
   border-radius: 20px;
-  color: rgba(238, 123, 103, 1);
+  color: #51C7CC;
 }
 .start {
   margin: auto;

@@ -39,7 +39,7 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   color: #fff;
-  background-color: rgba(238, 123, 103, 1);
+  background-color: #51C7CC;
 }
 
 .createButton {
@@ -49,6 +49,6 @@
   border-radius: 7px;
   color: #fff;
   font-size: 17px;
-  background-color: rgba(238, 123, 103, 1);
+  background-color:#51C7CC;
   margin-top: 50px;
 }
