@@ -3,21 +3,21 @@ import { GroupContext } from 'src/contexts/GroupContext';
 import styles from './MemberListCompile.module.css';
 
 const index = () => {
-  const { groupName, setGroupName, memberArray, setMemberArray } =
+  const {shiftInfo, setShiftInfo } =
     useContext(GroupContext);
 
   const handleRemoveMember = (index) => {
-    const updatedMembers = [...memberArray];
+    const updatedMembers = [...shiftInfo];
     updatedMembers.splice(index, 1);
-    setMemberArray(updatedMembers);
+    setShiftInfo(updatedMembers);
   };
 
   return (
     <div className={styles.memberLists}>
-      {memberArray.map((value, index) => {
+      {shiftInfo.map((value, index) => {
         return (
           <div className={styles.memberList} key={index}>
-            <p className={styles.memberName}>{value}</p>
+            <p className={styles.memberName}>{value.name}</p>
             <span
               onClick={() => handleRemoveMember(index)}
               className={styles.removeButton}

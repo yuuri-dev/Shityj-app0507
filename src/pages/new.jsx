@@ -5,10 +5,17 @@ import styles from './new.module.css';
 import { GroupContext } from 'src/contexts/GroupContext';
 import PageTitle from '@/components/PageTitle';
 
+const NUM_DAYS = 7;
+const NUM_TIME_SLOTS = 3;
+
 function New() {
   const [memberName, setMemberName] = useState('');
-  const { groupName, setGroupName, memberArray, setMemberArray } =
-    useContext(GroupContext);
+  const {
+    groupName,
+    setGroupName,
+    shiftInfo,
+    setShiftInfo,
+  } = useContext(GroupContext);
 
   const router = useRouter();
 
@@ -16,14 +23,22 @@ function New() {
     if (!memberName) {
       return;
     }
-    for (let i = 0; i < memberArray.length; i++) {
-      if (memberName === memberArray[i]) {
+    for (let i = 0; i < shiftInfo.length; i++) {
+      if (memberName === shiftInfo[i].name) {
         alert('同じ名前が既に追加されています');
         return;
       }
     }
-    setMemberArray((prevArray) => {
-      const newArray = [...prevArray, memberName];
+    setShiftInfo((prevArray) => {
+      const newArray = [
+        ...prevArray,
+        {
+          id: prevArray.length,
+          name: memberName,
+          timesToEnterDesired: 0,
+          shiftArray: Array.from({ length: NUM_DAYS }, () => Array(NUM_TIME_SLOTS).fill(0))
+        },
+      ];
       console.log(newArray); // 新しいメンバー追加後にログを出力
       return newArray;
     });
@@ -31,14 +46,14 @@ function New() {
   }, [memberName]);
 
   const handleCreateGroup = useCallback(
-    async (e) => {
+    (e) => {
       e.preventDefault();
 
       router.push('/groupName/setting');
 
-      //後で追加する
+      //バリデーション
 
-      // if (!groupName && memberArray.length <= 2) {
+      // if (!groupName && shiftInfo.length <= 2) {
       //   alert(
       //     'グループ名を入力してください\nメンバーを二名以上追加してください'
       //   );
@@ -46,7 +61,7 @@ function New() {
       // } else if (!groupName) {
       //   alert('グループ名を入力してください');
       //   return;
-      // } else if (memberArray.length <= 1) {
+      // } else if (shiftInfo.length <= 1) {
       //   alert('メンバーを二名以上追加してください');
       //   return;
       // }
@@ -59,7 +74,7 @@ function New() {
       //         },
       //         body: JSON.stringify({
       //           groupName,
-      //           members: memberArray,
+      //           members: shiftInfo.name,
       //         }),
       //       });
 
@@ -75,7 +90,7 @@ function New() {
       //       alert('サーバーに接続できませんでした');
       //     }
     },
-    [groupName, router, memberArray]
+    [groupName, router, shiftInfo]
   );
 
   return (
