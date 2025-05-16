@@ -1,7 +1,6 @@
 import React from 'react';
-import styles from './ShiftOverview.module.css';
 
-const ShiftOverview = ({ days, timeSlots, shiftCandidates }) => {
+const ShiftOverview = ({ days, timeSlots, shiftInfo }) => {
   return (
     <div style={{ overflowX: 'auto' }}>
       <table>
@@ -18,13 +17,15 @@ const ShiftOverview = ({ days, timeSlots, shiftCandidates }) => {
             <tr key={rowIndex}>
               <td>{slot}</td>
               {days.map((_, colIndex) => {
-                const candidates = shiftCandidates[colIndex]?.[rowIndex] || [];
+                // 各メンバーの shiftArray[colIndex][rowIndex] が true かを見る
+                const names = shiftInfo
+                  .filter((member) => member.shiftArray[colIndex]?.[rowIndex])
+                  .map((member) => member.name);
+
                 return (
                   <td key={colIndex}>
-                    {candidates.length > 0
-                      ? candidates.map((name, idx) => (
-                          <div key={idx}>{name}</div>
-                        ))
+                    {names.length > 0
+                      ? names.map((name, idx) => <div key={idx}>{name}</div>)
                       : 'ー'}
                   </td>
                 );
