@@ -49,9 +49,6 @@ export const GroupProvider = ({ children }) => {
       value={{
         groupName,
         setGroupName,
-        //消す
-        memberArray,
-        setMemberArray,
 
         groupRequireNumberArray,
         setGroupRequireNumberArray,
