@@ -8,7 +8,6 @@ import ShiftOverview from '@/components/ShiftOverview';
 const GroupPage = () => {
   const {
     groupName,
-    setGroupName,
     shiftInfo,
     setShiftInfo,
   } = useContext(GroupContext);

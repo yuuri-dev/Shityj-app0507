@@ -1,15 +1,12 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import MemberListCompile from '@/components/MemberListCompile';
 import styles from './new.module.css';
 import { GroupContext } from 'src/contexts/GroupContext';
 import PageTitle from '@/components/PageTitle';
+import AddMember from '@/components/AddMember';
 
-const NUM_DAYS = 7;
-const NUM_TIME_SLOTS = 3;
 
 function New() {
-  const [memberName, setMemberName] = useState('');
   const {
     groupName,
     setGroupName,
@@ -19,31 +16,7 @@ function New() {
 
   const router = useRouter();
 
-  const handleAddMember = useCallback(() => {
-    if (!memberName) {
-      return;
-    }
-    for (let i = 0; i < shiftInfo.length; i++) {
-      if (memberName === shiftInfo[i].name) {
-        alert('同じ名前が既に追加されています');
-        return;
-      }
-    }
-    setShiftInfo((prevArray) => {
-      const newArray = [
-        ...prevArray,
-        {
-          id: prevArray.length,
-          name: memberName,
-          timesToEnterDesired: 0,
-          shiftArray: Array.from({ length: NUM_DAYS }, () => Array(NUM_TIME_SLOTS).fill(0))
-        },
-      ];
-      console.log(newArray); // 新しいメンバー追加後にログを出力
-      return newArray;
-    });
-    setMemberName('');
-  }, [memberName]);
+
 
   const handleCreateGroup = useCallback(
     (e) => {
@@ -108,25 +81,7 @@ function New() {
               onChange={(e) => setGroupName(e.target.value)}
             />
           </div>
-
-          <div className={styles.input_wrapper}>
-            <p className={styles.p}>メンバー名</p>
-            <input
-              type="text"
-              className={`${styles.input} ${styles.input_w70}`}
-              placeholder="あおい"
-              value={memberName}
-              onChange={(e) => setMemberName(e.target.value)}
-            />
-            <button
-              type="button"
-              onClick={handleAddMember}
-              className={styles.addButton}
-            >
-              追加
-            </button>
-            <MemberListCompile />
-          </div>
+          <AddMember />
 
           <button
             type="button"

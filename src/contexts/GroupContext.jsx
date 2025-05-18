@@ -56,10 +56,6 @@ export const GroupProvider = ({ children }) => {
         setMaxDateToWork,
         maxHoursToWork,
         setMaxHoursToWork,
-
-        //けす
-        shiftCandidates,
-        setShiftCandidates,
         
         shiftInfo,
         setShiftInfo,

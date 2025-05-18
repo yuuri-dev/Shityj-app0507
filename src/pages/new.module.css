@@ -28,19 +28,6 @@
 .input_w80 {
   width: 90%;
 }
-.input_w70 {
-  width: calc(90% - 70px);
-}
-
-.addButton {
-  width: 70px;
-  height: 40px;
-  border: none;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  color: #fff;
-  background-color: #51C7CC;
-}
 
 .createButton {
   width: 90%;
