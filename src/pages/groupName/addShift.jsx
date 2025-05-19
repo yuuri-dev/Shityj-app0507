@@ -52,7 +52,7 @@ const AddShift = () => {
     alert('シフト希望が確定されました。');
 
     e.preventDefault();
-    router.push('../groupName/groupPage');
+    router.push('groupName/groupPage');
   };
 
   return (
@@ -65,6 +65,7 @@ const AddShift = () => {
             <input
               type="radio"
               name="memberName"
+              id={`member-${index}`}
               value={member.name}
               onChange={() => setSelectedIndex(index)}
             />
@@ -119,9 +120,7 @@ const AddShift = () => {
       <button onClick={(e) => handleConfirm(e)} style={{ marginTop: '16px' }}>
         確定
       </button>
-      <Link href="../groupName/groupPage">戻る</Link>
-
-      
+      <Link href="groupName/groupPage">戻る</Link>
     </div>
   );
 };

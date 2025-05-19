@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { GroupContext } from 'src/contexts/GroupContext';
-import MemberListCompile from '@/components/MemberListCompile';
 import AddMember from '@/components/AddMember';
 import RequiredNumberSetting from '@/components/RequiredNumberSetting';
 import { useRouter } from 'next/router';
@@ -37,7 +36,6 @@ const Setting = () => {
         <p className={styles.p}>メンバー</p>
         <AddMember />
         <span>あとからの追加・削除も可能です</span>
-        <MemberListCompile />
       </div>
 
       <RequiredNumberSetting />
