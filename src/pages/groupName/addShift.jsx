@@ -52,7 +52,7 @@ const AddShift = () => {
     alert('シフト希望が確定されました。');
 
     e.preventDefault();
-    router.push('groupName/groupPage');
+    router.push('groupPage');
   };
 
   return (
@@ -120,7 +120,7 @@ const AddShift = () => {
       <button onClick={(e) => handleConfirm(e)} style={{ marginTop: '16px' }}>
         確定
       </button>
-      <Link href="groupName/groupPage">戻る</Link>
+      <Link href="groupPage">戻る</Link>
     </div>
   );
 };
