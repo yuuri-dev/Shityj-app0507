@@ -4,7 +4,7 @@ import useHandleAddMember from "../../fooks/useHandleAddMember"
 import styles from "./AddMember.module.css"
 
 
-const AddButton = () => {
+const AddMember = () => {
     const [memberName, setMemberName] = useState('');
     const useAddMember = useHandleAddMember();
     
@@ -30,4 +30,4 @@ const AddButton = () => {
   );
 }
 
-export default AddButton
+export default AddMember

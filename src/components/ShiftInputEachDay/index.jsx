@@ -3,6 +3,7 @@
 */
 
 import React from 'react';
+import styles from "./ShiftInputEachDay.module.css"
 
 const ShiftInputEachDay = ({
   day,
@@ -28,17 +29,25 @@ const ShiftInputEachDay = ({
     setGroupRequireNumberArray(updatedArray);
   };
   return (
-    <div>
-      <h2>{day}曜日</h2>
-      <p>一括設定:</p>
-      <input type="number" onChange={(e) => handleBulkChange(e)} />
+    <div className={styles.contents}>
+      <h2 className={styles.dayTitle}>{day}曜日</h2>
+      <div className={styles.innerSetting}>
+        <p className={styles.p}>一括設定:</p>
+        <input
+          className={styles.input}
+          type="number"
+          onChange={(e) => handleBulkChange(e)}
+        />
+      </div>
+
       <p>時間別設定</p>
       {timeSlots.map((v, i) => {
         const value = groupRequireNumberArray[dayIndex][i];
         return (
-          <div key={i}>
-            <p>{v}</p>
+          <div className={styles.inner} key={i}>
+            <p className={styles.p}>{v}</p>
             <input
+              className={styles.input}
               type="number"
               value={value}
               onChange={(e) => handleChangeNumber(e, i)}

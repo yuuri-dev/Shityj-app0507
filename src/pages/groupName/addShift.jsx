@@ -46,7 +46,7 @@ const AddShift = () => {
       let newData = [...prev];
       newData[selectedIndex].timesToEnterDesired = timesToEnter;
       newData[selectedIndex].shiftArray = selection
-      setShiftInfo(newData);
+      return newData;
     });
 
     alert('シフト希望が確定されました。');
