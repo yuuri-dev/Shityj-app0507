@@ -5,14 +5,18 @@ import PageTitle from '@/components/PageTitle';
 import styles from './groupPage.module.css';
 import ShiftOverview from '@/components/ShiftOverview';
 import AddMember from '@/components/AddMember';
+import { useRouter } from 'next/router';
 
 const GroupPage = () => {
   const { groupName, shiftInfo, setShiftInfo } = useContext(GroupContext);
   const days = ['月', '火', '水', '木', '金', '土', '日'];
   const timeSlots = ['1', '2', '3'];
 
-  const handleSubmit = () => {
-    
+  const router = useRouter()
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    router.push();
   }
   return (
     <div>
@@ -32,7 +36,7 @@ const GroupPage = () => {
       <Link href="addShift" className={styles.shiftEnterButton}>
         シフト入力
       </Link>
-      <button onClick={() => handleSubmit} className={styles.shiftCreateButton}>シフト作成</button>
+      <button onClick={(e) => handleSubmit(e)} className={styles.shiftCreateButton}>シフト作成</button>
     </div>
   );
 };
