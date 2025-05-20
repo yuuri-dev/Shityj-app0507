@@ -4,6 +4,7 @@ import AddMember from '@/components/AddMember';
 import RequiredNumberSetting from '@/components/RequiredNumberSetting';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/PageTitle';
+import ButtonBlue from '@/components/ButtonBlue';
 import styles from "./setting.module.css"
 
 const Setting = () => {
@@ -49,9 +50,7 @@ const Setting = () => {
         className={styles.input}
         onChange={(e) => setMaxHoursToWork(e.target.value)}
       />
-      <button className={styles.button} onClick={handleSetDetail}>
-        決定
-      </button>
+      <ButtonBlue func={(e) => handleSetDetail(e)}>決定</ButtonBlue>
     </div>
   );
 };
