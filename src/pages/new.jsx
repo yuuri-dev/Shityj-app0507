@@ -75,7 +75,7 @@ function New() {
             <p className={styles.p}>グループ名</p>
             <input
               type="text"
-              className={`${styles.input} ${styles.input_w80}`}
+              className={`${styles.input} ${styles.input_w90}`}
               placeholder="七輪房"
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}

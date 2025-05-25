@@ -26,7 +26,7 @@ const Setting = () => {
   return (
     <div className={styles.contents}>
       <PageTitle>シフト詳細設定</PageTitle>
-      <div>
+      <div className={styles.nameSettings}>
         <p className={styles.p}>グループ名</p>
         <input
           type="text"
@@ -36,6 +36,9 @@ const Setting = () => {
         />
         <AddMember />
       </div>
+
+      <div className={styles.border}></div>
+      <h2 className={styles.h2}>シフト必要人数を設定する</h2>
 
       <RequiredNumberSetting />
       <p className={styles.p}>連続勤務制限</p>
