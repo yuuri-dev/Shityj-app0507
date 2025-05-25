@@ -1,4 +1,5 @@
-input1 = [
+//必要人数のデータ
+const input1 = [
   [2, 1, 0],
   [2, 1, 0],
   [2, 1, 0],
@@ -7,7 +8,8 @@ input1 = [
   [2, 1, 0],
   [2, 1, 0],
 ];
-input2 = [
+//shiftInfoのデータ
+const input2 = [
   {
     id: 0,
     name: 'taro',
@@ -38,39 +40,41 @@ input2 = [
   },
 ];
 
+//---------シフト生成関数-------------
+const NUM_DAYS = 7;
+const NUM_TIME_SLOTS = 3;
+
 const result = (input1, input2) => {
-  let candidation = Array.from({ length: 7 }, () =>
-    Array.from({ length: 3 }, () => [])
+  const createMatrix = (rows, cols, init) =>
+    Array.from({ length: rows }, () =>
+      Array.from({ length: cols }, () =>
+        typeof init === 'function' ? init() : init
+      )
+    );
+
+  const candidation = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, () => []);
+  const isConfirmed = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, false);
+  const output = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, false);
+
+  const shiftCountArray = Array(input2.length).fill(0);
+
+  //必要人数0の場合の処理
+  input1.forEach((row, i) =>
+    row.forEach((val, j) => {
+      if (val === 0) isConfirmed[i][j] = true;
+    })
   );
 
-  let isConfirmed = Array.from({ length: 7 }, () =>
-    Array.from({ length: 3 }, () => false)
-  );
-
- let output = Array.from({ length: 7 }, () =>
-    Array.from({ length: 3 }, () => false)
- );
-  
-  shiftCountArray = Array.from({length:input2.length},() => 0)
-    
-
-  for (let i = 0; i < 7; i++) {
-    for (let j = 0; j < 3; j++) {
-      if (input1[i][j] === 0) {
-        isConfirmed[i][j] = true;
-      }
-    }
-  }
-
-  for (let i = 0; i < input2.length; i++) {
-    for (let j = 0; j < 7; j++) {
-      for (let k = 0; k < 3; k++) {
-        if (input2[i].shiftArray[j][k]) {
-          candidation[j][k].push(input2[i].id);
+  // 必要人数より候補者が少ないまたは同じ時の処理
+  input2.forEach(({ id, shiftArray }) => {
+    shiftArray.forEach((row, i) => {
+      row.forEach((wantsToEnter, j) => {
+        if (wantsToEnter) {
+          candidation[i][j].push(id);
         }
-      }
-    }
-  }
+      });
+    });
+  });
 
   for (let j = 0; j < 7; j++) {
     for (let k = 0; k < 3; k++) {
@@ -82,11 +86,6 @@ const result = (input1, input2) => {
       }
     }
   }
-  
-
-
-  
- 
 
   console.log(output);
   console.log(candidation);
@@ -94,4 +93,4 @@ const result = (input1, input2) => {
   console.log(shiftCountArray);
 };
 
-result(input1,input2);
+result(input1, input2);
