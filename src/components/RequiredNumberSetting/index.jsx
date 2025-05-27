@@ -5,6 +5,7 @@
 import React, {useContext } from 'react';
 import { GroupContext } from 'src/contexts/GroupContext';
 import ShiftInputEachDay from '../ShiftInputEachDay';
+import styles from "./RequiredNumberSetting.module.css"
 
 const Index = () => {
   const days = ['月', '火', '水', '木', '金', '土', '日'];
@@ -15,7 +16,7 @@ const Index = () => {
 
 
   return (
-    <div>
+    <div className={styles.contents}>
       {days.map((day,dayIndex) => {
         return (
           <ShiftInputEachDay

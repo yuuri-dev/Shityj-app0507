@@ -1,8 +1,8 @@
 .contents {
-  margin: 20px 30px;
+  
 }
 .p {
-
+  
 }
 
 .nameSettings p{
@@ -11,10 +11,10 @@
 }
 
 .border{
-  border: 1px #aaa solid;
-  width: 270px;
-  margin: 0 auto;
-  margin-bottom: 40px;
+  border: 1px #3c3c3c solid;
+  width: 100%;
+  margin: 30px auto;
+  margin-bottom: 70px;
 }
 
 .h2{
@@ -38,10 +38,18 @@
 }
 .groupNameInput {
   height: 40px;
-  width: 90%;
+  width: 80%;
   background-color: rgba(243, 244, 246, 0.8);
   border-color: rgba(243, 244, 246, 0.656);
   border-style: solid;
   font-size: 20px;
   padding-left: 10px;
+}
+
+@media (min-width: 767px) {
+  .contents{
+    width: 500px;
+    margin: 0 auto;
+  }
+  
 }
