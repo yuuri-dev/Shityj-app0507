@@ -7,6 +7,7 @@ import ShiftOverview from '@/components/ShiftOverview';
 import AddMember from '@/components/AddMember';
 import ButtonBlue from '@/components/ButtonBlue';
 import ButtonWhite from '@/components/ButtonWhite';
+import Loading from '@/components/Loading';
 import { useRouter } from 'next/router';
 
 
@@ -30,9 +31,9 @@ const GroupPageShow = ({setLoading}) => {
     setLoading(true);
 
     await fakeAsyncTask(); // 非同期処理が終わるまで待つ
-
-    setLoading(false);
     router.push('shiftView');
+    setLoading(false);
+
   };
 
   return (
@@ -59,18 +60,12 @@ const GroupPageShow = ({setLoading}) => {
   );
 };
 
-const Loading = () => {
-  return (
-    <div>
-      ...計算中
-    </div>
-  )
-}
+
 
 const GroupPage = () => {
   const [isLoading, setLoading] = useState(false);
   return (
-    <>{isLoading ? <Loading /> : <GroupPageShow setLoading={setLoading} />}</>
+    <>{isLoading ? <Loading/> : <GroupPageShow setLoading={setLoading} />}</>
   );
   
 }

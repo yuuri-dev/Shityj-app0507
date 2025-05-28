@@ -1,0 +1,26 @@
+.container{
+
+}
+.colIndex{
+
+}
+.grid {
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr); /* slot列 + 7日分 */
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
+  
+  .slot {
+    font-weight: bold;
+    text-align: center;
+    background-color: #f0f0f0;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .item {
+    text-align: center;
+    padding: 10px;
+    border-right: 1px solid #eee;
+  }
