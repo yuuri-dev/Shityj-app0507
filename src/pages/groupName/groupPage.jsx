@@ -10,27 +10,31 @@ import ButtonWhite from '@/components/ButtonWhite';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/router';
 
+import { result } from 'src/hooks/result';
+import { input1, input2, input3, input4 } from 'src/hooks/test_data';
+
 
 const GroupPageShow = ({setLoading}) => {
-  const { groupName, shiftInfo, setShiftInfo } = useContext(GroupContext);
+  const {
+    groupName,
+    shiftInfo,
+    setShiftInfo,
+    shiftCompleted,
+    setShiftCompleted,
+  } = useContext(GroupContext);
   const days = ['月', '火', '水', '木', '金', '土', '日'];
   const timeSlots = ['1', '2', '3'];
 
   const router = useRouter();
 
-  const fakeAsyncTask = () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 2000); // 将来的にはここを本物の処理に差し替え
-    });
-  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    await fakeAsyncTask(); // 非同期処理が終わるまで待つ
+    setShiftCompleted(await result(input1, input2, input3, input4)); // 非同期処理が終わるまで待つ
+
     router.push('shiftView');
     setLoading(false);
 
