@@ -167,6 +167,9 @@ const input2 = [
     ],
   },
 ];
+
+const input3 = 2;
+const input4 = 2;
 // const input2 = [
 //   {
 //     id: 0,
@@ -202,13 +205,15 @@ const input2 = [
 const NUM_DAYS = 7;
 const NUM_TIME_SLOTS = 3;
 
-const result = (input1, input2) => {
-  const createMatrix = (rows, cols, init) =>
-    Array.from({ length: rows }, () =>
+export const result = async (input1, input2, input3, input4) => {
+  const createMatrix = (rows, cols, init) => {
+    return Array.from({ length: rows }, () =>
       Array.from({ length: cols }, () =>
         typeof init === 'function' ? init() : init
       )
-    );
+    );    
+  }
+
 
   let candidation = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, () => []);
   const isConfirmed = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, false);
@@ -237,8 +242,8 @@ const result = (input1, input2) => {
     });
   });
 
+  console.log('候補者一覧:');
   console.log(candidation);
-  
 
   // 必要人数より候補者が少ないまたは同じ時の処理
   for (let j = 0; j < 7; j++) {
@@ -255,10 +260,9 @@ const result = (input1, input2) => {
     }
   }
 
-  console.log("確定してるやつ");
-  ;console.log(output);
-  
-  
+  console.log('確定してるやつ:');
+  console.log(output);
+
   //二週目
   let i = 0; //iは第一段階の繰り返し回数
   while (i < 5) {
@@ -275,19 +279,19 @@ const result = (input1, input2) => {
 
           //最小値の要素番号すべてを格納した配列
           const minIndexes = rateOfShiftCandidation
-            .map((value, index) => (value - min < 0.01 ? candidationOverFlow[index] : -1))
+            .map((value, index) =>
+              value - min < 0.01 ? candidationOverFlow[index] : -1
+            )
             .filter((index) => index !== -1);
 
-          if (minIndexes.length === input1[j][k]) {
+          if (minIndexes.length === input1[j][k] - output[j][k].length) {
             isConfirmed[j][k] = true;
           }
-          console.log(minIndexes);
-          
+
           if (minIndexes.length <= input1[j][k]) {
             minIndexes.map((value) => {
-              console.log(value)
+              console.log(value);
               output[j][k].push(value);
-
 
               candidation[j][k] = candidation[j][k].filter((v) => v !== value);
 
@@ -304,14 +308,52 @@ const result = (input1, input2) => {
 
   //第二段階
 
-  // for (let j = 0; j < 7; j++) {
-  //   for (let k = 0; k < 3; k++) {
-  //     if (!isConfirmed[j][k]) {
+  for (let j = 0; j < 7; j++) {
+    for (let k = 0; k < 3; k++) {
+      if (!isConfirmed[j][k]) {
+        const candidationOverFlow = [...candidation[j][k]];
+        const timesToDesiredArray = [];
+        for (let l = 0; l < candidationOverFlow.length; l++) {
+          timesToDesiredArray.push(
+            input2[candidationOverFlow[l]].timesToEnterDesired
+          );
+        }
+        const min = Math.min(timesToDesiredArray);
 
+        const minIndexes = timesToDesiredArray
+          .map((value, index) =>
+            value === min ? candidationOverFlow[index] : -1
+          )
+          .filter((index) => index !== -1);
+
+        if (minIndexes.length === input1[j][k] - output[j][k].length) {
+          isConfirmed[j][k] = true;
+        }
+
+        if (minIndexes.length <= input1[j][k]) {
+          minIndexes.map((value) => {
+            output[j][k].push(value);
+
+            candidation[j][k] = candidation[j][k].filter((v) => v !== value);
+
+            shiftCountArray[value]++;
+            rateOfShift[value] += 1 / input2[value].timesToEnterDesired;
+          });
+          latestShiftRequired[j][k] -= minIndexes.length;
+        }
+      }
+    }
+  }
+  console.log('出力');
   console.log(output);
-  console.log(candidation);
+
+  console.log('isConfirmed?:');
   console.log(isConfirmed);
+
+  console.log('シフト入った回数:');
   console.log(shiftCountArray);
+
+  console.log('出勤率:');
   console.log(rateOfShift);
 };
 
