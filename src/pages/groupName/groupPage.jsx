@@ -13,31 +13,27 @@ import { useRouter } from 'next/router';
 import { result } from 'src/hooks/result';
 import { input1, input2, input3, input4 } from 'src/hooks/test_data';
 
-
-const GroupPageShow = ({setLoading}) => {
-  const {
-    groupName,
-    shiftInfo,
-    setShiftInfo,
-    shiftCompleted,
-    setShiftCompleted,
-  } = useContext(GroupContext);
+const GroupPageShow = ({ setLoading }) => {
+  const { groupName, shiftInfo, setShiftCompleted } = useContext(GroupContext);
   const days = ['月', '火', '水', '木', '金', '土', '日'];
   const timeSlots = ['1', '2', '3'];
 
   const router = useRouter();
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    setShiftCompleted(await result(input1, input2, input3, input4)); // 非同期処理が終わるまで待つ
-
-    router.push('shiftView');
-    setLoading(false);
-
+    try {
+      const shiftData = await result(input1, input2, input3, input4);
+      setShiftCompleted(shiftData); // 非同期処理が終わるまで待つ
+      router.push('shiftView');
+    } catch (error) {
+      console.error('エラー:', error);
+      
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -53,6 +49,10 @@ const GroupPageShow = ({setLoading}) => {
         })}
       </div>
       <AddMember />
+      <Link href="setting">
+        <ButtonWhite>詳細設定へ</ButtonWhite>
+      </Link>
+
       <h2 className={styles.h2}>シフト候補者一覧</h2>
       <ShiftOverview days={days} timeSlots={timeSlots} shiftInfo={shiftInfo} />
 
@@ -64,14 +64,11 @@ const GroupPageShow = ({setLoading}) => {
   );
 };
 
-
-
 const GroupPage = () => {
   const [isLoading, setLoading] = useState(false);
   return (
-    <>{isLoading ? <Loading/> : <GroupPageShow setLoading={setLoading} />}</>
+    <>{isLoading ? <Loading /> : <GroupPageShow setLoading={setLoading} />}</>
   );
-  
-}
+};
 
 export default GroupPage;

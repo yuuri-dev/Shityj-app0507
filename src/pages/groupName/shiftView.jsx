@@ -13,9 +13,17 @@ const ShiftView = () => {
     setShiftCompleted,
   } = useContext(GroupContext);
 
+  if (
+    !shiftCompleted ||
+    shiftCompleted.length === 0 ||
+    !Array.isArray(shiftCompleted[0])
+  ) {
+    return <p>読み込み中...</p>;
+  }
+
   return (
     <div>
-      <PageTitle>作成したシフト</PageTitle>
+      <PageTitle>{groupName}</PageTitle>
       <p>作成したシフトはこちら</p>
 
       <table border="1">
