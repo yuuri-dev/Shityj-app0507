@@ -3,7 +3,7 @@
 */
 
 import React from 'react';
-import styles from "./ShiftInputEachDay.module.css"
+import styles from './ShiftInputEachDay.module.css';
 
 const ShiftInputEachDay = ({
   day,
@@ -28,6 +28,7 @@ const ShiftInputEachDay = ({
     updatedArray[dayIndex][timeIndex] = Number.isNaN(newValue) ? 0 : newValue;
     setGroupRequireNumberArray(updatedArray);
   };
+
   return (
     <div className={styles.contents}>
       <h2 className={styles.dayTitle}>{day}曜日</h2>
