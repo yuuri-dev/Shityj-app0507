@@ -9,3 +9,6 @@
     margin: 20px auto 0;
     display: block; 
 }
+.button:hover {
+  background-color: #7cd9e0;
+}

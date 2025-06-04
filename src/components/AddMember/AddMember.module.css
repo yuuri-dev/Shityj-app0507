@@ -28,3 +28,7 @@
   color: #fff;
   background-color: #51c7cc;
 }
+
+.addButton:hover {
+  background-color: #7cd9e0;
+}
