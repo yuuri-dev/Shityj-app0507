@@ -1,9 +1,4 @@
-.container{
 
-}
-.colIndex{
-
-}
 .grid {
     display: grid;
     grid-template-columns: 80px repeat(7, 1fr); /* slot列 + 7日分 */
@@ -11,16 +6,56 @@
     padding: 10px 0;
   }
   
-  .slot {
-    font-weight: bold;
-    text-align: center;
-    background-color: #f0f0f0;
-    border-right: 1px solid #ccc;
-    padding: 10px;
-  }
-  
-  .item {
-    text-align: center;
-    padding: 10px;
-    border-right: 1px solid #eee;
-  }
+.container {
+  width: 95%;
+  overflow-x: auto;
+  margin: 20px auto;
+}
+
+/* 表全体のスタイル */
+.container table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+  min-width: 600px; /* 必要に応じて調整 */
+}
+
+/* ヘッダー行（曜日） */
+.colIndex {
+
+  background-color: #00bcd4;
+  color: white;
+  padding:12px;
+  font-weight: bold;
+  font-size: 14px;
+  border: 1px solid #ddd;
+}
+
+/* 各時間帯（朝・昼・晩）の行ラベル */
+.slot {
+ 
+}
+
+/* 通常のセル */
+.item {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* ホバー時にハイライト */
+.item:hover {
+  background-color: #e0f7fa;
+  cursor: pointer;
+}
+
+
+
