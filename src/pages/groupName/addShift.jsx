@@ -2,15 +2,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import { GroupContext } from 'src/contexts/GroupContext';
+import ButtonBlue from '@/components/ButtonBlue';
+import ButtonWhite from '@/components/ButtonWhite';
 
 //定数
 const DAYS = ['月', '火', '水', '木', '金', '土', '日'];
 const TIME_SLOTS = ['午前', '午後', '夜'];
 
 const AddShift = () => {
-  
-  const { shiftInfo, setShiftInfo } =
-    useContext(GroupContext);
+  const { shiftInfo, setShiftInfo } = useContext(GroupContext);
 
   //ローカルな変数
   const [selection, setSelection] = useState(
@@ -45,7 +45,7 @@ const AddShift = () => {
     setShiftInfo((prev) => {
       let newData = [...prev];
       newData[selectedIndex].timesToEnterDesired = timesToEnter;
-      newData[selectedIndex].shiftArray = selection
+      newData[selectedIndex].shiftArray = selection;
       return newData;
     });
 
@@ -117,10 +117,10 @@ const AddShift = () => {
         value={timesToEnter}
         onChange={(e) => changeTimesToEnter(e)}
       />
-      <button onClick={(e) => handleConfirm(e)} style={{ marginTop: '16px' }}>
-        確定
-      </button>
-      <Link href="groupPage">戻る</Link>
+      <ButtonWhite func={(e) => handleConfirm(e)}>確定</ButtonWhite>
+      <Link href="groupPage">
+        <ButtonBlue>戻る</ButtonBlue>
+      </Link>
     </div>
   );
 };

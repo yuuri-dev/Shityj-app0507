@@ -4,6 +4,7 @@ import AddMember from '@/components/AddMember';
 import RequiredNumberSetting from '@/components/RequiredNumberSetting';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/PageTitle';
+import ButtonBlue from '@/components/ButtonBlue';
 import styles from "./setting.module.css"
 
 const Setting = () => {
@@ -25,7 +26,7 @@ const Setting = () => {
   return (
     <div className={styles.contents}>
       <PageTitle>シフト詳細設定</PageTitle>
-      <div>
+      <div className={styles.nameSettings}>
         <p className={styles.p}>グループ名</p>
         <input
           type="text"
@@ -35,6 +36,9 @@ const Setting = () => {
         />
         <AddMember />
       </div>
+
+      <div className={styles.border}></div>
+      <h2 className={styles.h2}>シフト必要人数を設定する</h2>
 
       <RequiredNumberSetting />
       <p className={styles.p}>連続勤務制限</p>
@@ -49,9 +53,7 @@ const Setting = () => {
         className={styles.input}
         onChange={(e) => setMaxHoursToWork(e.target.value)}
       />
-      <button className={styles.button} onClick={handleSetDetail}>
-        決定
-      </button>
+      <ButtonBlue func={(e) => handleSetDetail(e)}>決定</ButtonBlue>
     </div>
   );
 };

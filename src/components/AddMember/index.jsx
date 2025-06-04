@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import MemberListCompile from '@/components/MemberListCompile';
-import useHandleAddMember from "../../fooks/useHandleAddMember"
+import useHandleAddMember from "../../hooks/useHandleAddMember"
 import styles from "./AddMember.module.css"
 
 

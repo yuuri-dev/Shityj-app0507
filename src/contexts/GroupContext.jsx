@@ -7,27 +7,26 @@ const NUM_TIME_SLOTS = 3;
 
 export const GroupProvider = ({ children }) => {
   const [groupName, setGroupName] = useState('');
-  const [memberArray, setMemberArray] = useState([]);
+
+  // [
+  //   [2, 1, 0],
+  //   [2, 1, 0],
+  //   [2, 1, 0],
+  //   [2, 1, 0],
+  //   [2, 1, 0],
+  //   [2, 1, 0],
+  //   [2, 1, 0],
+  // ];
+
   const [groupRequireNumberArray, setGroupRequireNumberArray] = useState(
     Array.from({ length: NUM_DAYS }, () => Array(NUM_TIME_SLOTS).fill(0))
   );
 
-  const [timesToEnterArray, setTimesToEnterArray] = useState(Array([]));
 
   const [maxDateToWork, setMaxDateToWork] = useState(5);
   const [maxHoursToWork, setMaxHoursToWork] = useState(8);
 
-  const initialShiftCandidates = Array(NUM_DAYS)
-    .fill(null)
-    .map(() =>
-      Array(NUM_TIME_SLOTS)
-        .fill(null)
-        .map(() => [])
-    );
-  const [shiftCandidates, setShiftCandidates] = useState(
-    initialShiftCandidates
-  );
-////////////////// shiftInfo/////////////////////
+  ////////////////// shiftInfo/////////////////////
   // [
   //   {
   //     id:0;
@@ -44,6 +43,12 @@ export const GroupProvider = ({ children }) => {
 
   const [shiftInfo, setShiftInfo] = useState([]);
 
+  const [shiftCompleted, setShiftCompleted] = useState(
+    Array.from({ length: NUM_DAYS }, () =>
+      Array.from({ length: NUM_TIME_SLOTS }, () => [])
+    )
+  );
+
   return (
     <GroupContext.Provider
       value={{
@@ -56,9 +61,12 @@ export const GroupProvider = ({ children }) => {
         setMaxDateToWork,
         maxHoursToWork,
         setMaxHoursToWork,
-        
+
         shiftInfo,
         setShiftInfo,
+        
+        shiftCompleted,
+        setShiftCompleted,
       }}
     >
       {children}
