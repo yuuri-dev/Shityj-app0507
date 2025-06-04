@@ -44,7 +44,9 @@ export const GroupProvider = ({ children }) => {
   const [shiftInfo, setShiftInfo] = useState([]);
 
   const [shiftCompleted, setShiftCompleted] = useState(
-    Array.from({ length: NUM_DAYS }, () => Array(NUM_TIME_SLOTS).fill([]))
+    Array.from({ length: NUM_DAYS }, () =>
+      Array.from({ length: NUM_TIME_SLOTS }, () => [])
+    )
   );
 
   return (
