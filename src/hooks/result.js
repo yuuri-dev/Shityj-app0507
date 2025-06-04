@@ -355,6 +355,7 @@ export const result = async (input1, input2, input3, input4) => {
 
   console.log('出勤率:');
   console.log(rateOfShift);
+  return output;
 };
 
 result(input1, input2, input3, input4);

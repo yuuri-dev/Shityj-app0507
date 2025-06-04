@@ -5,12 +5,11 @@ import { useContext } from 'react';
 import { GroupContext } from 'src/contexts/GroupContext';
 
 const ShiftView = () => {
+  const context = useContext(GroupContext);
+  console.log('GroupContext in ShiftView:', context);
   const {
     groupName,
-    shiftInfo,
-    setShiftInfo,
     shiftCompleted,
-    setShiftCompleted,
   } = useContext(GroupContext);
 
   if (
@@ -18,8 +17,11 @@ const ShiftView = () => {
     shiftCompleted.length === 0 ||
     !Array.isArray(shiftCompleted[0])
   ) {
+    console.log('shiftCompleted:', shiftCompleted);
     return <p>読み込み中...</p>;
   }
+
+
 
   return (
     <div>

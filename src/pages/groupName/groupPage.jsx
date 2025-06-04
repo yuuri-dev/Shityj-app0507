@@ -21,16 +21,16 @@ const GroupPageShow = ({ setLoading }) => {
   const router = useRouter();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     setLoading(true);
 
     try {
       const shiftData = await result(input1, input2, input3, input4);
+
       setShiftCompleted(shiftData); // 非同期処理が終わるまで待つ
+      e.preventDefault();
       router.push('shiftView');
     } catch (error) {
       console.error('エラー:', error);
-      
     } finally {
       setLoading(false);
     }
