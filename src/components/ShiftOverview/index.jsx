@@ -4,10 +4,14 @@ import styles from "./ShiftOverview.module.css"
 const ShiftOverview = ({ days, timeSlots, shiftInfo }) => {
   return (
     <div style={{ overflowX: 'auto' }} className={styles.container}>
-      <table>
+      <table className={styles.table}>
         <thead>
-          <tr>
-            <th></th>
+          <tr className= {styles.grid}>
+            <th className={styles.colIndex}>
+              
+              曜日
+
+            </th>
             {days.map((day, colIndex) => (
               <th className={styles.colIndex} key={colIndex}>
                 {day}
