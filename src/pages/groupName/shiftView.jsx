@@ -39,6 +39,7 @@ const ShiftView = () => {
               ))}
           </tr>
         </thead>
+        
         <tbody>
           {shiftCompleted &&
             shiftCompleted.map((dayRow, dayIndex) => (
