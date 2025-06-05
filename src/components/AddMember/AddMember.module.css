@@ -3,8 +3,8 @@
 }
 .p {
   justify-self: start;
-  padding-left: 10px;
   color: #333;
+  margin-left: 13%;
 }
 .input {
   height: 40px;
@@ -16,7 +16,7 @@
 }
 
 .input_w70 {
-  width: calc(80% - 70px);
+  width: calc(70% - 70px);
 }
 
 .addButton {

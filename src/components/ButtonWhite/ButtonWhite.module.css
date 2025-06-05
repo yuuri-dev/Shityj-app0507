@@ -1,21 +1,18 @@
 
 .button{
- 
-  background-color: #51C7CC;
-  color: white;
+  display: block;
+  margin:0 auto;
+  background-color: white;
+  color: #51C7CC;
   padding: 12px 24px;
+  width: 200px;
   border: none;
   border-radius: 8px;
   font-size: 16px;
   font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
 .button:hover {
-  background-color: #7cd9e0;
-  transform: translateY(3px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  background-color: #f6fdfd;
 }
 
