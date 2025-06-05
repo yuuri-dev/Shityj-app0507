@@ -38,7 +38,7 @@ const ShiftInputEachDay = ({
     <div className={styles.contents}>
       <h2 className={styles.dayTitle}>{day}曜日</h2>
       <div className={styles.innerSetting}>
-        <p className={styles.p}>一括設定:</p>
+        <p className={styles.settingTitle}>一括設定:</p>
 
         <label className={styles['selectbox-1']}>
           <select value={selectedBulk} onChange={(e) => handleBulkChange(e)}>
@@ -67,12 +67,12 @@ const ShiftInputEachDay = ({
         </label>
       </div>
 
-      <p>時間別設定</p>
+      <p className={styles.titleTimeSeparated}>時間別設定</p>
       {timeSlots.map((v, i) => {
         const value = groupRequireNumberArray[dayIndex][i];
         return (
-          <div className={styles.inner} key={i}>
-            <p className={styles.p}>{v}</p>
+          <div className={styles.innerSetting} key={i}>
+            <p className={styles.settingTitle}>{v}</p>
             <label className={styles['selectbox-1']}>
               <select
                 value={value}
