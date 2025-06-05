@@ -1,13 +1,16 @@
 .contents{
+    padding: 20px 0;
 }
 .dayTitle{
-    font-size: 16px;
+    font-size: 18px;
+    text-align: center;
 }
 .innerSetting{
     display: flex;
+    margin-top: 10px;
 }
-.p{
- 
+.settingTitle{
+    margin: auto;
 }
 
 /* selectbox */
@@ -53,18 +56,13 @@
     color: #333;
     font-size: 1em;
     cursor: pointer;
+    text-align: center;
 }
 
 .selectbox-1 select:focus {
     outline: 2px solid #51C7CC;
 }
-
-
-.input{
-    width: 200px;
-    height: 30px;
+.titleTimeSeparated{
     text-align: center;
-}
-.inner{
-    margin: 0 auto;
+    margin-top: 20px;
 }
