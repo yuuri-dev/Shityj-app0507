@@ -1,17 +1,43 @@
 import PageTitle from '@/components/PageTitle';
 import React from 'react';
-import { useContext } from 'react';
+import { useContext, useState,useEffect } from 'react';
 
 import { GroupContext } from 'src/contexts/GroupContext';
+
+const NUM_DAYS = 7;
+const NUM_TIME_SLOTS = 3;
 
 const ShiftView = () => {
   const context = useContext(GroupContext);
   console.log('GroupContext in ShiftView:', context);
-  const {
-    groupName,
-    shiftCompleted,
-  } = useContext(GroupContext);
+  const { groupName, shiftCompleted, shiftInfo } = useContext(GroupContext);
 
+  const a = Array.from({ length: NUM_DAYS }, () =>
+    Array.from({ length: NUM_TIME_SLOTS }, () => [])
+  );
+
+  const [shiftCompletedWithName, setShiftCompletedWithName] = useState(a);
+
+  useEffect(() => {
+    // shiftCompletedとshiftInfoがそろっているときだけ処理
+    if (
+      !shiftCompleted ||
+      !Array.isArray(shiftCompleted) ||
+      !shiftInfo ||
+      shiftCompleted.length === 0
+    ) {
+      return;
+    }
+
+    const converted = Array.from({ length: NUM_DAYS }, (_, i) =>
+      Array.from({ length: NUM_TIME_SLOTS }, (_, j) => {
+        const ids = shiftCompleted[i]?.[j] || [];
+        return ids.map((id) => shiftInfo[id]?.name || '');
+      })
+    );
+
+    setShiftCompletedWithName(converted);
+  }, [shiftCompleted, shiftInfo]); // 依存関係
   if (
     !shiftCompleted ||
     shiftCompleted.length === 0 ||
@@ -20,8 +46,6 @@ const ShiftView = () => {
     console.log('shiftCompleted:', shiftCompleted);
     return <p>読み込み中...</p>;
   }
-
-
 
   return (
     <div>
@@ -41,9 +65,9 @@ const ShiftView = () => {
         </thead>
         <tbody>
           {shiftCompleted &&
-            shiftCompleted.map((dayRow, dayIndex) => (
+            shiftCompletedWithName.map((dayRow, dayIndex) => (
               <tr key={dayIndex}>
-                <td>日 {dayIndex + 1}</td>
+                <td>{dayIndex + 1}日 </td>
                 {dayRow.map((slot, timeIndex) => (
                   <td key={timeIndex}>
                     {slot.length > 0 ? slot.join(', ') : 'なし'}

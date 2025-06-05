@@ -14,7 +14,14 @@ import { result } from 'src/hooks/result';
 import { input1, input2, input3, input4 } from 'src/hooks/test_data';
 
 const GroupPageShow = ({ setLoading }) => {
-  const { groupName, shiftInfo, setShiftCompleted } = useContext(GroupContext);
+  const {
+    groupName,
+    groupRequireNumberArray,
+    shiftInfo,
+    setShiftCompleted,
+    maxDateToWork,
+    maxHoursToWork,
+  } = useContext(GroupContext);
   const days = ['月', '火', '水', '木', '金', '土', '日'];
   const timeSlots = ['1', '2', '3'];
 
@@ -24,7 +31,12 @@ const GroupPageShow = ({ setLoading }) => {
     setLoading(true);
 
     try {
-      const shiftData = await result(input1, input2, input3, input4);
+      const shiftData = await result(
+        groupRequireNumberArray,
+        shiftInfo,
+        maxDateToWork,
+        maxHoursToWork
+      );
 
       setShiftCompleted(shiftData); // 非同期処理が終わるまで待つ
       e.preventDefault();
