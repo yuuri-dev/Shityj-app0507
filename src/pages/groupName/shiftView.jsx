@@ -10,6 +10,7 @@ import ShiftView1 from '@/components/ShiftView1';
 const NUM_DAYS = 7;
 const NUM_TIME_SLOTS = 3;
 
+
 const ShiftView = () => {
   const { groupName, shiftCompleted, shiftInfo } = useContext(GroupContext);
 
