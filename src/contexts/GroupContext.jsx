@@ -19,54 +19,69 @@ export const GroupProvider = ({ children }) => {
     )
   );
 
-  // 読み込み処理
+  // 読み込み処理（クライアントだけ）
   useEffect(() => {
-    const savedGroupName = localStorage.getItem('groupName');
-    if (savedGroupName) setGroupName(savedGroupName);
+    if (typeof window !== 'undefined') {
+      const savedGroupName = localStorage.getItem('groupName');
+      if (savedGroupName) setGroupName(savedGroupName);
 
-    const savedGroupRequire = localStorage.getItem('groupRequireNumberArray');
-    if (savedGroupRequire)
-      setGroupRequireNumberArray(JSON.parse(savedGroupRequire));
+      const savedGroupRequire = localStorage.getItem('groupRequireNumberArray');
+      if (savedGroupRequire)
+        setGroupRequireNumberArray(JSON.parse(savedGroupRequire));
 
-    const savedMaxDate = localStorage.getItem('maxDateToWork');
-    if (savedMaxDate) setMaxDateToWork(Number(savedMaxDate));
+      const savedMaxDate = localStorage.getItem('maxDateToWork');
+      if (savedMaxDate) setMaxDateToWork(Number(savedMaxDate));
 
-    const savedMaxHours = localStorage.getItem('maxHoursToWork');
-    if (savedMaxHours) setMaxHoursToWork(Number(savedMaxHours));
+      const savedMaxHours = localStorage.getItem('maxHoursToWork');
+      if (savedMaxHours) setMaxHoursToWork(Number(savedMaxHours));
 
-    const savedShiftInfo = localStorage.getItem('shiftInfo');
-    if (savedShiftInfo) setShiftInfo(JSON.parse(savedShiftInfo));
+      const savedShiftInfo = localStorage.getItem('shiftInfo');
+      if (savedShiftInfo) setShiftInfo(JSON.parse(savedShiftInfo));
 
-    const savedShiftCompleted = localStorage.getItem('shiftCompleted');
-    if (savedShiftCompleted) setShiftCompleted(JSON.parse(savedShiftCompleted));
+      const savedShiftCompleted = localStorage.getItem('shiftCompleted');
+      if (savedShiftCompleted)
+        setShiftCompleted(JSON.parse(savedShiftCompleted));
+    }
   }, []);
 
   // 書き込み処理
   useEffect(() => {
-    localStorage.setItem('groupName', groupName);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('groupName', groupName);
+    }
   }, [groupName]);
 
   useEffect(() => {
-    localStorage.setItem(
-      'groupRequireNumberArray',
-      JSON.stringify(groupRequireNumberArray)
-    );
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(
+        'groupRequireNumberArray',
+        JSON.stringify(groupRequireNumberArray)
+      );
+    }
   }, [groupRequireNumberArray]);
 
   useEffect(() => {
-    localStorage.setItem('maxDateToWork', maxDateToWork);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('maxDateToWork', maxDateToWork);
+    }
   }, [maxDateToWork]);
 
   useEffect(() => {
-    localStorage.setItem('maxHoursToWork', maxHoursToWork);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('maxHoursToWork', maxHoursToWork);
+    }
   }, [maxHoursToWork]);
 
   useEffect(() => {
-    localStorage.setItem('shiftInfo', JSON.stringify(shiftInfo));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('shiftInfo', JSON.stringify(shiftInfo));
+    }
   }, [shiftInfo]);
 
   useEffect(() => {
-    localStorage.setItem('shiftCompleted', JSON.stringify(shiftCompleted));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('shiftCompleted', JSON.stringify(shiftCompleted));
+    }
   }, [shiftCompleted]);
 
   return (

@@ -2,12 +2,14 @@
 import React from 'react';
 import { useContext, useState, useEffect } from 'react';
 import styles from './shiftView.module.css';
+import PageTitle from '@/components/PageTitle';
 
 import { GroupContext } from 'src/contexts/GroupContext';
 import ShiftView1 from '@/components/ShiftView1';
 
 const NUM_DAYS = 7;
 const NUM_TIME_SLOTS = 3;
+
 
 const ShiftView = () => {
   const { groupName, shiftCompleted, shiftInfo } = useContext(GroupContext);
@@ -48,8 +50,12 @@ const ShiftView = () => {
     return <p>読み込み中...</p>;
   }
 
-  return (<ShiftView1 props={shiftCompletedWithName } />
-    
+  return (
+    <div>
+      <PageTitle>{groupName}</PageTitle>
+      <h2 className={styles.h2}>シフト作成成功！</h2>
+      <ShiftView1 shiftCompletedWithName={shiftCompletedWithName} />
+    </div>
   );
 };
 
