@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './shiftView1.module.css';
+import styles from './ShiftView1.module.css';
 
 const ShiftView1 = ({ shiftCompletedWithName }) => {
   if (!shiftCompletedWithName || shiftCompletedWithName.length === 0) {
