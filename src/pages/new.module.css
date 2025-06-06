@@ -2,6 +2,8 @@
   min-height: 100vh; /* 全体で画面の高さをカバー */
   display: flex;
   flex-direction: column;
+  width: 90%;
+  margin:0 auto;
 }
 
 .main {
@@ -15,7 +17,7 @@
 }
 .p {
   justify-self: start;
-  padding-left: 10px;
+  padding-left: 13%;
   color: #333;
 }
 .input {
@@ -27,11 +29,11 @@
   padding-left: 10px;
 }
 .input_w80 {
-  width: 80%;
+  width: 70%;
 }
 
 .createButton {
-  width: 90%;
+  width: 60%;
   height: 60px;
   border: none;
   border-radius: 7px;

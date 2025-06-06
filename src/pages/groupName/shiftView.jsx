@@ -1,22 +1,23 @@
-import PageTitle from '@/components/PageTitle';
+
 import React from 'react';
-import { useContext, useState,useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
+import styles from './shiftView.module.css';
 
 import { GroupContext } from 'src/contexts/GroupContext';
+import ShiftView1 from '@/components/ShiftView1';
 
 const NUM_DAYS = 7;
 const NUM_TIME_SLOTS = 3;
 
 const ShiftView = () => {
-  const context = useContext(GroupContext);
-  console.log('GroupContext in ShiftView:', context);
   const { groupName, shiftCompleted, shiftInfo } = useContext(GroupContext);
 
-  const a = Array.from({ length: NUM_DAYS }, () =>
+  const formatArray = Array.from({ length: NUM_DAYS }, () =>
     Array.from({ length: NUM_TIME_SLOTS }, () => [])
   );
 
-  const [shiftCompletedWithName, setShiftCompletedWithName] = useState(a);
+  const [shiftCompletedWithName, setShiftCompletedWithName] =
+    useState(formatArray);
 
   useEffect(() => {
     // shiftCompletedとshiftInfoがそろっているときだけ処理
@@ -47,37 +48,8 @@ const ShiftView = () => {
     return <p>読み込み中...</p>;
   }
 
-  return (
-    <div>
-      <PageTitle>{groupName}</PageTitle>
-      <p>作成したシフトはこちら</p>
-
-      <table border="1">
-        <thead>
-          <tr>
-            <th>日 / 時間</th>
-            {shiftCompleted &&
-              shiftCompleted.length > 0 &&
-              shiftCompleted[0].map((_, timeIndex) => (
-                <th key={timeIndex}>時間 {timeIndex + 1}</th>
-              ))}
-          </tr>
-        </thead>
-        <tbody>
-          {shiftCompleted &&
-            shiftCompletedWithName.map((dayRow, dayIndex) => (
-              <tr key={dayIndex}>
-                <td>{dayIndex + 1}日 </td>
-                {dayRow.map((slot, timeIndex) => (
-                  <td key={timeIndex}>
-                    {slot.length > 0 ? slot.join(', ') : 'なし'}
-                  </td>
-                ))}
-              </tr>
-            ))}
-        </tbody>
-      </table>
-    </div>
+  return (<ShiftView1 props={shiftCompletedWithName } />
+    
   );
 };
 

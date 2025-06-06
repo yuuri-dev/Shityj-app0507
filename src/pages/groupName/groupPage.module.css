@@ -1,28 +1,54 @@
+.container {
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 50px;
+}
+
+.border{
+  border: 1px #3c3c3c solid;
+  width: 100%;
+  margin: 30px auto;
+  margin-bottom: 70px;
+}
+
+/* memberList */
+
+.memberListTitle {
+  font-size: 19px;
+  margin: 10px 0 0 10px;
+  color: #686868;
+}
+.memberListsWrapper {
+  background-color: #fff7cc;
+  margin-bottom: 30px;
+}
 .memberLists {
   display: flex;
   flex-wrap: wrap;
-  padding: 10px 20px;
-  margin: 20px;
-  background-color: #D9D9D9;
-}
-.memberList {
-  height: 30px;
-  padding: 10px;
+  padding: 0 20px 20px 20px;
   margin: 5px;
-  display: flex;
-  align-items: center;
   justify-content: space-around;
 }
 .memberName {
-  color: #000;
+  color: #9f9d9d;
+  margin: 5px;
+}
+.AddMemberWrapper {
+  text-align: center;
+}
+.compileMemberButton{
+  display: block;
+  font-size: 18px;
+  width: 190px;
+  height: 30px;
+  margin:0 auto;
+  text-align: center;
+}
+.compileMemberButton:hover{
+  color: #686868;
 }
 
-.h2{
-  font-size: 15px;
-}
-.shiftEnterButton{
-  
-}
-.shiftCreateButton{
-
+.h2 {
+  font-size: 23px;
+  text-align: center;
 }
