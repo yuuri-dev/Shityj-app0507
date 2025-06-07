@@ -27,14 +27,15 @@
   flex-wrap: wrap;
   padding: 0 20px 20px 20px;
   margin: 5px;
-  justify-content: space-around;
+  justify-content: start;
 }
 .memberName {
   color: #9f9d9d;
   margin: 5px;
 }
 .AddMemberWrapper {
-  text-align: center;
+  width: 70%;
+  margin:0 auto;
 }
 .compileMemberButton{
   display: block;

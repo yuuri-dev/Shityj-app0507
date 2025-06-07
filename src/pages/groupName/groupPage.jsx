@@ -68,19 +68,18 @@ const GroupPageShow = ({ setLoading }) => {
         </div>
       </div>
 
+      {isMemberCompiler && (
+        <div className={styles.AddMemberWrapper}>
+          <AddMember />
+        </div>
+      )}
+
       <span
         className={styles.compileMemberButton}
         onClick={handleCompileMember}
       >
         {isMemberCompiler ? '閉じる ' : '>>メンバーを編集する'}
       </span>
-
-      {isMemberCompiler ? (
-        <div className={styles.AddMemberWrapper}>
-          <AddMember />
-        </div>
-      ) : null}
-
       <div className={styles.border}></div>
 
       <h2 className={styles.h2}>シフト候補者一覧</h2>

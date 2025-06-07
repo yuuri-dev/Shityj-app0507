@@ -1,22 +1,25 @@
 .input_wrapper {
   padding: 15px 0;
+  margin:0 auto;
 }
 .p {
-  justify-self: start;
+  text-align: left;
   color: #333;
   margin-left: 13%;
 }
+.contents{
+  width: 70%;
+  margin:0 auto;
+}
 .input {
+  width: calc(100% - 70px);
   height: 40px;
   background-color: rgba(243, 244, 246, 0.8);
   border-color: rgba(243, 244, 246, 0.656);
   border-style: solid;
   font-size: 20px;
   padding-left: 10px;
-}
-
-.input_w70 {
-  width: calc(70% - 70px);
+  margin-bottom: 30px;
 }
 
 .addButton {

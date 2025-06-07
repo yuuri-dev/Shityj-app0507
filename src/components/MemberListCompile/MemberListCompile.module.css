@@ -2,6 +2,8 @@
   display: flex;
   flex-wrap: wrap;
   padding: 10px 20px;
+  width: 70%;
+  margin: auto;
 }
 .memberList {
   height: 30px;
