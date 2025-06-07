@@ -22,7 +22,7 @@ export const input2 = [
       [true, false, false],
       [false, false, false],
       [false, false, false],
-      [false, false, false],
+      [true, false, false],
     ],
   },
   {
@@ -152,6 +152,7 @@ export const input2 = [
     ],
   },
 ];
-
+// maxDateToWork
 export const input3 = 2;
+// maxHoursToWork;
 export const input4 = 2;
