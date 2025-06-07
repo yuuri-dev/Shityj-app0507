@@ -1,0 +1,56 @@
+.container {
+  width: 90%;
+  max-width: 700px;
+  margin: 0 auto;
+  margin-bottom: 100px;
+}
+.selectName {
+    width: 80%;
+    margin: 20px auto;
+}
+.radio_input{
+
+}
+
+.p {
+    /* 修正する */
+    margin-left: 15%;
+}
+.kome{
+    color: #a7a7a7;
+    font-size: 12px;
+    margin-left: 17%;
+    /* 修正する */
+}
+.th{
+    
+}
+
+.table {
+  border-collapse: collapse;
+  margin:0 auto;
+}
+
+.dayTitle {
+}
+.item {
+}
+
+.enterTimesContainer{
+   margin: 50px 0;
+}
+.enterTimesTitle {
+    text-align: center;
+}
+.enterTimesInput {
+    height: 40px;
+    width: 55%;
+    max-width: 200px;
+    display:block;
+    margin:5px auto;
+    background-color: rgba(243, 244, 246, 0.944);
+    border-color: rgba(243, 244, 246, 0.656);
+    border-style: solid;
+    font-size: 20px;
+    text-align: center;
+}

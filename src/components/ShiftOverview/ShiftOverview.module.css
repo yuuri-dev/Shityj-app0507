@@ -1,12 +1,12 @@
-
 .grid {
-    display: grid;
-    grid-template-columns: 80px repeat(7, 1fr); /* slot列 + 7日分 */
-    border-bottom: 1px solid #ccc;
-  }
-  
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr); /* slot列 + 7日分 */
+  border-bottom: 1px solid #ccc;
+}
+
 .container {
   overflow-x: auto;
+  margin-bottom: 50px;
 }
 
 /* 表全体のスタイル */
@@ -15,7 +15,7 @@
   table-layout: fixed;
   border-collapse: collapse;
   overflow: hidden;
-  text-align:center;
+  text-align: center;
   min-width: 800px; /* 必要に応じて調整 */
 }
 
@@ -23,7 +23,7 @@
 .colIndex {
   background-color: #51c7cc;
   color: white;
-  padding:12px;
+  padding: 12px;
   font-weight: bold;
   font-size: 14px;
   border: 1px solid #ddd;
@@ -31,7 +31,7 @@
 
 /* 各時間帯（朝・昼・晩）の行ラベル */
 .slot {
- margin: auto;
+  margin: auto;
 }
 
 /* 通常のセル */
@@ -48,6 +48,3 @@
   background-color: #e0f7fa;
   cursor: pointer;
 }
-
-
-
