@@ -4,6 +4,8 @@ import React, { useContext, useState } from 'react';
 import { GroupContext } from 'src/contexts/GroupContext';
 import ButtonBlue from '@/components/ButtonBlue';
 import ButtonWhite from '@/components/ButtonWhite';
+import PageTitle from '@/components/PageTitle';
+import styles from './addShift.module.css';
 
 //定数
 const DAYS = ['月', '火', '水', '木', '金', '土', '日'];
@@ -32,9 +34,6 @@ const AddShift = () => {
     });
   };
 
-  const changeTimesToEnter = (e) => {
-    setTimesToEnter(Number(e.target.value));
-  };
 
   const handleConfirm = (e) => {
     if (selectedIndex === null) {
@@ -56,29 +55,38 @@ const AddShift = () => {
   };
 
   return (
-    <div>
-      <h2>シフト入力</h2>
-      <div style={{ marginBottom: '10px' }}>
-        <p>名前を選択してください：</p>
+    <div className={styles.container}>
+      <PageTitle>シフト入力</PageTitle>
+      <p className={styles.p}>①名前を選んでください</p>
+      <div className={styles.selectName}>
         {shiftInfo.map((member, index) => (
-          <label key={index} style={{ marginRight: '10px' }}>
+          <label key={index} className={styles.name_label}>
             <input
               type="radio"
               name="memberName"
               id={`member-${index}`}
               value={member.name}
+              className={styles.radio_input}
               onChange={() => setSelectedIndex(index)}
             />
             {member.name}
           </label>
         ))}
       </div>
-      <table style={{ borderCollapse: 'collapse' }}>
+      <p className={styles.p}>②入れる時間と入りたい回数を選択してください。</p>
+      <p className={styles.kome}>
+        ※変更する場合も全てのシフトを入力してください。
+      </p>
+      <table className={styles.table}>
         <thead>
           <tr>
-            <th></th>
+            <th className={styles.th}></th>
             {TIME_SLOTS.map((slot, idx) => (
-              <th key={idx} style={{ padding: '4px 8px' }}>
+              <th
+                key={idx}
+                className={styles.th}
+                style={{ padding: '4px 8px' }}
+              >
                 {slot}
               </th>
             ))}
@@ -87,13 +95,14 @@ const AddShift = () => {
         <tbody>
           {DAYS.map((day, dayIndex) => (
             <tr key={dayIndex}>
-              <td>{day}</td>
+              <td className={styles.dayTitle}>{day}</td>
               {TIME_SLOTS.map((_, timeIndex) => {
                 const isSelected = selection[dayIndex][timeIndex];
                 return (
                   <td
                     key={timeIndex}
                     onClick={() => toggleCell(dayIndex, timeIndex)}
+                    className={styles.item}
                     style={{
                       width: 60,
                       height: 30,
@@ -111,15 +120,20 @@ const AddShift = () => {
           ))}
         </tbody>
       </table>
-      <p>入りたい回数</p>
-      <input
-        type="number"
-        value={timesToEnter}
-        onChange={(e) => changeTimesToEnter(e)}
-      />
-      <ButtonWhite func={(e) => handleConfirm(e)}>確定</ButtonWhite>
+      <div className={styles.enterTimesContainer}>
+        <p className={styles.enterTimesTitle}>入りたい回数</p>
+        <input
+          type="number"
+          value={timesToEnter}
+          className={styles.enterTimesInput}
+          onChange={(e) => setTimesToEnter(e.target.value)}
+        />
+      </div>
+
+      <ButtonBlue func={(e) => handleConfirm(e)}>確定</ButtonBlue>
       <Link href="groupPage">
-        <ButtonBlue>戻る</ButtonBlue>
+        <ButtonWhite>戻る</ButtonWhite>
+        {/* モーダルで変更を破棄しますかと注意を出す */}
       </Link>
     </div>
   );
