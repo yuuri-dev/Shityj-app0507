@@ -45,11 +45,56 @@
   margin:0 auto;
   text-align: center;
 }
-.compileMemberButton:hover{
-  color: #686868;
-}
 
 .h2 {
   font-size: 23px;
   text-align: center;
+}
+
+.toggle_wrapper {
+  width: 200px;
+  display: flex;
+  align-items: center; /* 高さを中央にそろえる */
+  gap: 8px; /* pとinputの間にスペース */
+  margin:0 auto;
+}
+.toggle_p{
+  display: inline;
+  align-items: center;
+}
+/* toggle button */
+.toggle_button_1 {
+  display: inline-block;
+  position: relative;
+  width: 50px;
+  height: 25px;
+  border-radius: 25px;
+  background-color: #dddddd;
+  cursor: pointer;
+  transition: background-color .4s;
+}
+
+.toggle_button_1:has(:checked) {
+  background-color: #51C7CC;
+}
+
+.toggle_button_1::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+  background-color: #fff;
+  content: '';
+  transition: left .4s;
+}
+
+.toggle_button_1:has(:checked)::after {
+  left: 25px;
+}
+
+.toggle_button_1 input {
+  display: none;
 }

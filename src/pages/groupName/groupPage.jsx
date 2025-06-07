@@ -32,7 +32,11 @@ const GroupPageShow = ({ setLoading }) => {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault(); // 最初に止める
     setLoading(true);
+
+    // 2秒待つ（setTimeoutをPromise化）
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     try {
       const shiftData = await result(
@@ -42,9 +46,8 @@ const GroupPageShow = ({ setLoading }) => {
         maxHoursToWork
       );
 
-      setShiftCompleted(shiftData); // 非同期処理が終わるまで待つ
-      e.preventDefault();
-      router.push('shiftView');
+      setShiftCompleted(shiftData);
+      router.push('./shiftView');
     } catch (error) {
       console.error('エラー:', error);
     } finally {
@@ -68,18 +71,19 @@ const GroupPageShow = ({ setLoading }) => {
         </div>
       </div>
 
+      <div className={styles.toggle_wrapper}>
+        <p className={styles.toggle_p}>メンバーを編集</p>
+        <label className={styles.toggle_button_1}>
+          <input type="checkbox" onClick={handleCompileMember} />
+        </label>
+      </div>
+
       {isMemberCompiler && (
         <div className={styles.AddMemberWrapper}>
           <AddMember />
         </div>
       )}
 
-      <span
-        className={styles.compileMemberButton}
-        onClick={handleCompileMember}
-      >
-        {isMemberCompiler ? '閉じる ' : '>>メンバーを編集する'}
-      </span>
       <div className={styles.border}></div>
 
       <h2 className={styles.h2}>シフト候補者一覧</h2>
