@@ -4,16 +4,19 @@ import styles from './shiftView.module.css';
 import PageTitle from '@/components/PageTitle';
 
 import { GroupContext } from 'src/contexts/GroupContext';
-import ShiftView1 from '@/components/ShiftView1';
-import ShiftView2 from '@/components/ShiftView2';
+import ShiftView1 from '@/components/ShiftView1_Wrapper';
+import ShiftView2 from '@/components/ShiftView2_Wrapper ';
 
 const NUM_DAYS = 7;
 const NUM_TIME_SLOTS = 3;
 
 const ShiftView = () => {
+
   const { groupName, shiftCompleted, shiftInfo } = useContext(GroupContext);
   const [activeTab, setActiveTab] = useState('tab1');
-
+  console.log('groupName:', groupName);
+  console.log('shiftCompleted:', shiftCompleted);
+  console.log('shiftInfo:', shiftInfo);
   const formatArray = Array.from({ length: NUM_DAYS }, () =>
     Array.from({ length: NUM_TIME_SLOTS }, () => [])
   );
