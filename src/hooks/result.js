@@ -21,8 +21,10 @@ export const result = async (input1, input2, input3, input4) => {
       )
     );
   };
-
+  //処理よう（変更あり）
   let candidation = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, () => []);
+  //変更しないやつ
+  const candidationFix = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, () => []);
   const isConfirmed = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, false);
   const output = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, () => []);
 
@@ -87,17 +89,22 @@ export const result = async (input1, input2, input3, input4) => {
   }
 
   //第二段階
-
-  secondStep(
-    input1,
-    input2,
-    candidation,
-    isConfirmed,
-    output,
-    shiftCountArray,
-    rateOfShift,
-    latestShiftRequired
-  );
+  for (let j = 0; j < 7; j++) {
+    for (let k = 0; k < 3; k++) {
+      secondStep(
+        input1,
+        input2,
+        candidation,
+        isConfirmed,
+        output,
+        shiftCountArray,
+        rateOfShift,
+        latestShiftRequired,
+        j,
+        k
+      );
+    }
+  }
 
   console.log('出力');
   console.log(output);
