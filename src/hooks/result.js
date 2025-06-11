@@ -7,6 +7,7 @@ import { firstStep } from './func/firstStep.js';
 import { firstConfirm } from './func/firstConfirm.js';
 import { required0 } from './func/required0.js';
 import { input1, input2, input3, input4 } from './test_data.js';
+import { secondStep } from './func/secondStep.js';
 
 //---------シフト生成関数-------------
 const NUM_DAYS = 7;
@@ -87,42 +88,17 @@ export const result = async (input1, input2, input3, input4) => {
 
   //第二段階
 
-  for (let j = 0; j < 7; j++) {
-    for (let k = 0; k < 3; k++) {
-      if (!isConfirmed[j][k]) {
-        const candidationOverFlow = [...candidation[j][k]];
-        const timesToDesiredArray = [];
-        for (let l = 0; l < candidationOverFlow.length; l++) {
-          timesToDesiredArray.push(
-            input2[candidationOverFlow[l]].timesToEnterDesired
-          );
-        }
-        const min = Math.min(timesToDesiredArray);
+  secondStep(
+    input1,
+    input2,
+    candidation,
+    isConfirmed,
+    output,
+    shiftCountArray,
+    rateOfShift,
+    latestShiftRequired
+  );
 
-        const minIndexes = timesToDesiredArray
-          .map((value, index) =>
-            value === min ? candidationOverFlow[index] : -1
-          )
-          .filter((index) => index !== -1);
-
-        if (minIndexes.length === input1[j][k] - output[j][k].length) {
-          isConfirmed[j][k] = true;
-        }
-
-        if (minIndexes.length <= input1[j][k]) {
-          minIndexes.map((value) => {
-            output[j][k].push(value);
-
-            candidation[j][k] = candidation[j][k].filter((v) => v !== value);
-
-            shiftCountArray[value]++;
-            rateOfShift[value] += 1 / input2[value].timesToEnterDesired;
-          });
-          latestShiftRequired[j][k] -= minIndexes.length;
-        }
-      }
-    }
-  }
   console.log('出力');
   console.log(output);
 
