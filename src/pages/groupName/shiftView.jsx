@@ -5,7 +5,7 @@ import PageTitle from '@/components/PageTitle';
 
 import { GroupContext } from 'src/contexts/GroupContext';
 import ShiftView1 from '@/components/ShiftView1_Wrapper';
-import ShiftView2 from '@/components/ShiftView2_Wrapper ';
+import ShiftView2 from '@/components/ShiftView2_Wrapper';
 
 const NUM_DAYS = 7;
 const NUM_TIME_SLOTS = 3;
