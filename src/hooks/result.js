@@ -3,11 +3,12 @@
 // 出席率低い人 -> shiftCountArray / timesToEnterDesired が小さい人
 // 出席率の増加率が高い人　-> timesToEnterDesired が小さい人
 
-import { firstStep } from './func/firstStep.js';
 import { firstConfirm } from './func/firstConfirm.js';
 import { required0 } from './func/required0.js';
 import { input1, input2, input3, input4 } from './test_data.js';
-import { secondStep } from './func/secondStep.js';
+import { one_cycle } from './func/one_cycle.js';
+import { random } from './func/random.js';
+import { isAllTrue } from './func/isAllTrue.js';
 
 //---------シフト生成関数-------------
 const NUM_DAYS = 7;
@@ -23,8 +24,10 @@ export const result = async (input1, input2, input3, input4) => {
   };
   //処理よう（変更あり）
   let candidation = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, () => []);
+
   //変更しないやつ
   const candidationFix = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, () => []);
+
   const isConfirmed = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, false);
   const output = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, () => []);
 
@@ -49,61 +52,30 @@ export const result = async (input1, input2, input3, input4) => {
     latestShiftRequired
   );
 
-  //第一段階
-  for (let i = 0; i < 5; i++) {
-    //休日
-    for (let j = 5; j < 7; j++) {
-      for (let k = 0; k < 3; k++) {
-        firstStep(
-          input1,
-          input2,
-          candidation,
-          isConfirmed,
-          output,
-          shiftCountArray,
-          rateOfShift,
-          latestShiftRequired,
-          j,
-          k
-        );
-      }
-    }
+  while (!isAllTrue(isConfirmed)) {
+    one_cycle(
+      input1,
+      input2,
+      input3,
+      candidation,
+      isConfirmed,
+      output,
+      shiftCountArray,
+      rateOfShift,
+      latestShiftRequired
+    );
 
-    //平日
-    for (let j = 0; j < 5; j++) {
-      for (let k = 0; k < 3; k++) {
-        firstStep(
-          input1,
-          input2,
-          candidation,
-          isConfirmed,
-          output,
-          shiftCountArray,
-          rateOfShift,
-          latestShiftRequired,
-          j,
-          k
-        );
-      }
-    }
-  }
-
-  //第二段階
-  for (let j = 0; j < 7; j++) {
-    for (let k = 0; k < 3; k++) {
-      secondStep(
-        input1,
-        input2,
-        candidation,
-        isConfirmed,
-        output,
-        shiftCountArray,
-        rateOfShift,
-        latestShiftRequired,
-        j,
-        k
-      );
-    }
+    //ランダム処理
+    random(
+      candidation,
+      output,
+      input2,
+      input3,
+      isConfirmed,
+      shiftCountArray,
+      rateOfShift,
+      latestShiftRequired
+    );
   }
 
   console.log('出力');
@@ -117,7 +89,7 @@ export const result = async (input1, input2, input3, input4) => {
 
   console.log('出勤率:');
   console.log(rateOfShift);
-  console.log('latestShift:');
+  console.log('latestShiftRequired:');
   console.log(latestShiftRequired);
   return output;
 };

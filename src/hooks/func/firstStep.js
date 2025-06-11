@@ -1,8 +1,11 @@
 //二週目
 
+import { check } from './check/check.js';
+
 export const firstStep = (
   input1,
   input2,
+  input3,
   candidation,
   isConfirmed,
   output,
@@ -31,6 +34,8 @@ export const firstStep = (
     if (minIndexes.length === input1[j][k] - output[j][k].length) {
       isConfirmed[j][k] = true;
     }
+
+    check(minIndexes, j, k, output, input3);
 
     if (minIndexes.length <= input1[j][k]) {
       minIndexes.map((value) => {
