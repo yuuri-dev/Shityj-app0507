@@ -46,6 +46,9 @@ export const secondStep = (
           });
           latestShiftRequired[j][k] -= minIndexes.length;
         }
+        if (latestShiftRequired[j][k] === 0) {
+          isConfirmed[j][k] = true;
+        }
       }
     }
   }
