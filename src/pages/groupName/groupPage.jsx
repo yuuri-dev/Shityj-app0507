@@ -47,7 +47,7 @@ const GroupPageShow = ({ setLoading }) => {
       );
 
       setShiftCompleted(shiftData);
-      router.push('./shiftView');
+      await router.push('./shiftView');
     } catch (error) {
       console.error('エラー:', error);
     } finally {
