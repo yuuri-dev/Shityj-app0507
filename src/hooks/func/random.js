@@ -18,11 +18,12 @@ export const random = (
     for (let j = 0; j < NUM_TIME_SLOTS; j++) {
       const prevCandidation = candidation[i][j];
 
-      if (!isConfirmed[i][j]) {
+      if (!isConfirmed[i][j] && latestShiftRequired !== 0) {
         check(prevCandidation, i, j, output, input3);
 
         if (prevCandidation.length === 0) {
-          // 候補がいないのでスキップ
+            // 候補がいないのでスキップ
+            candidation[i][j] = [];
           isConfirmed[i][j] = true;
           continue;
         }
@@ -42,21 +43,24 @@ export const random = (
     output,
     input3
   );
+    
 
   const candidationNumber =
-    candidation[randomPosition.day][randomPosition.time].length;
+      candidation[randomPosition.day][randomPosition.time].length;
+    
+    if (candidationNumber === 0) {
+        
+    }
 
   const rand = Math.floor(Math.random() * candidationNumber);
   const randMember = candidation[randomPosition.day][randomPosition.time][rand];
 
-  output[randomPosition.day][randomPosition.time].push(randMember);
-  candidation[randomPosition.day][randomPosition.time] = candidation[
-    randomPosition.day
-  ][randomPosition.time].filter((v) => v !== randMember);
+    output[randomPosition.day][randomPosition.time].push(randMember);
+  candidation[randomPosition.day][randomPosition.time] = candidation[randomPosition.day][randomPosition.time].filter((v) => v !== randMember);
   shiftCountArray[randMember]++;
   rateOfShift[randMember] += 1 / input2[randMember].timesToEnterDesired;
   latestShiftRequired[randomPosition.day][randomPosition.time]--;
   if (latestShiftRequired[randomPosition.day][randomPosition.time] === 0) {
-    isConfirmed = true;
+    isConfirmed[randomPosition.day][randomPosition.time] = true;
   }
 };

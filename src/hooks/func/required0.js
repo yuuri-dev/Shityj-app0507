@@ -5,7 +5,7 @@ export const required0 = (input1,input2,isConfirmed,candidation) => {
           if (val === 0) isConfirmed[i][j] = true;
         })
       );
-    
+    //candidationに候補者を全て入れる
       input2.forEach(({ id, shiftArray }) => {
         shiftArray.forEach((row, i) => {
           row.forEach((wantsToEnter, j) => {
