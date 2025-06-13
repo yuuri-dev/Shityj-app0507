@@ -35,7 +35,7 @@ export const result = async (input1, input2, input3, input4) => {
 
   let rateOfShift = Array(input2.length).fill(0);
 
-  const latestShiftRequired = input1;
+  const latestShiftRequired = JSON.parse(JSON.stringify(input1));
 
   //必要人数0の場合の処理
   required0(input1, input2, isConfirmed, candidation);
@@ -94,7 +94,7 @@ export const result = async (input1, input2, input3, input4) => {
   return output;
 };
 
-result(input1, input2, input3, input4);
+// result(input1, input2, input3, input4);
 
 //この後の改良点
 

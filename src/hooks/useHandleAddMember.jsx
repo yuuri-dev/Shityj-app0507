@@ -21,7 +21,6 @@ const useAddMember = () => {
       const newArray = [
         ...prevArray,
         {
-          id: prevArray.length,
           name: memberName,
           timesToEnterDesired: 0,
           shiftArray: Array.from({ length: NUM_DAYS }, () =>
