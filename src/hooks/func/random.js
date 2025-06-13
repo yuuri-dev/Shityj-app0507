@@ -12,55 +12,60 @@ export const random = (
   rateOfShift,
   latestShiftRequired
 ) => {
-  let randomPosition = { day: 0, time: 0 };
+  let randomPosition = null; // まだポジションが見つかっていないことを示す
 
+  // 1. 割り当て可能なシフト（ポジション）を探す
   outer: for (let i = 0; i < NUM_DAYS; i++) {
     for (let j = 0; j < NUM_TIME_SLOTS; j++) {
-      const prevCandidation = candidation[i][j];
+      // まだ確定していないシフトか？
+      if (!isConfirmed[i][j]) {
+        const currentCandidates = candidation[i][j];
+        // そのシフトに入れる候補者がいるかチェックする
+        check(currentCandidates, i, j, output, input3);
 
-      if (!isConfirmed[i][j] && latestShiftRequired !== 0) {
-        check(prevCandidation, i, j, output, input3);
-
-        if (prevCandidation.length === 0) {
-            // 候補がいないのでスキップ
-            candidation[i][j] = [];
-          isConfirmed[i][j] = true;
-          continue;
-        }
-        if (prevCandidation.length > 0) {
+        if (currentCandidates.length > 0) {
+          // 候補者がいれば、このシフトを割り当て対象とする
           randomPosition = { day: i, time: j };
-          break outer;
+          break outer; // ループを抜けて割り当て処理へ
+        } else {
+          // 候補者がいなければ、このシフトは埋められないので確定済みにする
+          // (無限ループを防ぐため)
+          isConfirmed[i][j] = true;
+          continue; // 次のシフトの検索を続ける
         }
       }
     }
   }
 
-  //candidationをcheckする。
-  check(
-    candidation[randomPosition.day][randomPosition.time],
-    randomPosition.day,
-    randomPosition.time,
-    output,
-    input3
-  );
-    
+  // 2. 割り当て可能なシフトがなければ、関数を終了
+  if (randomPosition === null) {
+    return;
+  }
 
-  const candidationNumber =
-      candidation[randomPosition.day][randomPosition.time].length;
-    
-    if (candidationNumber === 0) {
-        
-    }
+  // 3. メンバーをランダムに選んで割り当て
+  const candidates = candidation[randomPosition.day][randomPosition.time];
+  const candidationNumber = candidates.length;
+  
+  // 念のためのチェック（基本的には通らないはず）
+  if (candidationNumber === 0) {
+      isConfirmed[randomPosition.day][randomPosition.time] = true;
+      return;
+  }
 
   const rand = Math.floor(Math.random() * candidationNumber);
-  const randMember = candidation[randomPosition.day][randomPosition.time][rand];
+  const randMember = candidates[rand];
 
-    output[randomPosition.day][randomPosition.time].push(randMember);
-  candidation[randomPosition.day][randomPosition.time] = candidation[randomPosition.day][randomPosition.time].filter((v) => v !== randMember);
+  // 4. 各種データを更新
+  output[randomPosition.day][randomPosition.time].push(randMember);
+  candidation[randomPosition.day][randomPosition.time] = candidates.filter(
+    (v) => v !== randMember
+  );
   shiftCountArray[randMember]++;
   rateOfShift[randMember] += 1 / input2[randMember].timesToEnterDesired;
   latestShiftRequired[randomPosition.day][randomPosition.time]--;
-  if (latestShiftRequired[randomPosition.day][randomPosition.time] === 0) {
+
+  // 5. 必要人数に達したら、シフトを確定済みにする
+  if (latestShiftRequired[randomPosition.day][randomPosition.time] <= 0) {
     isConfirmed[randomPosition.day][randomPosition.time] = true;
   }
 };
