@@ -27,7 +27,7 @@
   flex-wrap: wrap;
   padding: 0 20px 20px 20px;
   margin: 5px;
-  justify-content: start;
+  justify-content: flex-start;
 }
 .memberName {
   color: #9f9d9d;
