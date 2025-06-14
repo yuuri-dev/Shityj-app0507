@@ -52,23 +52,27 @@ export const result = async (input1, input2, input3, input4) => {
     latestShiftRequired
   );
 
-  let currentCandidates = candidation;
-  let currentIsConfirmed = isConfirmed;
-  let currentshiftCountArray = shiftCountArray;
-  let currentrateOfShift = rateOfShift
-  let currentlatestShiftRequired = latestShiftRequired;
+  let currentCandidates = JSON.parse(JSON.stringify(candidation));
+  let currentIsConfirmed = JSON.parse(JSON.stringify(isConfirmed));
+  let currentshiftCountArray = [...shiftCountArray];
+  let currentrateOfShift = [...rateOfShift];
+  let currentlatestShiftRequired = JSON.parse(
+    JSON.stringify(latestShiftRequired)
+  );
 
   const outputArray = Array.from({ length: 4 }, () =>
     JSON.parse(JSON.stringify(output))
   );
 
-  outputArray.map((eachOutput) => {
+  outputArray.forEach((eachOutput) => {
     //初期化
-    candidation = currentCandidates;
-    isConfirmed = currentIsConfirmed;
-    shiftCountArray = currentshiftCountArray;
-    rateOfShift = currentrateOfShift;
-    latestShiftRequired = currentlatestShiftRequired;
+    candidation = JSON.parse(JSON.stringify(currentCandidates));
+    isConfirmed = JSON.parse(JSON.stringify(currentIsConfirmed));
+    shiftCountArray = [...currentshiftCountArray];
+    rateOfShift = [...currentrateOfShift];
+    latestShiftRequired = JSON.parse(
+      JSON.stringify(currentlatestShiftRequired)
+    );
     while (!isAllTrue(isConfirmed)) {
       one_cycle(
         input1,
@@ -96,8 +100,12 @@ export const result = async (input1, input2, input3, input4) => {
     }
   });
 
-  console.log('出力');
-  console.log(outputArray);
+  //----------------コンソールに出力-----------------------------
+  outputArray.forEach((v, i) => {
+    let num = i+1
+    console.log('出力' + num );
+    console.log(JSON.stringify(v, null, 2));
+  });
 
   console.log('isConfirmed?:');
   console.log(isConfirmed);
