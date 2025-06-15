@@ -66,3 +66,28 @@
     text-align: center;
     margin-top: 20px;
 }
+
+/* 既存CSSはそのままでOK */
+
+@media (max-width: 480px) {
+    .selectbox-1 select {
+      min-width: 100px;
+      width: 100%;
+      font-size: 0.9em;
+      padding: .4em 2.5em .4em .8em;
+    }
+  }
+  
+  @media (min-width: 481px) and (max-width: 768px) {
+    .selectbox-1 select {
+      min-width: 150px;
+      font-size: 1em;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .selectbox-1 select {
+      min-width: 230px;
+      font-size: 1em;
+    }
+  }
