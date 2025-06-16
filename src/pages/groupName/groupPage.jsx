@@ -5,6 +5,7 @@ import PageTitle from '@/components/PageTitle';
 import styles from './groupPage.module.css';
 import ShiftOverview from '@/components/ShiftOverview';
 import AddMember from '@/components/AddMember';
+import MemberModal from '@/components/MemberModal';
 import ButtonBlue from '@/components/ButtonBlue';
 import ButtonWhite from '@/components/ButtonWhite';
 import Loading from '@/components/Loading';
@@ -24,6 +25,7 @@ const GroupPageShow = ({ setLoading }) => {
   const days = ['月', '火', '水', '木', '金', '土', '日'];
   const timeSlots = ['1', '2', '3'];
   const [isMemberCompiler, setIsMemberCompiler] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null); // ← 追加
 
   const router = useRouter();
 
@@ -63,7 +65,11 @@ const GroupPageShow = ({ setLoading }) => {
         <div className={styles.memberLists}>
           {shiftInfo.map((value, index) => {
             return (
-              <div className={styles.memberList} key={index}>
+              <div
+                className={styles.memberList}
+                key={index}
+                onClick={() => setSelectedMember(index)}
+              >
                 <p className={styles.memberName}>{value.name}</p>
               </div>
             );
@@ -83,6 +89,11 @@ const GroupPageShow = ({ setLoading }) => {
           <AddMember />
         </div>
       )}
+
+      <MemberModal
+        member={selectedMember}
+        onClose={() => setSelectedMember(null)}
+      />
 
       <div className={styles.border}></div>
 
