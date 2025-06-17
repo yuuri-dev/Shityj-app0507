@@ -1,7 +1,13 @@
 import React from 'react';
 import styles from './ShiftOverview.module.css';
 
-const ShiftOverview = ({ days, timeSlots, shiftInfo }) => {
+const ShiftOverview = ({
+  days,
+  timeSlots,
+  shiftInfo,
+  groupRequireNumberArray,
+  onClickSlot,
+}) => {
   return (
     <div className={styles.container}>
       <table className={styles.table}>
@@ -21,12 +27,27 @@ const ShiftOverview = ({ days, timeSlots, shiftInfo }) => {
               <td className={styles.slot}>{slot}</td>
               {days.map((_, colIndex) => {
                 // 各メンバーの shiftArray[colIndex][rowIndex] が true かを見る
-                const names = shiftInfo
-                  .filter((member) => member.shiftArray[colIndex]?.[rowIndex])
-                  .map((member) => member.name);
-
+                const filteredMembers = shiftInfo.filter(
+                  (member) => member.shiftArray[colIndex]?.[rowIndex]
+                );
+                const names = filteredMembers.map((m) => m.name);
+                const required =
+                  groupRequireNumberArray?.[colIndex]?.[rowIndex] ?? 0;
                 return (
-                  <td className={styles.item} key={colIndex}>
+                  <td
+                    className={styles.item}
+                    key={colIndex}
+                    onClick={() => {
+                      if (onClickSlot) {
+                        onClickSlot(
+                          colIndex,
+                          rowIndex,
+                          filteredMembers,
+                          required
+                        );
+                      }
+                    }}
+                  >
                     {names.length > 0
                       ? names.map((name, idx) => <div key={idx}>{name}</div>)
                       : 'ー'}

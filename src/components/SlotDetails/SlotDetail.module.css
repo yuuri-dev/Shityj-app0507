@@ -1,0 +1,13 @@
+.wrapper {
+    margin-top: 24px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    line-height: 1.6;
+  }
+  
+  .alert {
+    color: #cc3300;
+    font-weight: bold;
+  }
