@@ -1,6 +1,6 @@
 const NUM_DAYS = 7;
 const NUM_TIME_SLOTS = 3;
-import { check } from './check/check.js';
+import { check } from '../check/check.js';
 
 export const random = (
   candidation,
@@ -45,11 +45,11 @@ export const random = (
   // 3. メンバーをランダムに選んで割り当て
   const candidates = candidation[randomPosition.day][randomPosition.time];
   const candidationNumber = candidates.length;
-  
+
   // 念のためのチェック（基本的には通らないはず）
   if (candidationNumber === 0) {
-      isConfirmed[randomPosition.day][randomPosition.time] = true;
-      return;
+    isConfirmed[randomPosition.day][randomPosition.time] = true;
+    return;
   }
 
   const rand = Math.floor(Math.random() * candidationNumber);

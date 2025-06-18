@@ -17,9 +17,12 @@ export const firstConfirm = (
           shiftCountArray[candidation[j][k][count]] += 1;
           rateOfShift[candidation[j][k][count]] +=
             1 / input2[candidation[j][k][count]].timesToEnterDesired;
+          console.log('index:', candidation[j][k][count]);
+        console.log('input2 at index:', input2[candidation[j][k][count]]);
         }
         output[j][k].push(...candidation[j][k]);
         latestShiftRequired[j][k] -= candidation[j][k].length;
+        
       }
     }
   }

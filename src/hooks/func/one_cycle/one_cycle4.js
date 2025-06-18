@@ -1,5 +1,5 @@
 import { firstStep } from '../firstStep.js';
-import { secondStep } from '../secondStep.js';
+import { secondStep } from '../step/secondStep.js';
 
 export const one_cycle = (
   input1,
