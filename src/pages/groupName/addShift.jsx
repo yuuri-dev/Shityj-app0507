@@ -34,7 +34,6 @@ const AddShift = () => {
     });
   };
 
-
   const handleConfirm = (e) => {
     if (selectedIndex === null) {
       alert('名前を選択して下さい。');
@@ -69,7 +68,7 @@ const AddShift = () => {
               className={styles.radio_input}
               onChange={() => setSelectedIndex(index)}
             />
-            {member.name}
+            <p className={styles.radio_input_p}>{member.name}</p>
           </label>
         ))}
       </div>
@@ -104,8 +103,6 @@ const AddShift = () => {
                     onClick={() => toggleCell(dayIndex, timeIndex)}
                     className={styles.item}
                     style={{
-                      width: 60,
-                      height: 30,
                       backgroundColor: isSelected ? '#4caf50' : '#fff',
                       border: '1px solid #ccc',
                       cursor: 'pointer',

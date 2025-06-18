@@ -1,56 +1,132 @@
 .container {
   width: 90%;
-  max-width: 700px;
+  max-width: 500px;
   margin: 0 auto;
   margin-bottom: 100px;
 }
 .selectName {
-    width: 80%;
+    display: flex;
+    flex-wrap: wrap; /* 横並び＋折り返し */
+    justify-content: center;
+    gap: 16px;
     margin: 20px auto;
-}
-.radio_input{
+  }
+  .name_label {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
 
-}
+.name_label:hover {
+    background-color: #f0f0f0;
+  }
+  .radio_input {
+    accent-color: #3865c6; /* チェックカラー（対応ブラウザのみ） */
+    cursor: pointer;
+  }
+  
+  .radio_input_p {
+    margin: 0;
+    font-size: 18px;
+  }
 
 .p {
-    /* 修正する */
-    margin-left: 15%;
+  font-size: 20px;
 }
-.kome{
-    color: #a7a7a7;
-    font-size: 12px;
-    margin-left: 17%;
-    /* 修正する */
-}
-.th{
-    
+.kome {
+  color: #a7a7a7;
+  font-size: 18px;
+  margin-left: 10%;
+  margin-bottom: 10px;
+  /* 修正する */
 }
 
 .table {
   border-collapse: collapse;
-  margin:0 auto;
+  margin: 0 auto;
+  width: 100%; /* 👈 追加：テーブルの幅を最大化 */
+  max-width: 100%; /* 念のため */
+}
+.th {
+  font-size: 16px;
+  padding: 6px 10px;
 }
 
 .dayTitle {
-}
-.item {
-}
+    font-size: 16px;
+    text-align: center;
+    width: 40px; /* 👈 追加：itemセルと揃える */
+  }
+  .item {
+    width: 80px;
+    height: 60px; /* 👈 高さを大きく */
+    font-size: 18px; /* 👈 視認性もUP */
+    border: 1px solid #ccc;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle; /* 👈 中央寄せ（念のため） */
+  }
 
-.enterTimesContainer{
-   margin: 50px 0;
+.enterTimesContainer {
+  margin: 50px 0;
 }
 .enterTimesTitle {
-    text-align: center;
+  text-align: center;
 }
 .enterTimesInput {
-    height: 40px;
-    width: 55%;
-    max-width: 200px;
-    display:block;
-    margin:5px auto;
-    background-color: rgba(243, 244, 246, 0.944);
-    border-color: rgba(243, 244, 246, 0.656);
-    border-style: solid;
-    font-size: 20px;
-    text-align: center;
+  height: 40px;
+  width: 55%;
+  max-width: 200px;
+  display: block;
+  margin: 5px auto;
+  background-color: rgba(243, 244, 246, 0.944);
+  border-color: rgba(243, 244, 246, 0.656);
+  border-style: solid;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* -------------------- */
+/* レスポンシブ対応     */
+/* -------------------- */
+@media (max-width: 480px) {
+  .p,
+  .kome {
+    margin-left: 5%;
+    font-size: 16px;
+  }
+  .radio_input_p {
+    font-size: 14px;
+  }
+
+  .name_label {
+    padding: 4px 8px;
+    gap: 4px;
+  }
+
+  .th,
+  .dayTitle {
+    font-size: 12px;
+    padding: 2px 4px;
+    width: 10px; /* 👈 モバイル時に幅縮小 */
+  }
+
+  .item {
+    width: 50px;
+    height: 50px; /* 👈 スマホでもタップしやすく */
+    font-size: 14px;
+  }
+
+  .enterTimesTitle {
+    font-size: 14px;
+  }
+
+  .enterTimesInput {
+    font-size: 16px;
+    width: 70%;
+  }
 }

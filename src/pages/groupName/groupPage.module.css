@@ -25,13 +25,33 @@
 .memberLists {
   display: flex;
   flex-wrap: wrap;
+  gap: 10px; /* ← marginではなくgap推奨 */
   padding: 0 20px 20px 20px;
   margin: 5px;
   justify-content: flex-start;
 }
-.memberName {
-  color: #9f9d9d;
+
+.memberList {
+  box-sizing: border-box; /* パディング含めてサイズを管理 */
   margin: 5px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.memberList:hover {
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.memberName {
+  color: #333; /* より読みやすく */
+  font-weight: 500;
+  font-size: 16px;
+  margin: 0;
 }
 .AddMemberWrapper {
   width: 70%;

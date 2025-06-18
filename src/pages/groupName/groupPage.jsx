@@ -1,14 +1,17 @@
 import React, { useContext, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { GroupContext } from 'src/contexts/GroupContext';
-import PageTitle from '@/components/PageTitle';
 import styles from './groupPage.module.css';
+
+import PageTitle from '@/components/PageTitle';
 import ShiftOverview from '@/components/ShiftOverview';
 import AddMember from '@/components/AddMember';
+import MemberModal from '@/components/MemberModal';
 import ButtonBlue from '@/components/ButtonBlue';
 import ButtonWhite from '@/components/ButtonWhite';
 import Loading from '@/components/Loading';
-import { useRouter } from 'next/router';
+import SlotDetail from '@/components/SlotDetails';
 
 import { result } from 'src/hooks/result';
 
@@ -21,9 +24,12 @@ const GroupPageShow = ({ setLoading }) => {
     maxDateToWork,
     maxHoursToWork,
   } = useContext(GroupContext);
+
   const days = ['月', '火', '水', '木', '金', '土', '日'];
   const timeSlots = ['1', '2', '3'];
   const [isMemberCompiler, setIsMemberCompiler] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null); // ← 追加
+  const [selectedSlotInfo, setSelectedSlotInfo] = useState(null);
 
   const router = useRouter();
 
@@ -63,7 +69,11 @@ const GroupPageShow = ({ setLoading }) => {
         <div className={styles.memberLists}>
           {shiftInfo.map((value, index) => {
             return (
-              <div className={styles.memberList} key={index}>
+              <div
+                className={styles.memberList}
+                key={index}
+                onClick={() => setSelectedMember(index)}
+              >
                 <p className={styles.memberName}>{value.name}</p>
               </div>
             );
@@ -84,10 +94,36 @@ const GroupPageShow = ({ setLoading }) => {
         </div>
       )}
 
+      <MemberModal
+        member={selectedMember}
+        onClose={() => setSelectedMember(null)}
+      />
+
       <div className={styles.border}></div>
 
       <h2 className={styles.h2}>シフト候補者一覧</h2>
-      <ShiftOverview days={days} timeSlots={timeSlots} shiftInfo={shiftInfo} />
+      <ShiftOverview
+        days={days}
+        timeSlots={timeSlots}
+        shiftInfo={shiftInfo}
+        groupRequireNumberArray={groupRequireNumberArray}
+        onClickSlot={(dayIndex, slotIndex, members, required) => {
+          setSelectedSlotInfo({
+            day: days[dayIndex],
+            slot: timeSlots[slotIndex],
+            members,
+            required,
+          });
+        }}
+      />
+      {selectedSlotInfo && (
+        <SlotDetail
+          day={selectedSlotInfo.day}
+          slot={selectedSlotInfo.slot}
+          members={selectedSlotInfo.members}
+          required={selectedSlotInfo.required}
+        />
+      )}
       <Link href="setting">
         <ButtonWhite>詳細設定</ButtonWhite>
       </Link>

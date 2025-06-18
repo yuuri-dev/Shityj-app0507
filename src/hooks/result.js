@@ -6,7 +6,7 @@
 import { firstConfirm } from './func/firstConfirm.js';
 import { required0 } from './func/required0.js';
 import { input1, input2, input3, input4 } from './test_data.js';
-import { one_cycle } from './func/one_cycle.js';
+import { one_cycle } from './func/one_cycle/one_cycle.js';
 import { random } from './func/random.js';
 import { isAllTrue } from './func/isAllTrue.js';
 
@@ -28,14 +28,14 @@ export const result = async (input1, input2, input3, input4) => {
   //変更しないやつ
   const candidationFix = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, () => []);
 
-  const isConfirmed = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, false);
+  let isConfirmed = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, false);
   const output = createMatrix(NUM_DAYS, NUM_TIME_SLOTS, () => []);
 
-  const shiftCountArray = Array(input2.length).fill(0);
+  let shiftCountArray = Array(input2.length).fill(0);
 
   let rateOfShift = Array(input2.length).fill(0);
 
-  const latestShiftRequired = JSON.parse(JSON.stringify(input1));
+  let latestShiftRequired = JSON.parse(JSON.stringify(input1));
 
   //必要人数0の場合の処理
   required0(input1, input2, isConfirmed, candidation);
@@ -52,34 +52,60 @@ export const result = async (input1, input2, input3, input4) => {
     latestShiftRequired
   );
 
-  while (!isAllTrue(isConfirmed)) {
-    one_cycle(
-      input1,
-      input2,
-      input3,
-      candidation,
-      isConfirmed,
-      output,
-      shiftCountArray,
-      rateOfShift,
-      latestShiftRequired
-    );
+  let currentCandidates = JSON.parse(JSON.stringify(candidation));
+  let currentIsConfirmed = JSON.parse(JSON.stringify(isConfirmed));
+  let currentshiftCountArray = [...shiftCountArray];
+  let currentrateOfShift = [...rateOfShift];
+  let currentlatestShiftRequired = JSON.parse(
+    JSON.stringify(latestShiftRequired)
+  );
 
-    //ランダム処理
-    random(
-      candidation,
-      output,
-      input2,
-      input3,
-      isConfirmed,
-      shiftCountArray,
-      rateOfShift,
-      latestShiftRequired
-    );
-  }
+  const outputArray = Array.from({ length: 4 }, () =>
+    JSON.parse(JSON.stringify(output))
+  );
 
-  console.log('出力');
-  console.log(output);
+  outputArray.forEach((eachOutput) => {
+    //初期化
+    candidation = JSON.parse(JSON.stringify(currentCandidates));
+    isConfirmed = JSON.parse(JSON.stringify(currentIsConfirmed));
+    shiftCountArray = [...currentshiftCountArray];
+    rateOfShift = [...currentrateOfShift];
+    latestShiftRequired = JSON.parse(
+      JSON.stringify(currentlatestShiftRequired)
+    );
+    while (!isAllTrue(isConfirmed)) {
+      one_cycle(
+        input1,
+        input2,
+        input3,
+        candidation,
+        isConfirmed,
+        eachOutput,
+        shiftCountArray,
+        rateOfShift,
+        latestShiftRequired
+      );
+
+      //ランダム処理
+      random(
+        candidation,
+        eachOutput,
+        input2,
+        input3,
+        isConfirmed,
+        shiftCountArray,
+        rateOfShift,
+        latestShiftRequired
+      );
+    }
+  });
+
+  //----------------コンソールに出力-----------------------------
+  outputArray.forEach((v, i) => {
+    let num = i+1
+    console.log('出力' + num );
+    console.log(JSON.stringify(v, null, 2));
+  });
 
   console.log('isConfirmed?:');
   console.log(isConfirmed);
@@ -94,7 +120,7 @@ export const result = async (input1, input2, input3, input4) => {
   return output;
 };
 
-// result(input1, input2, input3, input4);
+result(input1, input2, input3, input4);
 
 //この後の改良点
 

@@ -1,5 +1,5 @@
-import { firstStep } from './firstStep.js';
-import { secondStep } from './secondStep.js';
+import { firstStep } from '../firstStep.js';
+import { secondStep } from '../secondStep.js';
 
 export const one_cycle = (
   input1,
@@ -14,8 +14,8 @@ export const one_cycle = (
 ) => {
   //第一段階
   for (let i = 0; i < 5; i++) {
-    //休日
-    for (let j = 5; j < 7; j++) {
+    //平日
+    for (let j = 5; j > 0; j--) {
       for (let k = 0; k < 3; k++) {
         firstStep(
           input1,
@@ -33,8 +33,8 @@ export const one_cycle = (
       }
     }
 
-    //平日
-    for (let j = 0; j < 5; j++) {
+    //休日
+    for (let j = 7; j > 5; j--) {
       for (let k = 0; k < 3; k++) {
         firstStep(
           input1,
@@ -72,5 +72,4 @@ export const one_cycle = (
     }
   }
   console.log(output);
-  
 };
