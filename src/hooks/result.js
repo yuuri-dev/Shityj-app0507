@@ -3,11 +3,11 @@
 // 出席率低い人 -> shiftCountArray / timesToEnterDesired が小さい人
 // 出席率の増加率が高い人　-> timesToEnterDesired が小さい人
 
-import { firstConfirm } from './func/firstConfirm.js';
-import { required0 } from './func/required0.js';
+import { firstConfirm } from './func/step/firstConfirm.js';
+import { required0 } from './func/step/required0.js';
 import { input1, input2, input3, input4 } from './test_data.js';
 import { one_cycle } from './func/one_cycle/one_cycle.js';
-import { random } from './func/random.js';
+import { random } from './func/step/random.js';
 import { isAllTrue } from './func/isAllTrue.js';
 
 //---------シフト生成関数-------------
@@ -102,8 +102,8 @@ export const result = async (input1, input2, input3, input4) => {
 
   //----------------コンソールに出力-----------------------------
   outputArray.forEach((v, i) => {
-    let num = i+1
-    console.log('出力' + num );
+    let num = i + 1;
+    console.log('出力' + num);
     console.log(JSON.stringify(v, null, 2));
   });
 
@@ -117,7 +117,7 @@ export const result = async (input1, input2, input3, input4) => {
   console.log(rateOfShift);
   console.log('latestShiftRequired:');
   console.log(latestShiftRequired);
-  return output;
+  return outputArray[0];
 };
 
 result(input1, input2, input3, input4);

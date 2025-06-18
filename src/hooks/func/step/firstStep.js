@@ -1,6 +1,6 @@
 //二週目
 
-import { check } from './check/check.js';
+import { check } from '../check/check.js';
 
 export const firstStep = (
   input1,

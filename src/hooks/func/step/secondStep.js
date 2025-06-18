@@ -1,4 +1,4 @@
-import { check } from "./check/check.js";
+import { check } from '../check/check.js';
 
 export const secondStep = (
   input1,
