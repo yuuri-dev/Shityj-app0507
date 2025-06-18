@@ -117,10 +117,10 @@ export const result = async (input1, input2, input3, input4) => {
   console.log(rateOfShift);
   console.log('latestShiftRequired:');
   console.log(latestShiftRequired);
-  return output;
+  return outputArray[0];
 };
 
-result(input1, input2, input3, input4);
+//  result(input1, input2, input3, input4);
 
 //この後の改良点
 
