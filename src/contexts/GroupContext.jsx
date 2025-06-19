@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from 'react';
 
 export const GroupContext = createContext();
 
+const NUM_MEMBERS = 4;
 const NUM_DAYS = 7;
 const NUM_TIME_SLOTS = 3;
 
@@ -14,8 +15,11 @@ export const GroupProvider = ({ children }) => {
   const [maxHoursToWork, setMaxHoursToWork] = useState(8);
   const [shiftInfo, setShiftInfo] = useState([]);
   const [shiftCompleted, setShiftCompleted] = useState(
-    Array.from({ length: NUM_DAYS }, () =>
-      Array.from({ length: NUM_TIME_SLOTS }, () => [])
+    Array.from({ length: NUM_MEMBERS }, () =>
+      Array.from(
+        { length: NUM_DAYS },
+        () => Array.from({ length: NUM_TIME_SLOTS }, () => [])
+      )
     )
   );
 
