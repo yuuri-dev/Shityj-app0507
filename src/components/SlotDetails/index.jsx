@@ -1,27 +1,36 @@
-// components/SlotDetail.js
 import React from 'react';
-import styles from './SlotDetail.module.css'; // スタイル別ファイルにするとスッキリします
+import styles from './SlotDetail.module.css';
 
-const SlotDetail = ({ day, slot, members, required }) => {
+const SlotDetailModal = ({ day, slot, members, required, onClose }) => {
   if (!day || !slot) return null;
 
   return (
-    <div className={styles.wrapper}>
-      <p>
-        🗓 日時: {day}・{slot}コマ目
-      </p>
-      <p>👥 希望者: {members.length}名</p>
-      <ul>
-        {members.map((m, i) => (
-          <li key={i}>- {m.name}</li>
-        ))}
-      </ul>
-      <p>🧩 必要人数: {required}人</p>
-      {members.length > required && (
-        <p className={styles.alert}>⚠️ 注意: 希望者が多いので調整が必要です</p>
-      )}
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
+        <h3>
+          {day}曜日・{slot}コマ目の詳細
+        </h3>
+        <p className={styles.p}>必要人数: {required}人</p>
+        <p className={styles.p}>希望者: {members.length}名</p>
+
+        <ul className={styles.ul}>
+          {members.map((m, i) => (
+            <li className={styles.memberItem} key={i}>
+              - {m.name}
+            </li>
+          ))}
+        </ul>
+
+        {members.length < required && (
+          <p className={styles.alert}>⚠️ 希望者が不足しています</p>
+        )}
+
+        <button onClick={onClose} className={styles.button}>
+          閉じる
+        </button>
+      </div>
     </div>
   );
 };
 
-export default SlotDetail;
+export default SlotDetailModal;

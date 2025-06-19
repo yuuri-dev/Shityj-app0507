@@ -122,6 +122,7 @@ const GroupPageShow = ({ setLoading }) => {
           slot={selectedSlotInfo.slot}
           members={selectedSlotInfo.members}
           required={selectedSlotInfo.required}
+          onClose={() => setSelectedSlotInfo(null)}
         />
       )}
       <Link href="setting">
