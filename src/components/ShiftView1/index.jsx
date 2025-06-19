@@ -38,30 +38,38 @@ const ShiftView1 = ({ shiftCompletedWithName }) => {
       </button>
       <button onClick={handleDownloadImage}>画像で保存</button>
       <div ref={shiftRef} className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr className={styles.tr}>
-              <th>日 / 時間</th>
-              {Array.from({ length: numTimeSlots }, (_, i) => (
-                <th key={i}>時間 {i + 1}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {shiftCompletedWithName.map((dayRow, dayIndex) => (
-              <tr key={dayIndex}>
-                <td>{dayIndex + 1}日</td>
-                {dayRow.map((slot, timeIndex) => (
-                  <td key={timeIndex}>
-                    {Array.isArray(slot) && slot.length > 0
-                      ? slot.join(', ')
-                      : 'なし'}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {shiftCompletedWithName.map((value) => {
+          return (
+            <table className={styles.table}>
+              <thead>
+                <tr className={styles.tr}>
+                  <th>日 / 時間</th>
+                  {Array.from({ length: numTimeSlots }, (_, i) => (
+                    <th key={i}>時間 {i + 1}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {value.map((dayRow, dayIndex) => {
+                  return (
+                    <tr key={dayIndex}>
+                      <td>{dayIndex + 1}日</td>
+                      {dayRow.map((slot, timeIndex) => {
+                        return (
+                          <td key={timeIndex}>
+                            {Array.isArray(slot) && slot.length > 0
+                              ? slot.join(', ')
+                              : 'なし'}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          );
+        })}
       </div>
     </div>
   );
