@@ -1,3 +1,4 @@
+
 .modalOverlay {
     position: fixed;
     top: 0;
@@ -10,11 +11,64 @@
     align-items: center;
     z-index: 1000;
   }
-  
+  .h3{
+    text-align: center;
+    font-size: 20px;
+  }
+  .h4{
+    margin-top: 20px;
+  }
+  .p{
+    margin: 12px 0 10px 0;
+  }
+
   .modalContent {
     background-color: #fff;
     padding: 20px 30px;
     border-radius: 12px;
     min-width: 300px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+
+  .desiredTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .desiredTable th,
+  .desiredTable td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .desiredTable th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+  }
+  
+  .desiredTable td {
+    font-size: 1.2rem;
+  }
+
+  .checkItem{
+    text-align: center;
+    font-size: 30px;
+  }
+  
+  .button {
+    margin-top: 20px;
+    padding: 8px 16px;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .button:hover {
+    background-color: #005bb5;
   }
