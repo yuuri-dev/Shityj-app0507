@@ -23,14 +23,10 @@ const ShiftView = () => {
 
   useEffect(() => {
     // shiftCompletedとshiftInfoがそろっているときだけ処理
-    if (
-      !shiftCompleted ||
-      !Array.isArray(shiftCompleted) ||
-      !shiftInfo ||
-      shiftCompleted.length === 0
-    ) {
-      return;
-    }
+    console.log('shiftCompleted:', shiftCompleted);
+    console.log('shiftCompleted length:', shiftCompleted?.length);
+    console.log('shiftCompleted[0]:', shiftCompleted?.[0]);
+    console.log('shiftInfo:', shiftInfo);
 
     const converted = Array.from({ length: 4 }, (_, g) =>
       Array.from({ length: NUM_DAYS }, (_, i) =>
@@ -49,7 +45,10 @@ const ShiftView = () => {
     !Array.isArray(shiftCompleted[0])
   ) {
     console.log('shiftCompleted:', shiftCompleted);
-    return <p>読み込み中...</p>;
+    return (
+      <p>
+        !shiftCompleted || shiftCompleted.length === 0 || !Array.isArray(shiftCompleted[0]</p>
+    );
   }
 
   const renderContent = () => {

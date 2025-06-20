@@ -40,10 +40,26 @@ const AddShift = () => {
       return;
     }
 
+    if (!timesToEnter || isNaN(timesToEnter) || timesToEnter <= 0) {
+      alert('入りたい回数を1以上で入力してください。');
+      return;
+    }
+
     setShiftInfo((prev) => {
       let newData = [...prev];
-      newData[selectedIndex].timesToEnterDesired = timesToEnter;
-      newData[selectedIndex].shiftArray = selection;
+
+      const times = parseInt(timesToEnter, 10);
+      if (isNaN(times)) {
+        alert('入りたい回数が正しく入力されていません。');
+        return prev;
+      }
+      newData[selectedIndex] = {
+        ...newData[selectedIndex],
+        timesToEnterDesired: times,
+        shiftArray: selection,
+      };
+
+      console.log('登録されるデータ：', newData[selectedIndex]);
       return newData;
     });
 
@@ -123,7 +139,7 @@ const AddShift = () => {
           type="number"
           value={timesToEnter}
           className={styles.enterTimesInput}
-          onChange={(e) => setTimesToEnter(e.target.value)}
+          onChange={(e) => setTimesToEnter(parseInt(e.target.value))}
         />
       </div>
 
