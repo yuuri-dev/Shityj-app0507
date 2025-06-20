@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from 'react';
 
 export const GroupContext = createContext();
 
-const NUM_MEMBERS = 4;
+const NUM_SHIFT_CANDIDATION = 4;
 const NUM_DAYS = 7;
 const NUM_TIME_SLOTS = 3;
 
@@ -15,7 +15,7 @@ export const GroupProvider = ({ children }) => {
   const [maxHoursToWork, setMaxHoursToWork] = useState(8);
   const [shiftInfo, setShiftInfo] = useState([]);
   const [shiftCompleted, setShiftCompleted] = useState(
-    Array.from({ length: NUM_MEMBERS }, () =>
+    Array.from({ length: NUM_SHIFT_CANDIDATION }, () =>
       Array.from(
         { length: NUM_DAYS },
         () => Array.from({ length: NUM_TIME_SLOTS }, () => [])
@@ -43,8 +43,9 @@ export const GroupProvider = ({ children }) => {
       if (savedShiftInfo) setShiftInfo(JSON.parse(savedShiftInfo));
 
       const savedShiftCompleted = localStorage.getItem('shiftCompleted');
-      if (savedShiftCompleted)
+      if (savedShiftCompleted && savedShiftCompleted !== 'undefined') {
         setShiftCompleted(JSON.parse(savedShiftCompleted));
+      }
     }
   }, []);
 

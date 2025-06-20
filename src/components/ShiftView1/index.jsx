@@ -1,11 +1,29 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './ShiftView1.module.css';
 import html2pdf from 'html2pdf.js';
 import html2canvas from 'html2canvas';
+import ShiftView1Contents from '../ShiftView1Contents';
 
 const ShiftView1 = ({ shiftCompletedWithName }) => {
   const shiftRef = useRef();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  //エラーチェック　消してもいい
+  if (
+    !shiftCompletedWithName || // 配列じゃない or null
+    !Array.isArray(shiftCompletedWithName) ||
+    shiftCompletedWithName.length === 0 || // 空配列
+    !Array.isArray(shiftCompletedWithName[0]) || // 中身の構造も要チェック
+    shiftCompletedWithName.some((group) => !Array.isArray(group)) // 全て配列か？
+  ) {
+    // データ形式が違う時はここで止めて表示する
+    return (
+      <p>シフト情報の形式が正しくありません。管理者に連絡してください。</p>
+    );
+  }
+
+
+  const totalPages = shiftCompletedWithName.length;
   //shiftRef部分をpdfで保存する処理
   const handleDownloadPDF = () => {
     const element = shiftRef.current;
@@ -27,7 +45,7 @@ const ShiftView1 = ({ shiftCompletedWithName }) => {
     return <p>シフト情報がありません。</p>;
   }
 
-  const numTimeSlots = shiftCompletedWithName[0]?.length || 0;
+  const numTimeSlots = shiftCompletedWithName[currentIndex]?.[0]?.length || 0;
 
   return (
     <div className={styles.contents}>
@@ -38,38 +56,29 @@ const ShiftView1 = ({ shiftCompletedWithName }) => {
       </button>
       <button onClick={handleDownloadImage}>画像で保存</button>
       <div ref={shiftRef} className={styles.tableWrapper}>
-        {shiftCompletedWithName.map((value) => {
-          return (
-            <table className={styles.table}>
-              <thead>
-                <tr className={styles.tr}>
-                  <th>日 / 時間</th>
-                  {Array.from({ length: numTimeSlots }, (_, i) => (
-                    <th key={i}>時間 {i + 1}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {value.map((dayRow, dayIndex) => {
-                  return (
-                    <tr key={dayIndex}>
-                      <td>{dayIndex + 1}日</td>
-                      {dayRow.map((slot, timeIndex) => {
-                        return (
-                          <td key={timeIndex}>
-                            {Array.isArray(slot) && slot.length > 0
-                              ? slot.join(', ')
-                              : 'なし'}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          );
-        })}
+        <ShiftView1Contents
+          value={shiftCompletedWithName[currentIndex]}
+          outputIndex={currentIndex}
+          numTimeSlots={numTimeSlots}
+        />
+      </div>
+
+      <div className={styles.pagination}>
+        <button
+          onClick={() => setCurrentIndex((prev) => prev - 1)}
+          disabled={currentIndex === 0}
+        >
+          ← 前へ
+        </button>
+        <span style={{ margin: '0 10px' }}>
+          案 {currentIndex + 1} / {totalPages}
+        </span>
+        <button
+          onClick={() => setCurrentIndex((prev) => prev + 1)}
+          disabled={currentIndex === totalPages - 1}
+        >
+          次へ →
+        </button>
       </div>
     </div>
   );
