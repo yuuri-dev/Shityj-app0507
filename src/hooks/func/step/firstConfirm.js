@@ -14,20 +14,28 @@ export const firstConfirm = (
       if (input1[j][k] > 0 && candidation[j][k].length <= input1[j][k]) {
         isConfirmed[j][k] = true;
         for (let count = 0; count < candidation[j][k].length; count++) {
-          shiftCountArray[candidation[j][k][count]] += 1;
-          rateOfShift[candidation[j][k][count]] +=
-            1 / input2[candidation[j][k][count]].timesToEnterDesired;
-          console.log('index:', candidation[j][k][count]);
-        console.log('input2 at index:', input2[candidation[j][k][count]]);
+          const index = candidation[j][k][count];
+          const member = input2[index];
+
+          if (!member) {
+            console.warn(`input2[${index}] is undefined`);
+            continue; // スキップ
+          }
+
+          shiftCountArray[index] += 1;
+          rateOfShift[index] += 1 / member.timesToEnterDesired;
+
+          console.log("firstConfirm");
+          
+          console.log('candidation:', candidation[j][k][count]);
         }
         output[j][k].push(...candidation[j][k]);
         latestShiftRequired[j][k] -= candidation[j][k].length;
-        
       }
     }
   }
 
-  console.log('確定してるやつ:');
+  console.log('firstConfirm:output');
   console.log(output);
 
   return;

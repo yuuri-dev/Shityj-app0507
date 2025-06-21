@@ -1,6 +1,6 @@
+import { check } from '../check/check.js';
 const NUM_DAYS = 7;
 const NUM_TIME_SLOTS = 3;
-import { check } from '../check/check.js';
 
 export const random = (
   candidation,
@@ -19,7 +19,7 @@ export const random = (
     for (let j = 0; j < NUM_TIME_SLOTS; j++) {
       // まだ確定していないシフトか？
       if (!isConfirmed[i][j]) {
-        const currentCandidates = candidation[i][j];
+        const currentCandidates = [...candidation[i][j]]; // 浅いコピー
         // そのシフトに入れる候補者がいるかチェックする
         check(currentCandidates, i, j, output, input3);
 

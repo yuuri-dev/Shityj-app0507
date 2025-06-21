@@ -58,8 +58,6 @@ const AddShift = () => {
         timesToEnterDesired: times,
         shiftArray: selection,
       };
-
-      console.log('登録されるデータ：', newData[selectedIndex]);
       return newData;
     });
 
