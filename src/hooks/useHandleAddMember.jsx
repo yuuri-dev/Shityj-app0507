@@ -22,7 +22,7 @@ const useAddMember = () => {
         ...prevArray,
         {
           name: memberName,
-          timesToEnterDesired: 0,
+          timesToEnterDesired: 1,
           shiftArray: Array.from({ length: NUM_DAYS }, () =>
             Array(NUM_TIME_SLOTS).fill(0)
           ),

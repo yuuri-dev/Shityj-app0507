@@ -4,64 +4,45 @@ import styles from './new.module.css';
 import { GroupContext } from 'src/contexts/GroupContext';
 import PageTitle from '@/components/PageTitle';
 import AddMember from '@/components/AddMember';
-
+import { supabase } from 'src/lib/supabase_client';
 
 function New() {
-  const {
-    groupName,
-    setGroupName,
-    shiftInfo,
-    setShiftInfo,
-  } = useContext(GroupContext);
+  const { groupName, setGroupName, shiftInfo, setShiftInfo } =
+    useContext(GroupContext);
 
   const router = useRouter();
 
-
-
   const handleCreateGroup = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
 
       router.push('/groupName/setting');
 
-      //バリデーション
+      if (!groupName && shiftInfo.length <= 2) {
+        alert(
+          'グループ名を入力してください\nメンバーを二名以上追加してください'
+        );
+        return;
+      } else if (!groupName) {
+        alert('グループ名を入力してください');
+        return;
+      } else if (shiftInfo.length <= 1) {
+        alert('メンバーを二名以上追加してください');
+        return;
+      }
+      //name
 
-      // if (!groupName && shiftInfo.length <= 2) {
-      //   alert(
-      //     'グループ名を入力してください\nメンバーを二名以上追加してください'
-      //   );
-      //   return;
-      // } else if (!groupName) {
-      //   alert('グループ名を入力してください');
-      //   return;
-      // } else if (shiftInfo.length <= 1) {
-      //   alert('メンバーを二名以上追加してください');
-      //   return;
-      // }
+      //groupName
+      const { data, error } = await supabase
+        .from('groups')
+        .insert([{ group_name: groupName }]);
 
-      //     try {
-      //       const response = await fetch('http://localhost:5000/api/create-group', {
-      //         method: 'POST',
-      //         headers: {
-      //           'Content-Type': 'application/json',
-      //         },
-      //         body: JSON.stringify({
-      //           groupName,
-      //           members: shiftInfo.name,
-      //         }),
-      //       });
-
-      //       if (response.ok) {
-      //         console.log('グループ送信成功！');
-      //        // router.push('/groupName/setting');
-      //       } else {
-      //         console.error('送信失敗:', response.status);
-      //         alert('送信に失敗しました');
-      //       }
-      //     } catch (error) {
-      //       console.error('通信エラー:', error);
-      //       alert('サーバーに接続できませんでした');
-      //     }
+      if (error) {
+        alert('supabaseでエラー');
+        console.log(error);
+      } else {
+        console.log(data);
+      }
     },
     [groupName, router, shiftInfo]
   );
