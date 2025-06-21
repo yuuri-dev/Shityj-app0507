@@ -152,7 +152,7 @@ export const input2 = [
   //   ],
 ];
 
-// 最大連続出勤日数
+// 最大出勤日数
 export const input3 = 5;
 
 // 最大勤務時間数
