@@ -64,28 +64,27 @@ const ShiftView = () => {
   return (
     <div>
       <PageTitle>{groupName}</PageTitle>
-      <h2 className={styles.h2}>シフト作成成功！</h2>
 
       <div style={{ display: 'flex', marginBottom: '1rem' }}>
         <button
           onClick={() => setActiveTab('tab1')}
           style={{
-            backgroundColor: activeTab === 'tab1' ? '#ccc' : '#eee',
+            backgroundColor: activeTab === 'tab1' ? '#51C7CC' : '#eee',
             padding: '10px',
             border: '1px solid #999',
           }}
         >
-          タブ1
+          一覧
         </button>
         <button
           onClick={() => setActiveTab('tab2')}
           style={{
-            backgroundColor: activeTab === 'tab2' ? '#ccc' : '#eee',
+            backgroundColor: activeTab === 'tab2' ? '#51C7CC' : '#eee',
             padding: '10px',
             border: '1px solid #999',
           }}
         >
-          タブ2
+          個別に見る
         </button>
       </div>
       <div>{renderContent()}</div>

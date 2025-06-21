@@ -54,7 +54,9 @@ const ShiftView1 = ({ shiftCompletedWithName }) => {
       <button onClick={handleDownloadPDF} className={styles.downloadBtn}>
         PDFをダウンロード
       </button>
-      <button onClick={handleDownloadImage}>画像で保存</button>
+      <button onClick={handleDownloadImage} className={styles.downloadBtn}>
+        画像で保存
+      </button>
       <div ref={shiftRef} className={styles.tableWrapper}>
         <ShiftView1Contents
           value={shiftCompletedWithName[currentIndex]}
@@ -68,16 +70,16 @@ const ShiftView1 = ({ shiftCompletedWithName }) => {
           onClick={() => setCurrentIndex((prev) => prev - 1)}
           disabled={currentIndex === 0}
         >
-          ← 前へ
+          &lt; &lt;
         </button>
-        <span style={{ margin: '0 10px' }}>
+        <span>
           案 {currentIndex + 1} / {totalPages}
         </span>
         <button
           onClick={() => setCurrentIndex((prev) => prev + 1)}
           disabled={currentIndex === totalPages - 1}
         >
-          次へ →
+          &gt; &gt;
         </button>
       </div>
     </div>

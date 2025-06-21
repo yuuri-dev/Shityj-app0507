@@ -26,18 +26,18 @@ function New() {
 
       //バリデーション
 
-      // if (!groupName && shiftInfo.length <= 2) {
-      //   alert(
-      //     'グループ名を入力してください\nメンバーを二名以上追加してください'
-      //   );
-      //   return;
-      // } else if (!groupName) {
-      //   alert('グループ名を入力してください');
-      //   return;
-      // } else if (shiftInfo.length <= 1) {
-      //   alert('メンバーを二名以上追加してください');
-      //   return;
-      // }
+      if (!groupName && shiftInfo.length <= 2) {
+        alert(
+          'グループ名を入力してください\nメンバーを二名以上追加してください'
+        );
+        return;
+      } else if (!groupName) {
+        alert('グループ名を入力してください');
+        return;
+      } else if (shiftInfo.length <= 1) {
+        alert('メンバーを二名以上追加してください');
+        return;
+      }
 
       //     try {
       //       const response = await fetch('http://localhost:5000/api/create-group', {

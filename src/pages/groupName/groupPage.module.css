@@ -4,7 +4,7 @@
   margin-bottom: 50px;
 }
 
-.border{
+.border {
   border: 1px #3c3c3c solid;
   width: 100%;
   margin: 30px auto;
@@ -20,7 +20,10 @@
 }
 .memberListsWrapper {
   background-color: #fff7cc;
-  margin-bottom: 30px;
+  max-width: 700px;
+  margin: auto;
+  margin-bottom: 50px;
+  padding:5px 10px 20px 10px;
 }
 .memberLists {
   display: flex;
@@ -55,14 +58,14 @@
 }
 .AddMemberWrapper {
   width: 70%;
-  margin:0 auto;
+  margin: 0 auto;
 }
-.compileMemberButton{
+.compileMemberButton {
   display: block;
   font-size: 18px;
   width: 190px;
   height: 30px;
-  margin:0 auto;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -76,9 +79,9 @@
   display: flex;
   align-items: center; /* 高さを中央にそろえる */
   gap: 8px; /* pとinputの間にスペース */
-  margin:0 auto;
+  margin: 0 auto;
 }
-.toggle_p{
+.toggle_p {
   display: inline;
   align-items: center;
 }
@@ -91,11 +94,11 @@
   border-radius: 25px;
   background-color: #dddddd;
   cursor: pointer;
-  transition: background-color .4s;
+  transition: background-color 0.4s;
 }
 
 .toggle_button_1:has(:checked) {
-  background-color: #51C7CC;
+  background-color: #51c7cc;
 }
 
 .toggle_button_1::after {
@@ -108,7 +111,7 @@
   box-shadow: 0 0 5px rgb(0 0 0 / 20%);
   background-color: #fff;
   content: '';
-  transition: left .4s;
+  transition: left 0.4s;
 }
 
 .toggle_button_1:has(:checked)::after {
