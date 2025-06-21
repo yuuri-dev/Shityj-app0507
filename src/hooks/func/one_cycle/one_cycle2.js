@@ -71,5 +71,4 @@ export const one_cycle = (
       );
     }
   }
-  console.log(output);
 };

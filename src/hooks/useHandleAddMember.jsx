@@ -28,7 +28,6 @@ const useAddMember = () => {
           ),
         },
       ];
-      console.log(newArray); // 新しいメンバー追加後にログを出力
       return newArray;
     });
     setMemberName('');

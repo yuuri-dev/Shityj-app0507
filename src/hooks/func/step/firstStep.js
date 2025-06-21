@@ -15,8 +15,12 @@ export const firstStep = (
   j,
   k
 ) => {
+  const candidationCopy = candidation.map((row) =>
+    row.map((slot) => [...slot])
+  );
+
   if (!isConfirmed[j][k]) {
-    const candidationOverFlow = [...candidation[j][k]];
+    const candidationOverFlow = [...candidationCopy[j][k]]; // ← ここで使う
 
     const rateOfShiftCandidation = [];
     for (let l = 0; l < candidationOverFlow.length; l++) {
@@ -31,15 +35,13 @@ export const firstStep = (
       )
       .filter((index) => index !== -1);
 
+    check(minIndexes, j, k, output, input3);
+
     if (minIndexes.length === input1[j][k] - output[j][k].length) {
       isConfirmed[j][k] = true;
     }
-
-    check(minIndexes, j, k, output, input3);
-
     if (minIndexes.length <= input1[j][k]) {
       minIndexes.map((value) => {
-        console.log(value);
         output[j][k].push(value);
 
         candidation[j][k] = candidation[j][k].filter((v) => v !== value);
@@ -52,6 +54,8 @@ export const firstStep = (
     if (latestShiftRequired[j][k] === 0) {
       isConfirmed[j][k] = true;
     }
+    console.log(firstStep);
+    console.log(output);
   }
 
   return;

@@ -22,11 +22,10 @@ const ShiftView = () => {
     useState(formatArray);
 
   useEffect(() => {
-    // shiftCompletedとshiftInfoがそろっているときだけ処理
-    console.log('shiftCompleted:', shiftCompleted);
-    console.log('shiftCompleted length:', shiftCompleted?.length);
-    console.log('shiftCompleted[0]:', shiftCompleted?.[0]);
-    console.log('shiftInfo:', shiftInfo);
+    // console.log('shiftCompleted:', shiftCompleted);
+    // console.log('shiftCompleted length:', shiftCompleted?.length);
+    // console.log('shiftCompleted[0]:', shiftCompleted?.[0]);
+    // console.log('shiftInfo:', shiftInfo);
 
     const converted = Array.from({ length: 4 }, (_, g) =>
       Array.from({ length: NUM_DAYS }, (_, i) =>

@@ -1,1 +1,1 @@
- console.log('randMember:', randMember);
+console.log
