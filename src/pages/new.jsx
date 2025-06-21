@@ -16,7 +16,7 @@ function New() {
     async (e) => {
       e.preventDefault();
 
-      router.push('/groupName/setting');
+      
 
       if (!groupName && shiftInfo.length <= 2) {
         alert(
@@ -30,9 +30,24 @@ function New() {
         alert('メンバーを二名以上追加してください');
         return;
       }
-      //name
-
       //groupName
+
+      const { data: existingGroups, error: fetchError } = await supabase
+        .from('groups')
+        .select('group_id')
+        .eq('group_name', groupName);
+
+      if (fetchError) {
+        alert('グループ確認中にエラーが発生しました');
+        console.error(fetchError);
+        return;
+      }
+
+      if (existingGroups.length > 0) {
+        alert('そのグループ名はすでに使われています');
+        return;
+      }
+      
       const { data, error } = await supabase
         .from('groups')
         .insert([{ group_name: groupName }]);
@@ -43,6 +58,21 @@ function New() {
       } else {
         console.log(data);
       }
+      
+      //URL
+      const { data: groupData, fetch_uuid_error } = await supabase
+        .from('groups')
+        .select('group_id')
+        .eq('group_name', groupName)
+        .single();
+
+      if (fetch_uuid_error) {
+        console.log('error');
+        console.log(fetch_uuid_error);
+      }
+      const groupId = groupData?.group_id;
+
+      router.push(`/group/${groupId}/setting`);
     },
     [groupName, router, shiftInfo]
   );
