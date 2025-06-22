@@ -5,24 +5,15 @@ import { GroupContext } from 'src/contexts/GroupContext';
 import PageTitle from '@/components/PageTitle';
 import AddMember from '@/components/AddMember';
 
-
 function New() {
-  const {
-    groupName,
-    setGroupName,
-    shiftInfo,
-    setShiftInfo,
-  } = useContext(GroupContext);
+  const { groupName, setGroupName, shiftInfo, setShiftInfo } =
+    useContext(GroupContext);
 
   const router = useRouter();
-
-
 
   const handleCreateGroup = useCallback(
     (e) => {
       e.preventDefault();
-
-      router.push('/groupName/setting');
 
       //バリデーション
 
@@ -37,31 +28,10 @@ function New() {
       } else if (shiftInfo.length <= 1) {
         alert('メンバーを二名以上追加してください');
         return;
+      } else {
+        router.push('/groupName/setting');
       }
-
-      //     try {
-      //       const response = await fetch('http://localhost:5000/api/create-group', {
-      //         method: 'POST',
-      //         headers: {
-      //           'Content-Type': 'application/json',
-      //         },
-      //         body: JSON.stringify({
-      //           groupName,
-      //           members: shiftInfo.name,
-      //         }),
-      //       });
-
-      //       if (response.ok) {
-      //         console.log('グループ送信成功！');
-      //        // router.push('/groupName/setting');
-      //       } else {
-      //         console.error('送信失敗:', response.status);
-      //         alert('送信に失敗しました');
-      //       }
-      //     } catch (error) {
-      //       console.error('通信エラー:', error);
-      //       alert('サーバーに接続できませんでした');
-      //     }
+     
     },
     [groupName, router, shiftInfo]
   );

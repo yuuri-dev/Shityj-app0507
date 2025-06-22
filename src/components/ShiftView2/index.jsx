@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from "./ShiftView2.module.css"
 const DAYS = ['月', '火', '水', '木', '金', '土', '日'];
 
 const ShiftView2 = ({ shiftCompletedWithName }) => {
@@ -33,43 +34,32 @@ const ShiftView2 = ({ shiftCompletedWithName }) => {
   const allTimeSlotCount = currentShift[0]?.length || 0;
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h2>メンバー別シフト</h2>
+    <div className={styles.container}>
+      <h2 className={styles.title}>メンバー別シフト</h2>
       {Object.entries(memberShiftMap).map(([name, schedule]) => (
-        <div key={name} style={{ marginBottom: '1.5rem' }}>
-          <h3>{name}</h3>
-          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+        <div key={name} className={styles.memberBlock}>
+          <h3 className={styles.memberName}>{name}</h3>
+          <table className={styles.table}>
             <thead>
               <tr>
-                <th style={{ border: '1px solid #ccc', padding: '0.5rem' }}>
-                  曜日
-                </th>
+                <th>曜日</th>
                 {Array.from({ length: allTimeSlotCount }, (_, i) => (
-                  <th
-                    key={i}
-                    style={{ border: '1px solid #ccc', padding: '0.5rem' }}
-                  >
-                    時間 {i + 1}
-                  </th>
+                  <th key={i}>時間 {i + 1}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {schedule.map((slots, dayIndex) => (
                 <tr key={dayIndex}>
-                  <td style={{ border: '1px solid #ccc', padding: '0.5rem' }}>
-                    {DAYS[dayIndex]}曜日
-                  </td>
+                  <td>{DAYS[dayIndex]}曜日</td>
                   {Array.from({ length: allTimeSlotCount }, (_, timeIndex) => (
                     <td
                       key={timeIndex}
-                      style={{
-                        border: '1px solid #ccc',
-                        padding: '0.5rem',
-                        textAlign: 'center',
-                      }}
+                      className={`${styles.cell} ${
+                        slots[timeIndex] ? styles.present : styles.absent
+                      }`}
                     >
-                      {slots[timeIndex] ? '✔' : '×'}
+                      {slots[timeIndex] ? '○' : '×'}
                     </td>
                   ))}
                 </tr>
