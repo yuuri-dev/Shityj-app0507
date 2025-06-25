@@ -34,17 +34,44 @@ const AddShift = () => {
     });
   };
 
-  const handleConfirm = (e) => {
+  const handleConfirm = async (e) => {
     if (selectedIndex === null) {
       alert('名前を選択して下さい。');
       return;
     }
 
     if (!timesToEnter || isNaN(timesToEnter) || timesToEnter <= 0) {
-      alert('入りたい回数を1以上で入力してください。');
+      alert('入りたい回数を1以上の入力してください。');
       return;
     }
 
+    const upsertData = [];
+
+  for (let day = 0; day < 7; day++) {
+    for (let time = 0; time < 3; time++) {
+      upsertData.push({
+        group_id,
+        user_name: name,
+        day,
+        time_slot: time,
+        is_available: selection[day][time], // true or false
+      });
+    }
+  }
+
+  const { error } = await supabase
+    .from('shift_preferences') // ← あなたのテーブル名に変更してね
+    .upsert(upsertData, {
+      onConflict: ['group_id', 'user_id', 'day', 'time_slot'],
+    });
+
+  if (error) {
+    console.error('シフト希望の保存に失敗しました', error);
+    alert('シフト希望の保存に失敗しました');
+    return;
+  }
+
+    
     setShiftInfo((prev) => {
       let newData = [...prev];
 
@@ -60,6 +87,7 @@ const AddShift = () => {
       };
       return newData;
     });
+
 
     alert('シフト希望が確定されました。');
 

@@ -1,4 +1,7 @@
+// src/contexts/GroupContext.js
+
 import { createContext, useState, useEffect } from 'react';
+import { supabase } from 'src/lib/supabase_client'; // ← 自分の設定に合わせてね
 
 export const GroupContext = createContext();
 
@@ -6,7 +9,7 @@ const NUM_SHIFT_CANDIDATION = 4;
 const NUM_DAYS = 7;
 const NUM_TIME_SLOTS = 3;
 
-export const GroupProvider = ({ children }) => {
+export const GroupProvider = ({ children, groupId }) => {
   const [groupName, setGroupName] = useState('');
   const [groupRequireNumberArray, setGroupRequireNumberArray] = useState(
     Array.from({ length: NUM_DAYS }, () => Array(NUM_TIME_SLOTS).fill(0))
@@ -16,78 +19,68 @@ export const GroupProvider = ({ children }) => {
   const [shiftInfo, setShiftInfo] = useState([]);
   const [shiftCompleted, setShiftCompleted] = useState(
     Array.from({ length: NUM_SHIFT_CANDIDATION }, () =>
-      Array.from(
-        { length: NUM_DAYS },
-        () => Array.from({ length: NUM_TIME_SLOTS }, () => [])
+      Array.from({ length: NUM_DAYS }, () =>
+        Array.from({ length: NUM_TIME_SLOTS }, () => [])
       )
     )
   );
 
-  // 読み込み処理（クライアントだけ）
+  // ✅ Supabaseから読み込み
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedGroupName = localStorage.getItem('groupName');
-      if (savedGroupName) setGroupName(savedGroupName);
+    const fetchGroupData = async () => {
+      if (!groupId) return;
 
-      const savedGroupRequire = localStorage.getItem('groupRequireNumberArray');
-      if (savedGroupRequire)
-        setGroupRequireNumberArray(JSON.parse(savedGroupRequire));
+      const { data, error } = await supabase
+        .from('groups')
+        .select('*')
+        .eq('group_id', groupId)
+        .single();
 
-      const savedMaxDate = localStorage.getItem('maxDateToWork');
-      if (savedMaxDate) setMaxDateToWork(Number(savedMaxDate));
-
-      const savedMaxHours = localStorage.getItem('maxHoursToWork');
-      if (savedMaxHours) setMaxHoursToWork(Number(savedMaxHours));
-
-      const savedShiftInfo = localStorage.getItem('shiftInfo');
-      if (savedShiftInfo) setShiftInfo(JSON.parse(savedShiftInfo));
-
-      const savedShiftCompleted = localStorage.getItem('shiftCompleted');
-      if (savedShiftCompleted && savedShiftCompleted !== 'undefined') {
-        setShiftCompleted(JSON.parse(savedShiftCompleted));
+      if (error) {
+        console.error('データ取得エラー:', error);
+        return;
       }
-    }
-  }, []);
 
-  // 書き込み処理
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('groupName', groupName);
-    }
-  }, [groupName]);
+      if (data) {
+        setGroupName(data.group_name);
+        setGroupRequireNumberArray(data.group_require_number_array);
+        setMaxDateToWork(data.max_date_to_work);
+        setMaxHoursToWork(data.max_hours_to_work);
+        setShiftInfo(data.shift_info);
+        setShiftCompleted(data.shift_completed);
+      }
+    };
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(
-        'groupRequireNumberArray',
-        JSON.stringify(groupRequireNumberArray)
-      );
-    }
-  }, [groupRequireNumberArray]);
+    fetchGroupData();
+  }, [groupId]);
 
+  // ✅ 値が変わったら保存する（任意）
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('maxDateToWork', maxDateToWork);
-    }
-  }, [maxDateToWork]);
+    if (!groupId) return;
+    const updateGroup = async () => {
+      await supabase
+        .from('groups')
+        .update({
+          group_name: groupName,
+          group_require_number_array: groupRequireNumberArray,
+          max_date_to_work: maxDateToWork,
+          max_hours_to_work: maxHoursToWork,
+          shift_info: shiftInfo,
+          shift_completed: shiftCompleted,
+        })
+        .eq('group_id', groupId);
+    };
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('maxHoursToWork', maxHoursToWork);
-    }
-  }, [maxHoursToWork]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('shiftInfo', JSON.stringify(shiftInfo));
-    }
-  }, [shiftInfo]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('shiftCompleted', JSON.stringify(shiftCompleted));
-    }
-  }, [shiftCompleted]);
+    updateGroup();
+  }, [
+    groupId,
+    groupName,
+    groupRequireNumberArray,
+    maxDateToWork,
+    maxHoursToWork,
+    shiftInfo,
+    shiftCompleted,
+  ]);
 
   return (
     <GroupContext.Provider

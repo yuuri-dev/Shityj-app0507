@@ -122,7 +122,7 @@ export const result = async (input1, input2, input3, input4) => {
   return outputArray;
 };
 
- result(input1, input2, input3, input4);
+//  result(input1, input2, input3, input4);
 
 //この後の改良点
 

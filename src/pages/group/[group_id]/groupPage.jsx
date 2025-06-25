@@ -14,6 +14,7 @@ import Loading from '@/components/Loading';
 import SlotDetail from '@/components/SlotDetails';
 
 import { result } from 'src/hooks/result';
+import { supabase } from 'src/lib/supabase_client';
 
 const GroupPageShow = ({ setLoading }) => {
   const {
@@ -32,6 +33,7 @@ const GroupPageShow = ({ setLoading }) => {
   const [selectedSlotInfo, setSelectedSlotInfo] = useState(null);
 
   const router = useRouter();
+  const { group_id } = router.query;
 
   const handleCompileMember = () => {
     setIsMemberCompiler((prev) => !prev);
@@ -58,6 +60,37 @@ const GroupPageShow = ({ setLoading }) => {
       console.error('エラー:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSubmitMemberSetting = async (e) => {
+    e.preventDefault();
+
+    const { group_id } = router.query; // ← URLから取得（/group/[group_id]/setting の場合）
+
+    if (!group_id) {
+      alert('グループIDが取得できません');
+      return;
+    }
+
+    const groupMemberToUpdate = shiftInfo.map((member, index) => ({
+      name: member.name,
+      user_id: index, // グループ内の番号（0,1,2...）
+      group_id: group_id,
+    }));
+
+    const { data, error } = await supabase
+      .from('users_table')
+      .upsert(groupMemberToUpdate, {
+        onConflict: ['group_id', 'user_id'], // グループ内番号が一意
+      });
+
+    if (error) {
+      console.error('メンバー追加失敗:', error);
+      alert('メンバーの追加に失敗しました');
+    } else {
+      console.log('追加成功:', data);
+      alert('メンバーを追加しました');
     }
   };
 
@@ -91,6 +124,7 @@ const GroupPageShow = ({ setLoading }) => {
       {isMemberCompiler && (
         <div className={styles.AddMemberWrapper}>
           <AddMember />
+          <button onClick={handleSubmitMemberSetting}>更新</button>
         </div>
       )}
 
@@ -125,10 +159,21 @@ const GroupPageShow = ({ setLoading }) => {
           onClose={() => setSelectedSlotInfo(null)}
         />
       )}
-      <Link href="setting">
+      <Link
+        href={{
+          pathname: '/group/[group_id]/setting',
+          query: { group_id}, // ← 実際のUUIDを渡す
+        }}
+      >
         <ButtonWhite>詳細設定</ButtonWhite>
       </Link>
-      <Link href="addShift">
+
+      <Link
+        href={{
+          pathname: '/group/[group_id]/addShift',
+          query: { group_id}, // ← 実際のUUIDを渡す
+        }}
+      >
         <ButtonWhite>シフト入力</ButtonWhite>
       </Link>
       <ButtonBlue func={(e) => handleSubmit(e)}>シフト作成</ButtonBlue>
