@@ -3,10 +3,15 @@ import { GroupContext } from 'src/contexts/GroupContext';
 import { supabase } from 'src/lib/supabase_client';
 
 export const useGroupName = (group_id) => {
-  const { setGroupName } = useContext(GroupContext);
+  const { groupName, setGroupName } = useContext(GroupContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // 既にデータあるならfetchしない
+    if (groupName) {
+      setIsLoading(false);
+      return;
+    }
     const fetchGroupName = async () => {
       setIsLoading(true);
       const { data, error } = await supabase
@@ -30,6 +35,10 @@ export const useShiftInfo = (group_id) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (shiftInfo.length > 0) {
+      setIsLoading(false);
+      return;
+    }
     const fetchGroupMember = async () => {
       setIsLoading(true);
 
