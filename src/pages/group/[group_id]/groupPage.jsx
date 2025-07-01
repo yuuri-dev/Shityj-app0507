@@ -39,6 +39,8 @@ const GroupPageShow = ({ setLoading }) => {
   const loadingGroupName = useGroupName(group_id);
   const loadingShiftInfo = useShiftInfo(group_id);
 
+  if (loadingGroupName || loadingShiftInfo) return <Loading />;
+
   const handleCompileMember = () => {
     setIsMemberCompiler((prev) => !prev);
   };
