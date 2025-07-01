@@ -59,7 +59,7 @@ const GroupPageShow = ({ setLoading }) => {
       );
 
       setShiftCompleted(shiftData);
-      await router.push('./shiftView');
+      await router.push(`/group/${group_id}/shiftView`);
     } catch (error) {
       console.error('エラー:', error);
     } finally {
