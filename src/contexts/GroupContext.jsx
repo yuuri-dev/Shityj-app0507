@@ -1,7 +1,6 @@
 // src/contexts/GroupContext.js
 
 import { createContext, useState, useEffect } from 'react';
-import { supabase } from 'src/lib/supabase_client'; // ← 自分の設定に合わせてね
 
 export const GroupContext = createContext();
 

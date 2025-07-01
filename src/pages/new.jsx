@@ -16,8 +16,6 @@ function New() {
     async (e) => {
       e.preventDefault();
 
-      
-
       if (!groupName && shiftInfo.length <= 2) {
         alert(
           'グループ名を入力してください\nメンバーを二名以上追加してください'
@@ -30,7 +28,6 @@ function New() {
         alert('メンバーを二名以上追加してください');
         return;
       }
-      //groupName
 
       const { data: existingGroups, error: fetchError } = await supabase
         .from('groups')
@@ -47,7 +44,7 @@ function New() {
         alert('そのグループ名はすでに使われています');
         return;
       }
-      
+
       const { data, error } = await supabase
         .from('groups')
         .insert([{ group_name: groupName }]);
@@ -58,7 +55,7 @@ function New() {
       } else {
         console.log(data);
       }
-      
+
       //URL
       const { data: groupData, fetch_uuid_error } = await supabase
         .from('groups')
