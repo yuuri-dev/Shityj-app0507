@@ -5,6 +5,8 @@ import { GroupContext } from 'src/contexts/GroupContext';
 import PageTitle from '@/components/PageTitle';
 import AddMember from '@/components/AddMember';
 
+import { supabase } from 'src/lib/supabase_client';
+
 function New() {
   const { groupName, setGroupName, shiftInfo, setShiftInfo } =
     useContext(GroupContext);
@@ -12,10 +14,8 @@ function New() {
   const router = useRouter();
 
   const handleCreateGroup = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
-
-      //バリデーション
 
       if (!groupName && shiftInfo.length <= 2) {
         alert(
@@ -28,10 +28,49 @@ function New() {
       } else if (shiftInfo.length <= 1) {
         alert('メンバーを二名以上追加してください');
         return;
-      } else {
-        router.push('/groupName/setting');
       }
-     
+
+      const { data: existingGroups, error: fetchError } = await supabase
+        .from('groups')
+        .select('group_id')
+        .eq('group_name', groupName);
+
+      if (fetchError) {
+        alert('グループ確認中にエラーが発生しました');
+        console.error(fetchError);
+        return;
+      }
+
+      if (existingGroups.length > 0) {
+        alert('そのグループ名はすでに使われています');
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('groups')
+        .insert([{ group_name: groupName }]);
+
+      if (error) {
+        alert('supabaseでエラー');
+        console.log(error);
+      } else {
+        console.log(data);
+      }
+
+      //URL
+      const { data: groupData, fetch_uuid_error } = await supabase
+        .from('groups')
+        .select('group_id')
+        .eq('group_name', groupName)
+        .single();
+
+      if (fetch_uuid_error) {
+        console.log('error');
+        console.log(fetch_uuid_error);
+      }
+      const groupId = groupData?.group_id;
+
+      router.push(`/group/${groupId}/setting`);
     },
     [groupName, router, shiftInfo]
   );

@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 import { GroupContext } from 'src/contexts/GroupContext';
 import ButtonBlue from '@/components/ButtonBlue';
 import ButtonWhite from '@/components/ButtonWhite';
 import PageTitle from '@/components/PageTitle';
 import styles from './addShift.module.css';
+import { supabase } from 'src/lib/supabase_client';
 
 //定数
 const DAYS = ['月', '火', '水', '木', '金', '土', '日'];
@@ -24,6 +25,8 @@ const AddShift = () => {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const router = useRouter();
+  const { group_id } = router.query;
+  if (!group_id) return null;
 
   //関数
   const toggleCell = (dayIndex, timeIndex) => {
@@ -34,14 +37,41 @@ const AddShift = () => {
     });
   };
 
-  const handleConfirm = (e) => {
+  const handleConfirm = async (e) => {
     if (selectedIndex === null) {
       alert('名前を選択して下さい。');
       return;
     }
 
     if (!timesToEnter || isNaN(timesToEnter) || timesToEnter <= 0) {
-      alert('入りたい回数を1以上で入力してください。');
+
+      alert('入りたい回数を1以上の入力してください。');
+      return;
+    }
+
+    const upsertData = [];
+
+    for (let day = 0; day < 7; day++) {
+      for (let time = 0; time < 3; time++) {
+        upsertData.push({
+          group_id,
+          user_id: selectedIndex,
+          date: day,
+          time_slot: time,
+          is_available: selection[day][time], // true or false
+        });
+      }
+    }
+
+    const { error } = await supabase
+      .from('shift_preferences') // ← あなたのテーブル名に変更してね
+      .upsert(upsertData, {
+        onConflict: ['group_id', 'user_id', 'date', 'time_slot'],
+      });
+
+    if (error) {
+      console.error('シフト希望の保存に失敗しました', error);
+      alert('シフト希望の保存に失敗しました');
       return;
     }
 
@@ -64,7 +94,10 @@ const AddShift = () => {
     alert('シフト希望が確定されました。');
 
     e.preventDefault();
-    router.push('groupPage');
+    router.push({
+      pathname: '/group/[group_id]/groupPage',
+      query: { group_id },
+    });
   };
 
   return (
@@ -142,7 +175,12 @@ const AddShift = () => {
       </div>
 
       <ButtonBlue func={(e) => handleConfirm(e)}>確定</ButtonBlue>
-      <Link href="groupPage">
+      <Link
+        href={{
+          pathname: '/group/[group_id]/groupPage',
+          query: { group_id },
+        }}
+      >
         <ButtonWhite>戻る</ButtonWhite>
         {/* モーダルで変更を破棄しますかと注意を出す */}
       </Link>

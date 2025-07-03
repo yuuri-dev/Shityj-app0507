@@ -1,3 +1,5 @@
+// src/contexts/GroupContext.js
+
 import { createContext, useState, useEffect } from 'react';
 
 export const GroupContext = createContext();
@@ -16,9 +18,9 @@ export const GroupProvider = ({ children }) => {
   const [shiftInfo, setShiftInfo] = useState([]);
   const [shiftCompleted, setShiftCompleted] = useState(
     Array.from({ length: NUM_SHIFT_CANDIDATION }, () =>
-      Array.from(
-        { length: NUM_DAYS },
-        () => Array.from({ length: NUM_TIME_SLOTS }, () => [])
+
+      Array.from({ length: NUM_DAYS }, () =>
+        Array.from({ length: NUM_TIME_SLOTS }, () => [])
       )
     )
   );
