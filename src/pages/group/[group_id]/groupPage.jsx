@@ -46,7 +46,7 @@ const GroupPageShow = ({ setLoading }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 最初に止める
+    e.preventDefault();
     setLoading(true);
 
     // 2秒待つ（setTimeoutをPromise化）
