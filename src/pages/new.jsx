@@ -6,10 +6,13 @@ import PageTitle from '@/components/PageTitle';
 import AddMember from '@/components/AddMember';
 
 import { supabase } from 'src/lib/supabase_client';
+import Login from '@/components/Login';
 
 function New() {
   const { groupName, setGroupName, shiftInfo, setShiftInfo } =
     useContext(GroupContext);
+
+  const [isLoginModal, setIsLoginModal] = useState(false);
 
   const router = useRouter();
 
@@ -99,8 +102,16 @@ function New() {
           >
             グループ作成
           </button>
+          <button
+            type="button"
+            className={styles.createButton}
+            onClick={() => setIsLoginModal(true)}
+          >
+            作成済みの方はこちら
+          </button>
         </form>
       </div>
+      {isLoginModal && <Login setIsLoginModal={setIsLoginModal} />}
     </div>
   );
 }
