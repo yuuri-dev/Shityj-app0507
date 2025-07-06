@@ -80,7 +80,7 @@ function New() {
 
   return (
     <div className={styles.page}>
-      <PageTitle>グループ作成</PageTitle>
+      <PageTitle>グループ作成/ログイン</PageTitle>
       <div className={styles.main}>
         <form action="post" className={styles.form}>
           <div className={styles.input_wrapper}>
@@ -111,7 +111,9 @@ function New() {
           </button>
         </form>
       </div>
-      {isLoginModal && <Login setIsLoginModal={setIsLoginModal} />}
+      {isLoginModal && (
+        <Login setIsLoginModal={setIsLoginModal} setGroupName={setGroupName} />
+      )}
     </div>
   );
 }
