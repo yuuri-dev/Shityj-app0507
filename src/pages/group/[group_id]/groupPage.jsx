@@ -134,7 +134,17 @@ const GroupPageShow = ({ setLoading }) => {
           {isMemberCompiler && (
             <div className={styles.AddMemberWrapper}>
               <AddMember />
-              <button onClick={handleSubmitMemberSetting}>更新</button>
+              <button
+                className={styles.updateButton}
+                onClick={handleSubmitMemberSetting}
+              >
+                <img
+                  src="restart.png"
+                  alt="更新"
+                  className={styles.icon}
+                />
+                更新
+              </button>
             </div>
           )}
 
