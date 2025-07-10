@@ -37,10 +37,7 @@ export const firstStep = (
 
     check(minIndexes, j, k, output, input3);
 
-    if (minIndexes.length === input1[j][k] - output[j][k].length) {
-      isConfirmed[j][k] = true;
-    }
-    if (minIndexes.length <= input1[j][k]) {
+    if (minIndexes.length <= latestShiftRequired[j][k]) {
       minIndexes.map((value) => {
         output[j][k].push(value);
 
@@ -54,7 +51,9 @@ export const firstStep = (
     if (latestShiftRequired[j][k] === 0) {
       isConfirmed[j][k] = true;
     }
-    console.log(firstStep);
+    console.log("firstStep");
+    console.log(isConfirmed);
+    
     console.log(output);
   }
 
