@@ -31,13 +31,9 @@ export const secondStep = (
       .map((value, index) => (value === max ? candidationOverFlow[index] : -1))
       .filter((index) => index !== -1);
 
-    if (minIndexes.length === input1[j][k] - output[j][k].length) {
-      isConfirmed[j][k] = true;
-    }
-
     check(minIndexes, j, k, output, input3);
 
-    if (minIndexes.length <= input1[j][k]) {
+    if (minIndexes.length <= latestShiftRequired[j][k]) {
       minIndexes.map((value) => {
         output[j][k].push(value);
 
@@ -51,8 +47,9 @@ export const secondStep = (
     if (latestShiftRequired[j][k] === 0) {
       isConfirmed[j][k] = true;
     }
-    console.log(secondStep);
-  console.log(output);
+    console.log('secondStep');
+    console.log(isConfirmed);
+
+    console.log(output);
   }
-  
 };
