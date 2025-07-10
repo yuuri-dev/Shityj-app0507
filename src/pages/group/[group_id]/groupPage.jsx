@@ -108,10 +108,23 @@ const GroupPageShow = ({ setLoading }) => {
         <div className={styles.container}>
           <PageTitle>{groupName}</PageTitle>
           <div className={styles.memberListsWrapper}>
-            <p className={styles.memberListTitle}>メンバーリスト</p>
-            <div className={styles.memberLists}>
-              {shiftInfo.map((value, index) => {
-                return (
+            <div className={styles.headerRow}>
+              <p className={styles.memberListTitle}>メンバーリスト</p>
+              <div className={styles.toggle_wrapper}>
+                <span className={styles.toggle_label}>メンバーを編集</span>
+                <label className={styles.toggle_button_1}>
+                  <input
+                    type="checkbox"
+                    onChange={() => setIsMemberCompiler((prev) => !prev)}
+                  />
+                </label>
+              </div>
+            </div>
+
+            {/* 表示切り替え（トグルで） */}
+            {isMemberCompiler ? (
+              <div className={styles.memberLists}>
+                {shiftInfo.map((value, index) => (
                   <div
                     className={styles.memberList}
                     key={index}
@@ -119,34 +132,27 @@ const GroupPageShow = ({ setLoading }) => {
                   >
                     <p className={styles.memberName}>{value.name}</p>
                   </div>
-                );
-              })}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.AddMemberWrapper}>
+                <AddMember />
+                <div className={styles.updateButtonWrapper}>
+                  <button
+                    className={styles.updateButton}
+                    onClick={handleSubmitMemberSetting}
+                  >
+                    <img
+                      src="/restart.png"
+                      alt="更新"
+                      className={styles.icon}
+                    />
+                    更新
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
-
-          <div className={styles.toggle_wrapper}>
-            <p className={styles.toggle_p}>メンバーを編集</p>
-            <label className={styles.toggle_button_1}>
-              <input type="checkbox" onClick={handleCompileMember} />
-            </label>
-          </div>
-
-          {isMemberCompiler && (
-            <div className={styles.AddMemberWrapper}>
-              <AddMember />
-              <button
-                className={styles.updateButton}
-                onClick={handleSubmitMemberSetting}
-              >
-                <img
-                  src="restart.png"
-                  alt="更新"
-                  className={styles.icon}
-                />
-                更新
-              </button>
-            </div>
-          )}
 
           <MemberModal
             member={selectedMember}
