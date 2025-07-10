@@ -25,7 +25,7 @@ export const secondStep = (
         input2[candidationOverFlow[l]].timesToEnterDesired
       );
     }
-    const max = Math.max(timesToDesiredArray);
+    const max = Math.max(...timesToDesiredArray);
 
     const minIndexes = timesToDesiredArray
       .map((value, index) => (value === max ? candidationOverFlow[index] : -1))
