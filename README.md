@@ -8,6 +8,13 @@
 
 [実際のアプリケーションはこちら](https://shityj-app0507-lylpdj5b0-nextpandas-projects.vercel.app)
 
+>## 主要な機能
+現在の主な機能は以下になります。
+- 必要な人数の入力
+- メンバーの編集
+- シフトの入力
+- 連続勤務可能な日数の入力
+- シフトの出力とpdf保存、画像保存(png)
 
 >## 使用技術
 - フレームワーク: Next.js / React
