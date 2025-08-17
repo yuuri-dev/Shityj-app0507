@@ -4,11 +4,15 @@ import styles from './new.module.css';
 import { GroupContext } from 'src/contexts/GroupContext';
 import PageTitle from '@/components/PageTitle';
 import AddMember from '@/components/AddMember';
+
 import { supabase } from 'src/lib/supabase_client';
+import Login from '@/components/Login';
 
 function New() {
   const { groupName, setGroupName, shiftInfo, setShiftInfo } =
     useContext(GroupContext);
+
+  const [isLoginModal, setIsLoginModal] = useState(false);
 
   const router = useRouter();
 
@@ -69,14 +73,14 @@ function New() {
       }
       const groupId = groupData?.group_id;
 
-      router.push(`/group/${groupId}/setting`);
+      router.push(`/group/${groupId}/groupPage`);
     },
     [groupName, router, shiftInfo]
   );
 
   return (
     <div className={styles.page}>
-      <PageTitle>グループ作成</PageTitle>
+      <PageTitle>グループ作成/ログイン</PageTitle>
       <div className={styles.main}>
         <form action="post" className={styles.form}>
           <div className={styles.input_wrapper}>
@@ -98,8 +102,18 @@ function New() {
           >
             グループ作成
           </button>
+          <button
+            type="button"
+            className={styles.createButton}
+            onClick={() => setIsLoginModal(true)}
+          >
+            作成済みの方はこちら
+          </button>
         </form>
       </div>
+      {isLoginModal && (
+        <Login setIsLoginModal={setIsLoginModal} setGroupName={setGroupName} />
+      )}
     </div>
   );
 }

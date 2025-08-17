@@ -19,10 +19,8 @@ export const random = (
     for (let j = 0; j < NUM_TIME_SLOTS; j++) {
       // まだ確定していないシフトか？
       if (!isConfirmed[i][j]) {
-        const currentCandidates = [...candidation[i][j]]; // 浅いコピー
-        // そのシフトに入れる候補者がいるかチェックする
+        let currentCandidates = [...candidation[i][j]];
         check(currentCandidates, i, j, output, input3);
-
         if (currentCandidates.length > 0) {
           // 候補者がいれば、このシフトを割り当て対象とする
           randomPosition = { day: i, time: j };
@@ -65,7 +63,11 @@ export const random = (
   latestShiftRequired[randomPosition.day][randomPosition.time]--;
 
   // 5. 必要人数に達したら、シフトを確定済みにする
-  if (latestShiftRequired[randomPosition.day][randomPosition.time] <= 0) {
+  if (latestShiftRequired[randomPosition.day][randomPosition.time] === 0) {
     isConfirmed[randomPosition.day][randomPosition.time] = true;
   }
+
+  console.log('random');
+  console.log(output);
+  console.log(isConfirmed);
 };

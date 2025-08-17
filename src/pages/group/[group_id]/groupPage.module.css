@@ -1,39 +1,45 @@
+/* ========== Layout ========== */
 .container {
   width: 90%;
-  margin: 0 auto;
-  margin-bottom: 50px;
+  margin: 0 auto 50px;
 }
 
-.border{
-  border: 1px #3c3c3c solid;
+.border {
   width: 100%;
-  margin: 30px auto;
-  margin-bottom: 70px;
+  margin: 30px auto 70px;
+  border: 1px solid #3c3c3c;
 }
 
-/* memberList */
+/* ========== タイトル・見出し ========== */
+.h2 {
+  font-size: 23px;
+  text-align: center;
+}
 
 .memberListTitle {
-  font-size: 19px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #444;
   margin: 10px 0 0 10px;
-  color: #686868;
 }
+
+/* ========== メンバー一覧 ========== */
 .memberListsWrapper {
-  background-color: #fff7cc;
-  margin-bottom: 30px;
+  max-width: 700px;
+  margin: 0 auto 50px;
+  padding: 10px 16px 20px;
+  border-radius: 8px;
 }
+
 .memberLists {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px; /* ← marginではなくgap推奨 */
-  padding: 0 20px 20px 20px;
-  margin: 5px;
+  gap: 10px;
+  padding: 0 20px 20px;
   justify-content: flex-start;
 }
 
 .memberList {
-  box-sizing: border-box; /* パディング含めてサイズを管理 */
-  margin: 5px;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -48,67 +54,101 @@
 }
 
 .memberName {
-  color: #333; /* より読みやすく */
+  color: #333;
   font-weight: 500;
   font-size: 16px;
   margin: 0;
 }
+
+/* ========== メンバー追加・編集 ========== */
 .AddMemberWrapper {
   width: 70%;
-  margin:0 auto;
+  margin: 0 auto;
 }
-.compileMemberButton{
+
+.compileMemberButton {
   display: block;
-  font-size: 18px;
   width: 190px;
   height: 30px;
-  margin:0 auto;
+  font-size: 18px;
   text-align: center;
+  margin: 0 auto;
 }
 
-.h2 {
-  font-size: 23px;
-  text-align: center;
-}
-
-.toggle_wrapper {
-  width: 200px;
+/* ========== 更新ボタン ========== */
+.updateButtonWrapper {
   display: flex;
-  align-items: center; /* 高さを中央にそろえる */
-  gap: 8px; /* pとinputの間にスペース */
-  margin:0 auto;
+  justify-content: center;
 }
-.toggle_p{
-  display: inline;
+
+.updateButton {
+  display: flex;
   align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #51C7CC;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
 }
-/* toggle button */
+
+.updateButton:hover {
+  background-color: #7cd9e0;
+  transform: scale(1.03);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========== トグルボタン ========== */
+.toggle_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px auto 20px;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.toggle_label {
+  font-size: 12px;
+  color: #333;
+  margin: 0;
+}
+
 .toggle_button_1 {
-  display: inline-block;
   position: relative;
   width: 50px;
-  height: 25px;
-  border-radius: 25px;
-  background-color: #dddddd;
+  height: 26px;
+  border-radius: 13px;
+  background-color: #ccc;
+  transition: background-color 0.4s;
   cursor: pointer;
-  transition: background-color .4s;
 }
 
 .toggle_button_1:has(:checked) {
-  background-color: #51C7CC;
+  background-color: #51c7cc;
 }
 
 .toggle_button_1::after {
+  content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+  top: 1px;
+  left: 1px;
+  width: 24px;
+  height: 24px;
   background-color: #fff;
-  content: '';
-  transition: left .4s;
+  border-radius: 50%;
+  transition: left 0.4s;
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
 }
 
 .toggle_button_1:has(:checked)::after {
@@ -117,4 +157,11 @@
 
 .toggle_button_1 input {
   display: none;
+}
+
+/* ========== ヘッダー行（タイトル＋トグル） ========== */
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }

@@ -44,6 +44,7 @@ const AddShift = () => {
     }
 
     if (!timesToEnter || isNaN(timesToEnter) || timesToEnter <= 0) {
+
       alert('入りたい回数を1以上の入力してください。');
       return;
     }

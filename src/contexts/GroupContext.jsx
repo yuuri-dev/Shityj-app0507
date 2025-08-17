@@ -18,11 +18,78 @@ export const GroupProvider = ({ children }) => {
   const [shiftInfo, setShiftInfo] = useState([]);
   const [shiftCompleted, setShiftCompleted] = useState(
     Array.from({ length: NUM_SHIFT_CANDIDATION }, () =>
+
       Array.from({ length: NUM_DAYS }, () =>
         Array.from({ length: NUM_TIME_SLOTS }, () => [])
       )
     )
   );
+
+  // 読み込み処理（クライアントだけ）
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedGroupName = localStorage.getItem('groupName');
+      if (savedGroupName) setGroupName(savedGroupName);
+
+      const savedGroupRequire = localStorage.getItem('groupRequireNumberArray');
+      if (savedGroupRequire)
+        setGroupRequireNumberArray(JSON.parse(savedGroupRequire));
+
+      const savedMaxDate = localStorage.getItem('maxDateToWork');
+      if (savedMaxDate) setMaxDateToWork(Number(savedMaxDate));
+
+      const savedMaxHours = localStorage.getItem('maxHoursToWork');
+      if (savedMaxHours) setMaxHoursToWork(Number(savedMaxHours));
+
+      const savedShiftInfo = localStorage.getItem('shiftInfo');
+      if (savedShiftInfo) setShiftInfo(JSON.parse(savedShiftInfo));
+
+      const savedShiftCompleted = localStorage.getItem('shiftCompleted');
+      if (savedShiftCompleted && savedShiftCompleted !== 'undefined') {
+        setShiftCompleted(JSON.parse(savedShiftCompleted));
+      }
+    }
+  }, []);
+
+  // 書き込み処理
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('groupName', groupName);
+    }
+  }, [groupName]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(
+        'groupRequireNumberArray',
+        JSON.stringify(groupRequireNumberArray)
+      );
+    }
+  }, [groupRequireNumberArray]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('maxDateToWork', maxDateToWork);
+    }
+  }, [maxDateToWork]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('maxHoursToWork', maxHoursToWork);
+    }
+  }, [maxHoursToWork]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('shiftInfo', JSON.stringify(shiftInfo));
+    }
+  }, [shiftInfo]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('shiftCompleted', JSON.stringify(shiftCompleted));
+    }
+  }, [shiftCompleted]);
 
   return (
     <GroupContext.Provider

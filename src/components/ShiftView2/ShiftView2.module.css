@@ -1,0 +1,58 @@
+.container {
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #333;
+  text-align: center;
+}
+
+.memberBlock {
+  margin-bottom: 2rem;
+}
+
+.memberName {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+  color: #444;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.present {
+    color:blue;
+    font-size: 30px;
+}
+.absent {
+    color:#000;
+    font-size: 20px;
+}
