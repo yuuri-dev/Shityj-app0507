@@ -16,6 +16,7 @@ import SlotDetail from '@/components/SlotDetails';
 import { result } from 'src/hooks/result';
 import { supabase } from 'src/lib/supabase_client';
 import { useGroupName, useShiftInfo } from 'src/hooks/useSupabase';
+import MemberEdit from '@/components/MemberEdit';
 
 const GroupPageShow = ({ setLoading }) => {
   const {
@@ -107,52 +108,8 @@ const GroupPageShow = ({ setLoading }) => {
       ) : (
         <div className={styles.container}>
           <PageTitle>{groupName}</PageTitle>
-          <div className={styles.memberListsWrapper}>
-            <div className={styles.headerRow}>
-              <p className={styles.memberListTitle}>メンバーリスト</p>
-              <div className={styles.toggle_wrapper}>
-                <span className={styles.toggle_label}>メンバーを編集</span>
-                <label className={styles.toggle_button_1}>
-                  <input
-                    type="checkbox"
-                    onChange={() => setIsMemberCompiler((prev) => !prev)}
-                  />
-                </label>
-              </div>
-            </div>
 
-            {/* 表示切り替え（トグルで） */}
-            {isMemberCompiler ? (
-              <div className={styles.memberLists}>
-                {shiftInfo.map((value, index) => (
-                  <div
-                    className={styles.memberList}
-                    key={index}
-                    onClick={() => setSelectedMember(index)}
-                  >
-                    <p className={styles.memberName}>{value.name}</p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className={styles.AddMemberWrapper}>
-                <AddMember />
-                <div className={styles.updateButtonWrapper}>
-                  <button
-                    className={styles.updateButton}
-                    onClick={handleSubmitMemberSetting}
-                  >
-                    <img
-                      src="/restart.png"
-                      alt="更新"
-                      className={styles.icon}
-                    />
-                    更新
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+          <MemberEdit handleSubmitMemberSetting={handleSubmitMemberSetting} />
 
           <div>
             <h2>履歴</h2>
