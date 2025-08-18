@@ -17,6 +17,7 @@ import { result } from 'src/hooks/result';
 import { supabase } from 'src/lib/supabase_client';
 import { useGroupName, useShiftInfo } from 'src/hooks/useSupabase';
 import MemberEdit from '@/components/MemberEdit';
+import ShiftHistory from '@/components/ShiftHistory';
 
 const GroupPageShow = ({ setLoading }) => {
   const {
@@ -111,11 +112,7 @@ const GroupPageShow = ({ setLoading }) => {
 
           <MemberEdit handleSubmitMemberSetting={handleSubmitMemberSetting} />
 
-          <div>
-            <h2>履歴</h2>
-            <p>2025/08/15〜2025/08/22</p>
-            <p>2025/08/15〜2025/08/22</p>
-          </div>
+          <ShiftHistory />
 
           <MemberModal
             member={selectedMember}
