@@ -18,6 +18,7 @@ import { supabase } from 'src/lib/supabase_client';
 import { useGroupName, useShiftInfo } from 'src/hooks/useSupabase';
 import MemberEdit from '@/components/MemberEdit';
 import ShiftHistory from '@/components/ShiftHistory';
+import CreateShiftTab from '@/components/CreateShiftTab';
 
 const GroupPageShow = ({ setLoading }) => {
   const {
@@ -29,11 +30,7 @@ const GroupPageShow = ({ setLoading }) => {
     maxHoursToWork,
   } = useContext(GroupContext);
 
-  const days = ['月', '火', '水', '木', '金', '土', '日'];
-  const timeSlots = ['1', '2', '3'];
-  const [isMemberCompiler, setIsMemberCompiler] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null); // ← 追加
-  const [selectedSlotInfo, setSelectedSlotInfo] = useState(null);
 
   const router = useRouter();
   const { group_id } = router.query;
@@ -43,9 +40,6 @@ const GroupPageShow = ({ setLoading }) => {
 
   if (loadingGroupName || loadingShiftInfo) return <Loading />;
 
-  const handleCompileMember = () => {
-    setIsMemberCompiler((prev) => !prev);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,37 +108,17 @@ const GroupPageShow = ({ setLoading }) => {
 
           <ShiftHistory />
 
+          {/* メンバー別のシフトのモーダル */}
           <MemberModal
             member={selectedMember}
             onClose={() => setSelectedMember(null)}
           />
 
-          <div className={styles.border}></div>
-
-          <h2 className={styles.h2}>シフト候補者一覧</h2>
-          <ShiftOverview
-            days={days}
-            timeSlots={timeSlots}
+          <CreateShiftTab
             shiftInfo={shiftInfo}
             groupRequireNumberArray={groupRequireNumberArray}
-            onClickSlot={(dayIndex, slotIndex, members, required) => {
-              setSelectedSlotInfo({
-                day: days[dayIndex],
-                slot: timeSlots[slotIndex],
-                members,
-                required,
-              });
-            }}
           />
-          {selectedSlotInfo && (
-            <SlotDetail
-              day={selectedSlotInfo.day}
-              slot={selectedSlotInfo.slot}
-              members={selectedSlotInfo.members}
-              required={selectedSlotInfo.required}
-              onClose={() => setSelectedSlotInfo(null)}
-            />
-          )}
+
           <Link
             href={{
               pathname: '/group/[group_id]/setting',

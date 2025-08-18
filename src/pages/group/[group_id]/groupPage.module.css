@@ -4,24 +4,10 @@
   margin: 0 auto 50px;
 }
 
-.border {
-  width: 100%;
-  margin: 30px auto 70px;
-  border: 1px solid #3c3c3c;
-}
-
 /* ========== タイトル・見出し ========== */
-.h2 {
-  font-size: 23px;
-  text-align: center;
-}
 
-.memberListTitle {
-  font-size: 20px;
-  font-weight: bold;
-  color: #444;
-  margin: 10px 0 0 10px;
-}
+
+
 
 /* ========== トグルボタン ========== */
 .toggle_wrapper {
