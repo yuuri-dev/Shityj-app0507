@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './MemberEdit.module.css';
 import AddMember from '../AddMember';
 
-const MemberEdit = (handleSubmitMemberSetting) => {
+const MemberEdit = ({handleSubmitMemberSetting}) => {
   return (
     <div className={styles.memberListsWrapper}>
       <div className={styles.AddMemberWrapper}>
