@@ -3,25 +3,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { GroupContext } from 'src/contexts/GroupContext';
 import styles from './groupPage.module.css';
+import { result } from 'src/hooks/result';
+import { supabase } from 'src/lib/supabase_client';
+import { useGroupName, useShiftInfo } from 'src/hooks/useSupabase';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
 
 import PageTitle from '@/components/PageTitle';
-import ShiftOverview from '@/components/ShiftOverview';
-import AddMember from '@/components/AddMember';
 import MemberModal from '@/components/MemberModal';
 import ButtonBlue from '@/components/ButtonBlue';
 import ButtonWhite from '@/components/ButtonWhite';
 import Loading from '@/components/Loading';
-import SlotDetail from '@/components/SlotDetails';
-
-import { result } from 'src/hooks/result';
-import { supabase } from 'src/lib/supabase_client';
-import { useGroupName, useShiftInfo } from 'src/hooks/useSupabase';
 import MemberEdit from '@/components/MemberEdit';
 import ShiftHistory from '@/components/ShiftHistory';
 import CreateShiftTab from '@/components/CreateShiftTab';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
 import TabPanel from '@/components/TabPanel';
 
 const GroupPageShow = ({ setLoading }) => {
