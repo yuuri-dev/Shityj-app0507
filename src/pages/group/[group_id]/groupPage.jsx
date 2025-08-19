@@ -19,6 +19,10 @@ import { useGroupName, useShiftInfo } from 'src/hooks/useSupabase';
 import MemberEdit from '@/components/MemberEdit';
 import ShiftHistory from '@/components/ShiftHistory';
 import CreateShiftTab from '@/components/CreateShiftTab';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import TabPanel from '@/components/TabPanel';
 
 const GroupPageShow = ({ setLoading }) => {
   const {
@@ -38,8 +42,13 @@ const GroupPageShow = ({ setLoading }) => {
   const loadingGroupName = useGroupName(group_id);
   const loadingShiftInfo = useShiftInfo(group_id);
 
-  if (loadingGroupName || loadingShiftInfo) return <Loading />;
+  const [value, setValue] = React.useState(0);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  if (loadingGroupName || loadingShiftInfo) return <Loading />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -104,39 +113,63 @@ const GroupPageShow = ({ setLoading }) => {
         <div className={styles.container}>
           <PageTitle>{groupName}</PageTitle>
 
-          <MemberEdit handleSubmitMemberSetting={handleSubmitMemberSetting} />
+          <Box sx={{ width: '100%' }}>
+            <Tabs value={value} onChange={handleChange} centered>
+              <Tab label="Top" />
+              <Tab label="メンバー編集" />
+              <Tab label="シフト作成" />
+              <Tab label="履歴" />
+              <Tab label="使い方" />
+            </Tabs>
+          </Box>
 
-          <ShiftHistory />
+          {/* 各タブの中身 */}
+          <TabPanel value={value} index={0}>
+            {/* メンバー別のシフトのモーダル */}
+            <MemberModal
+              member={selectedMember}
+              onClose={() => setSelectedMember(null)}
+              />
+              
+            <Link
+              href={{
+                pathname: '/group/[group_id]/setting',
+                query: { group_id },
+              }}
+            >
+              <ButtonWhite>新しいシフトを作成</ButtonWhite>
+            </Link>
+            <Link
+              href={{
+                pathname: '/group/[group_id]/addShift',
+                query: { group_id },
+              }}
+            >
+              <ButtonWhite>シフト入力のリンク</ButtonWhite>
+            </Link>
+          </TabPanel>
 
-          {/* メンバー別のシフトのモーダル */}
-          <MemberModal
-            member={selectedMember}
-            onClose={() => setSelectedMember(null)}
-          />
+          <TabPanel value={value} index={1}>
+            <MemberEdit handleSubmitMemberSetting={handleSubmitMemberSetting} />
+          </TabPanel>
 
-          <CreateShiftTab
-            shiftInfo={shiftInfo}
-            groupRequireNumberArray={groupRequireNumberArray}
-          />
+          <TabPanel value={value} index={2}>
+            <CreateShiftTab
+              shiftInfo={shiftInfo}
+              groupRequireNumberArray={groupRequireNumberArray}
+            />
+            <ButtonBlue func={handleSubmit}>シフト作成</ButtonBlue>
+          </TabPanel>
 
-          <Link
-            href={{
-              pathname: '/group/[group_id]/setting',
-              query: { group_id }, // ← 実際のUUIDを渡す
-            }}
-          >
-            <ButtonWhite>詳細設定</ButtonWhite>
-          </Link>
+          <TabPanel value={value} index={3}>
+            <ShiftHistory />
+          </TabPanel>
 
-          <Link
-            href={{
-              pathname: '/group/[group_id]/addShift',
-              query: { group_id }, // ← 実際のUUIDを渡す
-            }}
-          >
-            <ButtonWhite>シフト入力</ButtonWhite>
-          </Link>
-          <ButtonBlue func={(e) => handleSubmit(e)}>シフト作成</ButtonBlue>
+          <TabPanel value={value} index={4}>
+            <p>このアプリの使い方をまとめます</p>
+          </TabPanel>
+
+          
         </div>
       )}
     </>
