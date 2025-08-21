@@ -1,8 +1,6 @@
 import Head from 'next/head';
 import styles from './index.module.css';
 import Link from 'next/link';
-import ButtonBlue from '@/components/ButtonBlue';
-import ButtonWhite from '@/components/ButtonWhite';
 
 export default function Home() {
   return (
@@ -28,7 +26,7 @@ export default function Home() {
           </h1>
 
           <p className={styles.hero_description}>
-            簡単な入力をするだけで、希望に基づくシフトをすぐに作成することができます。
+            簡単な入力をするだけで、希望に基づくシフトを作成することができます。
             もうシフトに時間をかける必要はありません。
           </p>
         </div>
@@ -42,6 +40,30 @@ export default function Home() {
           </a>
         </div>
 
+        <div id="servise_feature_description" className={styles.features}>
+          <h1>サービスの特徴</h1>
+          <div className={styles.featureContainer}>
+            <div className={styles.featureCard}>
+              <h3>かんたん操作</h3>
+              <p>
+                シンプルなUIで直感的に操作できます。アプリの機能は最低限に絞っています。
+              </p>
+            </div>
+            <div className={styles.featureCard}>
+              <h3>希望に沿った最適化</h3>
+              <p>
+                従業員の入りたい回数とシフト作成側の必要人数から希望通りのシフトを作成します。
+              </p>
+            </div>
+            <div className={styles.featureCard}>
+              <h3>簡単に共有可能</h3>
+              <p>
+                作成したシフトを簡単に画像やPDFに保存することができます。
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className={styles.top_image_wrapper}>
           <img
             src="top_img/top1.png"
@@ -51,9 +73,17 @@ export default function Home() {
         </div>
 
         {/* ステップ */}
-        <div id="description" className={styles.step}>
-          <div className={styles.stepContainer}>
+        <div className={styles.step}>
+          <h1>シフト生成はたった3ステップで完了</h1>
+          <div id="description" className={styles.stepContainer}>
             <div className={styles.circle}>1</div>
+            <div className={styles.stepContent}>
+              <h4>店舗要件を設定</h4>
+              <p>必要人数、営業時間、特別な要件を設定</p>
+            </div>
+          </div>
+          <div className={styles.stepContainer}>
+            <div className={styles.circle}>2</div>
             <div className={styles.stepContent}>
               <h4>従業員情報を登録</h4>
               <p>スキル、勤務可能時間、希望シフトを簡単入力</p>
@@ -61,18 +91,10 @@ export default function Home() {
           </div>
 
           <div className={styles.stepContainer}>
-            <div className={styles.circle}>2</div>
-            <div className={styles.stepContent}>
-              <h4>店舗要件を設定</h4>
-              <p>必要人数、営業時間、特別な要件を設定</p>
-            </div>
-          </div>
-
-          <div className={styles.stepContainer}>
             <div className={styles.circle}>3</div>
             <div className={styles.stepContent}>
-              <h4>AIが自動生成</h4>
-              <p>最適化されたシフト表が数分で完成</p>
+              <h4>シフトをボタンひとつで自動生成</h4>
+              <p>独自のアルゴリズムで最適化されたシフト表が数秒で完成</p>
             </div>
           </div>
         </div>
