@@ -73,7 +73,7 @@ function New() {
       }
       const groupId = groupData?.group_id;
 
-      router.push(`/group/${groupId}/setting`);
+      router.push(`/group/${groupId}/groupPage`);
     },
     [groupName, router, shiftInfo]
   );
