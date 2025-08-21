@@ -19,6 +19,7 @@ import MemberEdit from '@/components/MemberEdit';
 import ShiftHistory from '@/components/ShiftHistory';
 import CreateShiftTab from '@/components/CreateShiftTab';
 import TabPanel from '@/components/TabPanel';
+import ShiftSubmitCondition from '@/components/ShiftSubmitCondition';
 
 const GroupPageShow = ({ setLoading }) => {
   const {
@@ -30,7 +31,6 @@ const GroupPageShow = ({ setLoading }) => {
     maxHoursToWork,
   } = useContext(GroupContext);
 
-  const [selectedMember, setSelectedMember] = useState(null); // ← 追加
 
   const router = useRouter();
   const { group_id } = router.query;
@@ -122,10 +122,7 @@ const GroupPageShow = ({ setLoading }) => {
           {/* 各タブの中身 */}
           <TabPanel value={value} index={0}>
             {/* メンバー別のシフトのモーダル */}
-            <MemberModal
-              member={selectedMember}
-              onClose={() => setSelectedMember(null)}
-              />
+            <ShiftSubmitCondition />
               
             <Link
               href={{
