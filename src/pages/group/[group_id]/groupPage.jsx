@@ -23,6 +23,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import TabPanel from '@/components/TabPanel';
+import UsageGuide from '@/components/UsageGuide';
 
 const GroupPageShow = ({ setLoading }) => {
   const {
@@ -166,7 +167,7 @@ const GroupPageShow = ({ setLoading }) => {
           </TabPanel>
 
           <TabPanel value={value} index={4}>
-            <p>このアプリの使い方をまとめます</p>
+            <UsageGuide />
           </TabPanel>
 
           
