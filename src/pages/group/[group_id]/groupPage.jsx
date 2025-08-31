@@ -35,6 +35,7 @@ const GroupPageShow = ({ setLoading }) => {
   } = useContext(GroupContext);
 
   const [selectedMember, setSelectedMember] = useState(null); // ← 追加
+  const tabLabels = ['Top', 'メンバー編集', 'シフト作成', '履歴', '使い方'];
 
   const router = useRouter();
   const { group_id } = router.query;
@@ -42,13 +43,13 @@ const GroupPageShow = ({ setLoading }) => {
   const loadingGroupName = useGroupName(group_id);
   const loadingShiftInfo = useShiftInfo(group_id);
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+//関数
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  if (loadingGroupName || loadingShiftInfo) return <Loading />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -105,6 +106,8 @@ const GroupPageShow = ({ setLoading }) => {
     }
   };
 
+  if (loadingGroupName || loadingShiftInfo) return <Loading />;
+
   return (
     <>
       {loadingGroupName || loadingShiftInfo ? (
@@ -113,15 +116,47 @@ const GroupPageShow = ({ setLoading }) => {
         <div className={styles.container}>
           <PageTitle>{groupName}</PageTitle>
 
-          <Box sx={{ width: '100%' }}>
+          {/* PC: タブ */}
+          <Box sx={{ width: '100%' }} className={styles.pcTabs}>
             <Tabs value={value} onChange={handleChange} centered>
-              <Tab label="Top" />
-              <Tab label="メンバー編集" />
-              <Tab label="シフト作成" />
-              <Tab label="履歴" />
-              <Tab label="使い方" />
+              {tabLabels.map((label, index) => (
+                <Tab key={index} label={label} />
+              ))}
             </Tabs>
           </Box>
+
+          {/* Mobile: ハンバーガー */}
+          <div className={styles.mobileHeader}>
+            <span className={styles.mobileTitle}>{tabLabels[value]}</span>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className={styles.menuButton}
+            >
+              {/* シンプルな三本線アイコンをCSSで表現 */}
+              <span className={styles.bar}></span>
+              <span className={styles.bar}></span>
+              <span className={styles.bar}></span>
+            </button>
+          </div>
+
+          {mobileMenuOpen && (
+            <div className={styles.mobileMenu}>
+              {tabLabels.map((label, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setValue(index);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`${styles.mobileMenuItem} ${
+                    value === index ? styles.active : ''
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* 各タブの中身 */}
           <TabPanel value={value} index={0}>
@@ -129,8 +164,8 @@ const GroupPageShow = ({ setLoading }) => {
             <MemberModal
               member={selectedMember}
               onClose={() => setSelectedMember(null)}
-              />
-              
+            />
+
             <Link
               href={{
                 pathname: '/group/[group_id]/setting',
@@ -168,8 +203,6 @@ const GroupPageShow = ({ setLoading }) => {
           <TabPanel value={value} index={4}>
             <p>このアプリの使い方をまとめます</p>
           </TabPanel>
-
-          
         </div>
       )}
     </>
