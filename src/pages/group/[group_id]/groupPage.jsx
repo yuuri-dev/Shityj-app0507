@@ -130,8 +130,8 @@ const GroupPageShow = ({ setLoading }) => {
             <MemberModal
               member={selectedMember}
               onClose={() => setSelectedMember(null)}
-              />
-              
+            />
+
             <Link
               href={{
                 pathname: '/group/[group_id]/setting',
@@ -163,14 +163,12 @@ const GroupPageShow = ({ setLoading }) => {
           </TabPanel>
 
           <TabPanel value={value} index={3}>
-            <ShiftHistory />
+            <ShiftHistory group_id={group_id} />
           </TabPanel>
 
           <TabPanel value={value} index={4}>
             <UsageGuide />
           </TabPanel>
-
-          
         </div>
       )}
     </>
