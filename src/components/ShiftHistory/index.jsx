@@ -31,7 +31,7 @@ const ShiftHistory = ({ group_id }) => {
       ) : (
         history.map((item) => (
           <div key={item.id}>
-            <Link href={`/${item.id}`}>
+            <Link href={`/group/${group_id}/shift-history/${item.id}`}>
               <p className="text-blue-500 underline cursor-pointer">
                 {item.week_start_date}
               </p>
