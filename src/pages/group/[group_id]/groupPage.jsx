@@ -44,6 +44,7 @@ const GroupPageShow = ({ setLoading }) => {
   const [selectedMember, setSelectedMember] = useState(null); // ← 追加
   const [value, setValue] = useState(0); //タブ用
   const [recruitingWeeksArray, setRecruitingWeeksArray] = useState([]);
+  const [submitStatus, setSubmitStatus] = useState([]);
 
   useEffect(() => {
     //あとでhooksに書き出す
@@ -116,7 +117,7 @@ const GroupPageShow = ({ setLoading }) => {
           users: result,
         });
       }
-
+      setSubmitStatus(results);
       console.log(results);
     };
 
@@ -205,7 +206,7 @@ const GroupPageShow = ({ setLoading }) => {
           {/* 各タブの中身 */}
           <TabPanel value={value} index={0}>
             {/* メンバー別のシフトのモーダル */}
-            <ShiftSubmitState />
+              <ShiftSubmitState submitStatus={submitStatus} recruitingWeeksArray={recruitingWeeksArray} />
             <MemberModal
               member={selectedMember}
               onClose={() => setSelectedMember(null)}
