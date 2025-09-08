@@ -26,6 +26,7 @@ const AddShift = () => {
 
   const router = useRouter();
   const { group_id } = router.query;
+  const { week_id } = router.query;
   if (!group_id) return null;
 
   //関数
@@ -56,7 +57,8 @@ const AddShift = () => {
         upsertData.push({
           group_id,
           user_id: selectedIndex,
-          date: day,
+          week_id: week_id, // ← date の代わりに週ID
+          shift_index: day,
           time_slot: time,
           is_available: selection[day][time], // true or false
         });
@@ -66,7 +68,13 @@ const AddShift = () => {
     const { error } = await supabase
       .from('shift_preferences') // ← あなたのテーブル名に変更してね
       .upsert(upsertData, {
-        onConflict: ['group_id', 'user_id', 'date', 'time_slot'],
+        onConflict: [
+          'user_id',
+          'group_id',
+          'week_id',
+          'shift_index',
+          'time_slot',
+        ],
       });
 
     if (error) {
