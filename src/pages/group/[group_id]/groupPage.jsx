@@ -206,7 +206,11 @@ const GroupPageShow = ({ setLoading }) => {
           {/* 各タブの中身 */}
           <TabPanel value={value} index={0}>
             {/* メンバー別のシフトのモーダル */}
-              <ShiftSubmitState submitStatus={submitStatus} recruitingWeeksArray={recruitingWeeksArray} />
+            <ShiftSubmitState
+              submitStatus={submitStatus}
+                recruitingWeeksArray={recruitingWeeksArray}
+                group_id={group_id}
+            />
             <MemberModal
               member={selectedMember}
               onClose={() => setSelectedMember(null)}
@@ -219,14 +223,6 @@ const GroupPageShow = ({ setLoading }) => {
               }}
             >
               <ButtonWhite>新しいシフトを作成</ButtonWhite>
-            </Link>
-            <Link
-              href={{
-                pathname: '/group/[group_id]/addShift',
-                query: { group_id },
-              }}
-            >
-              <ButtonWhite>シフト入力のリンク</ButtonWhite>
             </Link>
           </TabPanel>
 
