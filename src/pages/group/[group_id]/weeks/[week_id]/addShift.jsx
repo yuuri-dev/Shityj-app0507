@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GroupContext } from 'src/contexts/GroupContext';
 import ButtonBlue from '@/components/ButtonBlue';
 import ButtonWhite from '@/components/ButtonWhite';
@@ -23,6 +23,8 @@ const AddShift = () => {
   );
   const [timesToEnter, setTimesToEnter] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [week_start_date, setWeek_start_date] = useState('');
+  const [week_finish_date, setWeek_finish_date] = useState('');
 
   const router = useRouter();
   const { group_id } = router.query;
@@ -30,6 +32,33 @@ const AddShift = () => {
   if (!group_id) return null;
 
   //関数
+
+  useEffect(() => {
+    const fetchDaysFromWeekId = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('weeks')
+          .select('week_start_date')
+          .eq('id', week_id) // ←ここ修正: eq(week_id, week_id)だとバグる
+          .single();
+
+        if (error) throw error;
+
+        if (data?.week_start_date) {
+          const start = new Date(data.week_start_date);
+          const finish = new Date(start);
+          finish.setDate(start.getDate() + 6); // +6日で週末
+
+          setWeek_start_date(start.toISOString().slice(0, 10)); // yyyy-mm-dd
+          setWeek_finish_date(finish.toISOString().slice(0, 10));
+        }
+      } catch (error) {
+        console.error('fetchDaysFromWeekId error:', error);
+      }
+    };
+    if (week_id) fetchDaysFromWeekId();
+  }, [week_id]);
+
   const toggleCell = (dayIndex, timeIndex) => {
     setSelection((prev) => {
       const newSel = prev.map((row) => [...row]); //分割代入
@@ -45,7 +74,6 @@ const AddShift = () => {
     }
 
     if (!timesToEnter || isNaN(timesToEnter) || timesToEnter <= 0) {
-
       alert('入りたい回数を1以上の入力してください。');
       return;
     }
@@ -111,6 +139,9 @@ const AddShift = () => {
   return (
     <div className={styles.container}>
       <PageTitle>シフト入力</PageTitle>
+      <p>
+        日程:{week_start_date}~{week_finish_date}のシフトを入力して下さい。
+      </p>
       <p className={styles.p}>①名前を選んでください</p>
       <div className={styles.selectName}>
         {shiftInfo.map((member, index) => (
