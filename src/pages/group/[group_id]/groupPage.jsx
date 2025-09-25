@@ -128,8 +128,6 @@ const GroupPageShow = ({ setLoading }) => {
     setValue(newValue);
   };
 
-  if (loadingGroupName) return <Loading />;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -157,8 +155,6 @@ const GroupPageShow = ({ setLoading }) => {
   const handleSubmitMemberSetting = async (e) => {
     e.preventDefault();
 
-    const { group_id } = router.query; // ← URLから取得（/group/[group_id]/setting の場合）
-
     if (!group_id) {
       alert('グループIDが取得できません');
       return;
@@ -184,6 +180,7 @@ const GroupPageShow = ({ setLoading }) => {
       alert('メンバーを追加しました');
     }
   };
+  if (loadingGroupName) return <Loading />;
 
   return (
     <>
@@ -208,8 +205,8 @@ const GroupPageShow = ({ setLoading }) => {
             {/* メンバー別のシフトのモーダル */}
             <ShiftSubmitState
               submitStatus={submitStatus}
-                recruitingWeeksArray={recruitingWeeksArray}
-                group_id={group_id}
+              recruitingWeeksArray={recruitingWeeksArray}
+              group_id={group_id}
             />
             <MemberModal
               member={selectedMember}
