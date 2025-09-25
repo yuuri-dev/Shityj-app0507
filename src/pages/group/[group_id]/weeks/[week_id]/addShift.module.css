@@ -4,6 +4,9 @@
   margin: 0 auto;
   margin-bottom: 100px;
 }
+.date_p{
+  font-size: 30px;
+}
 .selectName {
     display: flex;
     flex-wrap: wrap; /* 横並び＋折り返し */

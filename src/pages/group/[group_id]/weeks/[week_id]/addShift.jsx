@@ -29,9 +29,9 @@ const AddShift = () => {
   const router = useRouter();
   const { group_id } = router.query;
   const { week_id } = router.query;
-  if (!group_id) return null;
 
-  //関数
+  const gid = Array.isArray(group_id) ? group_id[0] : group_id;
+  const wid = Array.isArray(week_id) ? week_id[0] : week_id;
 
   useEffect(() => {
     const fetchDaysFromWeekId = async () => {
@@ -39,7 +39,7 @@ const AddShift = () => {
         const { data, error } = await supabase
           .from('weeks')
           .select('week_start_date')
-          .eq('id', week_id) // ←ここ修正: eq(week_id, week_id)だとバグる
+          .eq('id', wid)
           .single();
 
         if (error) throw error;
@@ -47,7 +47,7 @@ const AddShift = () => {
         if (data?.week_start_date) {
           const start = new Date(data.week_start_date);
           const finish = new Date(start);
-          finish.setDate(start.getDate() + 6); // +6日で週末
+          finish.setDate(start.getDate() + 6);
 
           setWeek_start_date(start.toISOString().slice(0, 10)); // yyyy-mm-dd
           setWeek_finish_date(finish.toISOString().slice(0, 10));
@@ -56,12 +56,12 @@ const AddShift = () => {
         console.error('fetchDaysFromWeekId error:', error);
       }
     };
-    if (week_id) fetchDaysFromWeekId();
-  }, [week_id]);
+    if (wid) fetchDaysFromWeekId();
+  }, [wid]);
 
   const toggleCell = (dayIndex, timeIndex) => {
     setSelection((prev) => {
-      const newSel = prev.map((row) => [...row]); //分割代入
+      const newSel = prev.map((row) => [...row]);
       newSel[dayIndex][timeIndex] = !newSel[dayIndex][timeIndex];
       return newSel;
     });
@@ -83,18 +83,18 @@ const AddShift = () => {
     for (let day = 0; day < 7; day++) {
       for (let time = 0; time < 3; time++) {
         upsertData.push({
-          group_id,
+          group_id: gid,
           user_id: selectedIndex,
-          week_id: week_id, // ← date の代わりに週ID
+          week_id: wid,
           shift_index: day,
           time_slot: time,
-          is_available: selection[day][time], // true or false
+          is_available: selection[day][time],
         });
       }
     }
 
-    const { error } = await supabase
-      .from('shift_preferences') // ← あなたのテーブル名に変更してね
+    const { data, error } = await supabase
+      .from('shift_preferences')
       .upsert(upsertData, {
         onConflict: [
           'user_id',
@@ -135,12 +135,14 @@ const AddShift = () => {
       query: { group_id },
     });
   };
-
+  if (!router.isReady) {
+    return <div>Error! router is not Ready</div>;
+  }
   return (
     <div className={styles.container}>
       <PageTitle>シフト入力</PageTitle>
-      <p>
-        日程:{week_start_date}~{week_finish_date}のシフトを入力して下さい。
+      <p className={styles.date_p}>
+        日程:{week_start_date}~{week_finish_date}
       </p>
       <p className={styles.p}>①名前を選んでください</p>
       <div className={styles.selectName}>
