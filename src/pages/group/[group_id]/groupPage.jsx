@@ -128,8 +128,6 @@ const GroupPageShow = ({ setLoading }) => {
     setValue(newValue);
   };
 
-  if (loadingGroupName) return <Loading />;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -157,8 +155,6 @@ const GroupPageShow = ({ setLoading }) => {
   const handleSubmitMemberSetting = async (e) => {
     e.preventDefault();
 
-    const { group_id } = router.query; // ← URLから取得（/group/[group_id]/setting の場合）
-
     if (!group_id) {
       alert('グループIDが取得できません');
       return;
@@ -184,6 +180,7 @@ const GroupPageShow = ({ setLoading }) => {
       alert('メンバーを追加しました');
     }
   };
+  if (loadingGroupName) return <Loading />;
 
   return (
     <>
@@ -206,7 +203,11 @@ const GroupPageShow = ({ setLoading }) => {
           {/* 各タブの中身 */}
           <TabPanel value={value} index={0}>
             {/* メンバー別のシフトのモーダル */}
-              <ShiftSubmitState submitStatus={submitStatus} recruitingWeeksArray={recruitingWeeksArray} />
+            <ShiftSubmitState
+              submitStatus={submitStatus}
+              recruitingWeeksArray={recruitingWeeksArray}
+              group_id={group_id}
+            />
             <MemberModal
               member={selectedMember}
               onClose={() => setSelectedMember(null)}
@@ -219,14 +220,6 @@ const GroupPageShow = ({ setLoading }) => {
               }}
             >
               <ButtonWhite>新しいシフトを作成</ButtonWhite>
-            </Link>
-            <Link
-              href={{
-                pathname: '/group/[group_id]/addShift',
-                query: { group_id },
-              }}
-            >
-              <ButtonWhite>シフト入力のリンク</ButtonWhite>
             </Link>
           </TabPanel>
 

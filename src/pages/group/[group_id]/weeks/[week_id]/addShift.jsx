@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GroupContext } from 'src/contexts/GroupContext';
 import ButtonBlue from '@/components/ButtonBlue';
 import ButtonWhite from '@/components/ButtonWhite';
@@ -23,15 +23,45 @@ const AddShift = () => {
   );
   const [timesToEnter, setTimesToEnter] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [week_start_date, setWeek_start_date] = useState('');
+  const [week_finish_date, setWeek_finish_date] = useState('');
 
   const router = useRouter();
   const { group_id } = router.query;
-  if (!group_id) return null;
+  const { week_id } = router.query;
 
-  //関数
+  const gid = Array.isArray(group_id) ? group_id[0] : group_id;
+  const wid = Array.isArray(week_id) ? week_id[0] : week_id;
+
+  useEffect(() => {
+    const fetchDaysFromWeekId = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('weeks')
+          .select('week_start_date')
+          .eq('id', wid)
+          .single();
+
+        if (error) throw error;
+
+        if (data?.week_start_date) {
+          const start = new Date(data.week_start_date);
+          const finish = new Date(start);
+          finish.setDate(start.getDate() + 6);
+
+          setWeek_start_date(start.toISOString().slice(0, 10)); // yyyy-mm-dd
+          setWeek_finish_date(finish.toISOString().slice(0, 10));
+        }
+      } catch (error) {
+        console.error('fetchDaysFromWeekId error:', error);
+      }
+    };
+    if (wid) fetchDaysFromWeekId();
+  }, [wid]);
+
   const toggleCell = (dayIndex, timeIndex) => {
     setSelection((prev) => {
-      const newSel = prev.map((row) => [...row]); //分割代入
+      const newSel = prev.map((row) => [...row]);
       newSel[dayIndex][timeIndex] = !newSel[dayIndex][timeIndex];
       return newSel;
     });
@@ -44,7 +74,6 @@ const AddShift = () => {
     }
 
     if (!timesToEnter || isNaN(timesToEnter) || timesToEnter <= 0) {
-
       alert('入りたい回数を1以上の入力してください。');
       return;
     }
@@ -54,19 +83,26 @@ const AddShift = () => {
     for (let day = 0; day < 7; day++) {
       for (let time = 0; time < 3; time++) {
         upsertData.push({
-          group_id,
+          group_id: gid,
           user_id: selectedIndex,
-          date: day,
+          week_id: wid,
+          shift_index: day,
           time_slot: time,
-          is_available: selection[day][time], // true or false
+          is_available: selection[day][time],
         });
       }
     }
 
-    const { error } = await supabase
-      .from('shift_preferences') // ← あなたのテーブル名に変更してね
+    const { data, error } = await supabase
+      .from('shift_preferences')
       .upsert(upsertData, {
-        onConflict: ['group_id', 'user_id', 'date', 'time_slot'],
+        onConflict: [
+          'user_id',
+          'group_id',
+          'week_id',
+          'shift_index',
+          'time_slot',
+        ],
       });
 
     if (error) {
@@ -99,10 +135,15 @@ const AddShift = () => {
       query: { group_id },
     });
   };
-
+  if (!router.isReady) {
+    return <div>Error! router is not Ready</div>;
+  }
   return (
     <div className={styles.container}>
       <PageTitle>シフト入力</PageTitle>
+      <p className={styles.date_p}>
+        日程:{week_start_date}~{week_finish_date}
+      </p>
       <p className={styles.p}>①名前を選んでください</p>
       <div className={styles.selectName}>
         {shiftInfo.map((member, index) => (
@@ -164,14 +205,33 @@ const AddShift = () => {
           ))}
         </tbody>
       </table>
-      <div className={styles.enterTimesContainer}>
-        <p className={styles.enterTimesTitle}>入りたい回数</p>
-        <input
-          type="number"
-          value={timesToEnter}
-          className={styles.enterTimesInput}
-          onChange={(e) => setTimesToEnter(parseInt(e.target.value))}
-        />
+      <div className={styles.innerSetting}>
+        <p className={styles.settingTitle}>入りたい回数</p>
+        <label className={styles['selectbox-1']}>
+          <select onChange={(e) => setTimesToEnter(parseInt(e.target.value, 10))}>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+          </select>
+        </label>
       </div>
 
       <ButtonBlue func={(e) => handleConfirm(e)}>確定</ButtonBlue>
