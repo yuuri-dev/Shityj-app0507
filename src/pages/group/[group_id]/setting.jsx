@@ -8,6 +8,7 @@ import ButtonBlue from '@/components/ButtonBlue';
 import styles from './setting.module.css';
 import { supabase } from 'src/lib/supabase_client';
 import Loading from '@/components/Loading';
+import ShiftDatePicker from '@/components/ShiftDatePicker';
 
 const Setting = () => {
   const router = useRouter();
@@ -72,22 +73,10 @@ const Setting = () => {
       {isLoading ? (
         <Loading/>
       ) : (
-        <div className={styles.contents}>
+        <div className={styles.container}>
           <PageTitle>シフト詳細設定</PageTitle>
-          <div className={styles.nameSettings}>
-            <h2 className={styles.h2}>グループ情報を変更・追加してください</h2>
-            <p className={styles.p}>グループ名</p>
-            <input
-              type="text"
-              value={groupName}
-              className={styles.groupNameInput}
-              onChange={(e) => setGroupName(e.target.value)}
-            />
-            <AddMember />
-          </div>
 
-          <div className={styles.border}></div>
-
+          <div className={styles.form_content}></div>
           <h2 className={styles.h2}>
             曜日・時間ごとに必要な人数を設定してください。
           </h2>
@@ -106,7 +95,9 @@ const Setting = () => {
               className={styles.input}
               onChange={(e) => setMaxDateToWork(e.target.value)}
             />
-            <p className={styles.p}>１日の最大勤務時間</p>
+            <p className={styles.p}>
+              １日の最大勤務時間（現在のバージョンでは考慮されません）
+            </p>
             <input
               type="number"
               className={styles.input}
