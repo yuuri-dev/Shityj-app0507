@@ -16,6 +16,7 @@ const Setting = () => {
 
   const [start_date, setStart_date] = useState('');
   const [finish_date, setFinish_date] = useState('');
+  const [error, setError] = useState('');
 
   const {
     groupRequireNumberArray,
@@ -27,6 +28,10 @@ const Setting = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!start_date) {
+      alert('日付を選んでください');
+      return;
+    }
     const { group_id } = router.query;
 
     try {
@@ -112,6 +117,8 @@ const Setting = () => {
               <ShiftDatePicker
                 setWeek_start_date={setStart_date}
                 setWeek_finish_date={setFinish_date}
+                error={error}
+                setError={setError}
               />
             </div>
           </div>
