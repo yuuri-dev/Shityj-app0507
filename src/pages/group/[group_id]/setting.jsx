@@ -14,11 +14,10 @@ const Setting = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  
+  const [start_date, setStart_date] = useState('');
+  const [finish_date, setFinish_date] = useState('');
 
   const {
-    groupName,
-    setGroupName,
     groupRequireNumberArray,
     maxDateToWork,
     setMaxDateToWork,
@@ -26,67 +25,106 @@ const Setting = () => {
     setMaxHoursToWork,
   } = useContext(GroupContext);
 
-  const handleSetDetail = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { group_id } = router.query;
 
-    setIsLoading(true);
+    try {
+      setIsLoading(true);
 
-    if (!group_id) {
-      alert('グループIDが見つかりません');
-      setIsLoading(false);
-      return;
-    }
-
-    const insertData = [];
-
-    for (let day = 0; day < 7; day++) {
-      for (let timeSlot = 0; timeSlot < 3; timeSlot++) {
-        const required_staff_number = groupRequireNumberArray[day][timeSlot];
-        insertData.push({
-          group_id,
-          day,
-          time_slot: timeSlot,
-          required_staff_number,
-        });
+      if (!group_id) {
+        alert('グループIDが見つかりません');
+        setIsLoading(false);
+        return;
       }
-    }
 
-    const { error } = await supabase
-      .from('shift_requirement')
-      .upsert(insertData, {
-        onConflict: ['group_id', 'day', 'time_slot'],
-      });
+      //weeks
+      const week_id = crypto.randomUUID();
+      const created_at = new Date();
 
-    if (error) {
-      console.error('一括保存失敗:', error);
-      alert('保存に失敗しました');
+      const { data: weekData, error: weeksError } = await supabase
+        .from('weeks')
+        .insert({
+          id: week_id,
+          created_at,
+          group_id,
+          week_start_date: start_date,
+          status: 'recruiting',
+        });
+      if (weeksError) {
+        console.error('weeksの保存失敗:', weeksError);
+        alert('保存に失敗しました');
+        setIsLoading(false);
+        return;
+      }
+
+      const shift_requirement_data = [];
+
+      for (let day = 0; day < 7; day++) {
+        for (let timeSlot = 0; timeSlot < 3; timeSlot++) {
+          const required_staff_number = groupRequireNumberArray[day][timeSlot];
+          shift_requirement_data.push({
+            group_id,
+            day,
+            time_slot: timeSlot,
+            required_staff_number,
+            week_id,
+          });
+        }
+      }
+
+      const { data: requirementData, error: requirementError } = await supabase
+        .from('shift_requirement')
+        .upsert(shift_requirement_data, {
+          onConflict: ['group_id', 'week_id', 'day', 'time_slot'],
+        });
+
+      if (requirementError) {
+        console.error('必要人数の保存失敗:', requirementError);
+        alert('保存に失敗しました');
+        setIsLoading(false);
+        return;
+      }
+    } catch (err) {
+      console.error(err);
+      alert('予期せぬエラーが発生しました');
+    } finally {
       setIsLoading(false);
-      return;
     }
-    setIsLoading(false);
+
     router.push({ pathname: './groupPage', query: { group_id } });
   };
 
   return (
     <>
       {isLoading ? (
-        <Loading/>
+        <Loading />
       ) : (
         <div className={styles.container}>
-          <PageTitle>シフト詳細設定</PageTitle>
+          <PageTitle>シフト新規作成</PageTitle>
 
           <div className={styles.form_content}></div>
           <h2 className={styles.h2}>
-            曜日・時間ごとに必要な人数を設定してください。
+            ①作成するシフトの日にちを入力してください。
           </h2>
-          <RequiredNumberSetting />
-
-          <div className={styles.border}></div>
-
-          <div className={styles.settingMax}>
+          <div>
+            <div className={styles.shiftDatePicker}>
+              <ShiftDatePicker
+                setWeek_start_date={setStart_date}
+                setWeek_finish_date={setFinish_date}
+              />
+            </div>
+          </div>
+          <div className={styles.form_content}>
             <h2 className={styles.h2}>
-              連続で勤務できる日数の指定、１日で勤務できる時間の最大値を設定してください。
+              ②曜日・時間ごとに必要な人数を設定してください。
+            </h2>
+            <RequiredNumberSetting />
+          </div>
+
+          <div className={styles.form_content}>
+            <h2 className={styles.h2}>
+              ③連続で勤務できる日数の指定、１日で勤務できる時間の最大値を設定してください。
             </h2>
             <p className={styles.p}>連続勤務制限</p>
             <input
@@ -106,7 +144,7 @@ const Setting = () => {
             />
           </div>
 
-          <ButtonBlue func={(e) => handleSetDetail(e)}>決定</ButtonBlue>
+          <ButtonBlue func={(e) => handleSubmit(e)}>決定</ButtonBlue>
         </div>
       )}{' '}
     </>
