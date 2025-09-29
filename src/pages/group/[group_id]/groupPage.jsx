@@ -51,7 +51,8 @@ const GroupPageShow = ({ setLoading }) => {
         .from('weeks')
         .select('*')
         .eq('group_id', group_id)
-        .eq('status', 'recruiting');
+        .eq('status', 'recruiting')
+        .order('week_start_date', { ascending: true });
 
       if (error) {
         console.log('error: ' + error);
