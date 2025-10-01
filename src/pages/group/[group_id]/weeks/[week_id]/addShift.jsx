@@ -67,6 +67,13 @@ const AddShift = () => {
     });
   };
 
+  const handleReset = () => {
+    const initial = Array.from({ length: DAYS.length }, () =>
+      Array(TIME_SLOTS.length).fill(false)
+    );
+    setSelection(initial);
+  };
+
   const handleConfirm = async (e) => {
     if (selectedIndex === null) {
       alert('名前を選択して下さい。');
@@ -80,8 +87,8 @@ const AddShift = () => {
 
     const upsertData = [];
 
-    for (let day = 0; day < 7; day++) {
-      for (let time = 0; time < 3; time++) {
+    for (let day = 0; day < DAYS.length; day++) {
+      for (let time = 0; time < TIME_SLOTS.length; time++) {
         upsertData.push({
           group_id: gid,
           user_id: selectedIndex,
@@ -130,10 +137,6 @@ const AddShift = () => {
     alert('シフト希望が確定されました。');
 
     e.preventDefault();
-    router.push({
-      pathname: '/group/[group_id]/groupPage',
-      query: { group_id },
-    });
   };
   if (!router.isReady) {
     return <div>Error! router is not Ready</div>;
@@ -205,10 +208,14 @@ const AddShift = () => {
           ))}
         </tbody>
       </table>
+      <ButtonWhite func={handleReset}>白紙にする</ButtonWhite>
+
       <div className={styles.innerSetting}>
         <p className={styles.settingTitle}>入りたい回数</p>
         <label className={styles['selectbox-1']}>
-          <select onChange={(e) => setTimesToEnter(parseInt(e.target.value, 10))}>
+          <select
+            onChange={(e) => setTimesToEnter(parseInt(e.target.value, 10))}
+          >
             <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -235,15 +242,6 @@ const AddShift = () => {
       </div>
 
       <ButtonBlue func={(e) => handleConfirm(e)}>確定</ButtonBlue>
-      <Link
-        href={{
-          pathname: '/group/[group_id]/groupPage',
-          query: { group_id },
-        }}
-      >
-        <ButtonWhite>戻る</ButtonWhite>
-        {/* モーダルで変更を破棄しますかと注意を出す */}
-      </Link>
     </div>
   );
 };
