@@ -1,0 +1,29 @@
+.container {
+  max-width: 500px;
+  margin: 0 auto 30px;
+}
+.title {
+  text-align: center;
+  font-size: x-large;
+}
+
+.discription{
+    color: rgb(105, 104, 104);
+    font-size:medium;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.week_item {
+  max-width: 200px;
+  margin: auto;
+  padding: 10px 0;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 10px;
+}
+.start_date {
+}
+.start_date:hover {
+  color: #7fbacf;
+}

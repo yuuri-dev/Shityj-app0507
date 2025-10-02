@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { supabase } from 'src/lib/supabase_client';
+import styles from './ShiftHistory.module.css';
 
 const ShiftHistory = ({ group_id }) => {
   const [history, setHistory] = useState([]);
@@ -24,18 +25,23 @@ const ShiftHistory = ({ group_id }) => {
   }, [group_id]);
 
   return (
-    <div>
-      <h2>履歴</h2>
+    <div className={styles.container}>
+      <h2 className={styles.title}>履歴</h2>
+      <p className={styles.discription}>
+        日付をクリックしてそれぞれの週の情報を見ることができます。
+      </p>
       {history.length === 0 ? (
         <p>データがありません</p>
       ) : (
         history.map((item) => (
-          <div key={item.id}>
-            <Link href={`/group/${group_id}/shift-history/${item.id}`}>
-              <p className="text-blue-500 underline cursor-pointer">
-                {item.week_start_date}
-              </p>
+          <div key={item.id} className={styles.week_item}>
+            <Link
+              href={`/group/${group_id}/weeks/${item.id}`}
+              className={styles.start_date}
+            >
+              <p>{item.week_start_date}</p>
             </Link>
+            <p>{item.status}</p>
           </div>
         ))
       )}
