@@ -208,7 +208,7 @@ const AddShift = () => {
           ))}
         </tbody>
       </table>
-      <ButtonWhite func={handleReset}>白紙にする</ButtonWhite>
+      <ButtonWhite func={handleReset}>変更をリセットする</ButtonWhite>
 
       <div className={styles.innerSetting}>
         <p className={styles.settingTitle}>入りたい回数</p>
