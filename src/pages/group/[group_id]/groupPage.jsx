@@ -5,13 +5,10 @@ import { GroupContext } from 'src/contexts/GroupContext';
 import styles from './groupPage.module.css';
 
 import PageTitle from '@/components/PageTitle';
-import ShiftOverview from '@/components/ShiftOverview';
-import AddMember from '@/components/AddMember';
 import MemberModal from '@/components/MemberModal';
 import ButtonBlue from '@/components/ButtonBlue';
 import ButtonWhite from '@/components/ButtonWhite';
 import Loading from '@/components/Loading';
-import SlotDetail from '@/components/SlotDetails';
 
 import { result } from 'src/hooks/result';
 import { supabase } from 'src/lib/supabase_client';
@@ -54,7 +51,8 @@ const GroupPageShow = ({ setLoading }) => {
         .from('weeks')
         .select('*')
         .eq('group_id', group_id)
-        .eq('status', 'recruiting');
+        .eq('status', 'recruiting')
+        .order('week_start_date', { ascending: true });
 
       if (error) {
         console.log('error: ' + error);
