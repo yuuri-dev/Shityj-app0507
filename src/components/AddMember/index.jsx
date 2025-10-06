@@ -1,9 +1,31 @@
 import React, { useState } from 'react';
-import MemberListCompile from '@/components/MemberListCompile';
 import styles from './AddMember.module.css';
 
-const AddMember = ({ setGroupMembers }) => {
+const AddMember = ({ groupMembers, setGroupMembers }) => {
   const [memberName, setMemberName] = useState('');
+
+  const handleAddMember = () => {
+    const trimmedName = memberName.trim();
+    // 空白チェック
+    if (!trimmedName) {
+      alert('名前を入力してください');
+      return;
+    }
+
+    // 重複チェック
+    if (groupMembers.includes(trimmedName)) {
+      alert('同じ名前が既に存在します');
+      return;
+    }
+    setGroupMembers((prev) => [...prev, memberName]);
+    setMemberName('')
+  };
+
+  const handleRemoveMember = (index) => {
+    const updatedMembers = [...groupMembers];
+    updatedMembers.splice(index, 1);
+    setGroupMembers(updatedMembers);
+  };
 
   return (
     <div className={styles.input_wrapper}>
@@ -19,13 +41,28 @@ const AddMember = ({ setGroupMembers }) => {
         <button
           type="button"
           className={styles.addButton}
-          onClick={() => setGroupMembers((prev) => [...prev, memberName])}
+          onClick={handleAddMember}
         >
           追加
         </button>
       </div>
 
-      <MemberListCompile />
+      {/* シフト削除 */}
+      <div className={styles.memberLists}>
+        {groupMembers.map((memberName, index) => {
+          return (
+            <div className={styles.memberList} key={index}>
+              <p className={styles.memberName}>{memberName}</p>
+              <span
+                onClick={() => handleRemoveMember(index)}
+                className={styles.removeButton}
+              >
+                ×
+              </span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { GroupContext } from 'src/contexts/GroupContext';
 import styles from './MemberListCompile.module.css';
-
+// これ親コンポーネントとまとめる
 const index = () => {
   const {shiftInfo, setShiftInfo } =
     useContext(GroupContext);

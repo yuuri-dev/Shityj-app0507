@@ -99,7 +99,7 @@ function New() {
               onChange={(e) => setGroupName(e.target.value)}
             />
           </div>
-          <AddMember setGroupMembers={setGroupMembers} />
+          <AddMember groupMembers={groupMembers} setGroupMembers={setGroupMembers} />
 
           <button
             type="button"
