@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import MemberListCompile from '@/components/MemberListCompile';
-import useHandleAddMember from '../../hooks/useHandleAddMember';
 import styles from './AddMember.module.css';
 
-const AddMember = () => {
+const AddMember = ({ setGroupMembers }) => {
   const [memberName, setMemberName] = useState('');
-  const useAddMember = useHandleAddMember();
 
   return (
     <div className={styles.input_wrapper}>
@@ -21,7 +19,7 @@ const AddMember = () => {
         <button
           type="button"
           className={styles.addButton}
-          onClick={() => useAddMember(memberName, setMemberName)}
+          onClick={() => setGroupMembers((prev) => [...prev, memberName])}
         >
           追加
         </button>
