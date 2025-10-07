@@ -12,6 +12,15 @@
   padding-left: 10px;
 }
 
+.page_description_container{
+  padding: 10px 0;
+  background-color:  #dafafb;;
+}
+.page_description{
+  text-align: center;
+  color: rgb(115, 115, 115);
+}
+
 /* .border {
   border: 1px #3c3c3c solid;
   width: 100%;

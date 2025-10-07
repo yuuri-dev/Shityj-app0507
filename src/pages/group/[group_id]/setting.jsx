@@ -1,6 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { GroupContext } from 'src/contexts/GroupContext';
-import AddMember from '@/components/AddMember';
 import RequiredNumberSetting from '@/components/RequiredNumberSetting';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/PageTitle';
@@ -10,6 +8,9 @@ import { supabase } from 'src/lib/supabase_client';
 import Loading from '@/components/Loading';
 import ShiftDatePicker from '@/components/ShiftDatePicker';
 
+const NUM_DAYS = 7;
+const NUM_TIME_SLOTS = 3;
+
 const Setting = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -18,13 +19,9 @@ const Setting = () => {
   const [finish_date, setFinish_date] = useState('');
   const [error, setError] = useState('');
 
-  const {
-    groupRequireNumberArray,
-    maxDateToWork,
-    setMaxDateToWork,
-    maxHoursToWork,
-    setMaxHoursToWork,
-  } = useContext(GroupContext);
+  const [groupRequireNumberArray, setGroupRequireNumberArray] = useState(
+    Array.from({ length: NUM_DAYS }, () => Array(NUM_TIME_SLOTS).fill(0))
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,19 +40,17 @@ const Setting = () => {
         return;
       }
 
-      //weeks
+      //weeksをsupabaseに送信
       const week_id = crypto.randomUUID();
       const created_at = new Date();
 
-      const { data: weekData, error: weeksError } = await supabase
-        .from('weeks')
-        .insert({
-          id: week_id,
-          created_at,
-          group_id,
-          week_start_date: start_date,
-          status: 'recruiting',
-        });
+      const { error: weeksError } = await supabase.from('weeks').insert({
+        id: week_id,
+        created_at,
+        group_id,
+        week_start_date: start_date,
+        status: 'recruiting',
+      });
       if (weeksError) {
         console.error('weeksの保存失敗:', weeksError);
         alert('保存に失敗しました');
@@ -63,6 +58,7 @@ const Setting = () => {
         return;
       }
 
+      //shift_requirementをsupabaseに送信
       const shift_requirement_data = [];
 
       for (let day = 0; day < 7; day++) {
@@ -78,7 +74,7 @@ const Setting = () => {
         }
       }
 
-      const { data: requirementData, error: requirementError } = await supabase
+      const { error: requirementError } = await supabase
         .from('shift_requirement')
         .upsert(shift_requirement_data, {
           onConflict: ['group_id', 'week_id', 'day', 'time_slot'],
@@ -108,6 +104,15 @@ const Setting = () => {
         <div className={styles.container}>
           <PageTitle>シフト新規作成</PageTitle>
 
+          <div className={styles.page_description_container}>
+            <p className={styles.page_description}>
+              週ごとの新しいシフトを作成するページです。
+            </p>
+            <p className={styles.page_description}>
+              作成する週の開始日と必要な人数を設定してください。
+            </p>
+          </div>
+
           <div className={styles.form_content}></div>
           <h2 className={styles.h2}>
             ①作成するシフトの日にちを入力してください。
@@ -126,10 +131,14 @@ const Setting = () => {
             <h2 className={styles.h2}>
               ②曜日・時間ごとに必要な人数を設定してください。
             </h2>
-            <RequiredNumberSetting />
+            <RequiredNumberSetting
+              groupRequireNumberArray={groupRequireNumberArray}
+              setGroupRequireNumberArray={setGroupRequireNumberArray}
+            />
           </div>
 
-          <div className={styles.form_content}>
+          {/* 週ごとの修正をやめてグループで一つ設定する */}
+          {/* <div className={styles.form_content}>
             <h2 className={styles.h2}>
               ③連続で勤務できる日数の指定、１日で勤務できる時間の最大値を設定してください。
             </h2>
@@ -149,7 +158,7 @@ const Setting = () => {
               value={maxHoursToWork}
               onChange={(e) => setMaxHoursToWork(e.target.value)}
             />
-          </div>
+          </div> */}
 
           <ButtonBlue func={(e) => handleSubmit(e)}>決定</ButtonBlue>
         </div>
