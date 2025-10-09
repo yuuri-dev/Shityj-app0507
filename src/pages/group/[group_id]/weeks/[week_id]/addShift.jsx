@@ -13,14 +13,13 @@ const DAYS = ['月', '火', '水', '木', '金', '土', '日'];
 const TIME_SLOTS = ['午前', '午後', '夜'];
 
 const AddShift = () => {
-  const { shiftInfo, setShiftInfo } = useContext(GroupContext);
-
   //ローカルな変数
   const [selection, setSelection] = useState(
     Array.from({ length: DAYS.length }, () =>
       Array.from({ length: TIME_SLOTS.length }, () => false)
     )
   );
+  const [groupMembers, setGroupMembers] = useState([]);
   const [timesToEnter, setTimesToEnter] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [week_start_date, setWeek_start_date] = useState('');
@@ -32,6 +31,26 @@ const AddShift = () => {
 
   const gid = Array.isArray(group_id) ? group_id[0] : group_id;
   const wid = Array.isArray(week_id) ? week_id[0] : week_id;
+
+  useEffect(() => {
+    const fetchGroupMember = async () => {
+      try {
+        if (!gid) return;
+        const { data, error } = await supabase
+          .from('users_table')
+          .select('name', 'user_id')
+          .eq('group_id', gid);
+
+        if (error) throw error;
+
+        setGroupMembers(data.map((m) => m.name));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchGroupMember();
+  }, [gid]);
 
   useEffect(() => {
     const fetchDaysFromWeekId = async () => {
@@ -118,22 +137,6 @@ const AddShift = () => {
       return;
     }
 
-    setShiftInfo((prev) => {
-      let newData = [...prev];
-
-      const times = parseInt(timesToEnter, 10);
-      if (isNaN(times)) {
-        alert('入りたい回数が正しく入力されていません。');
-        return prev;
-      }
-      newData[selectedIndex] = {
-        ...newData[selectedIndex],
-        timesToEnterDesired: times,
-        shiftArray: selection,
-      };
-      return newData;
-    });
-
     alert('シフト希望が確定されました。');
 
     e.preventDefault();
@@ -149,17 +152,17 @@ const AddShift = () => {
       </p>
       <p className={styles.p}>①名前を選んでください</p>
       <div className={styles.selectName}>
-        {shiftInfo.map((member, index) => (
+        {groupMembers.map((member, index) => (
           <label key={index} className={styles.name_label}>
             <input
               type="radio"
               name="memberName"
               id={`member-${index}`}
-              value={member.name}
+              value={member}
               className={styles.radio_input}
               onChange={() => setSelectedIndex(index)}
             />
-            <p className={styles.radio_input_p}>{member.name}</p>
+            <p className={styles.radio_input_p}>{member}</p>
           </label>
         ))}
       </div>
