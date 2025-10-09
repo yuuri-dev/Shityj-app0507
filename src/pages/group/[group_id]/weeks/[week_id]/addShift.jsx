@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
-import { GroupContext } from 'src/contexts/GroupContext';
+import React, { useEffect, useState } from 'react';
 import ButtonBlue from '@/components/ButtonBlue';
 import ButtonWhite from '@/components/ButtonWhite';
 import PageTitle from '@/components/PageTitle';
