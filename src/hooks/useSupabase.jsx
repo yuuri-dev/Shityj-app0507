@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
-import { GroupContext } from 'src/contexts/GroupContext';
+import { useEffect, useState } from 'react';
 import { supabase } from 'src/lib/supabase_client';
 
 export const useGroupName = (group_id, groupName, setGroupName) => {
@@ -28,4 +27,3 @@ export const useGroupName = (group_id, groupName, setGroupName) => {
   }, [group_id]);
   return isLoading;
 };
-
