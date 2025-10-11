@@ -9,7 +9,7 @@ export const useGroupData = (group_id) => {
   const [error, setError] = useState(null);
 
   const [recruitingWeeks, setRecruitingWeeks] = useState([]);
-  const [currentWeekId, setCurrentWeekId] = useState('');
+  const [currentWeekId, setCurrentWeekId] = useState(null);
 
   // 表示用の名前配列（['田中', ...]）
   const [groupMembers, setGroupMembers] = useState([]);

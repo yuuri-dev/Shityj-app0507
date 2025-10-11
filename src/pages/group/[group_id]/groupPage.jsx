@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { GroupContext } from 'src/contexts/GroupContext';
 import styles from './groupPage.module.css';
 
 import PageTitle from '@/components/PageTitle';
