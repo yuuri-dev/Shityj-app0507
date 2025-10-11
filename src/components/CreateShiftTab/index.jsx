@@ -3,6 +3,7 @@ import styles from './'
 import ShiftOverview from '../ShiftOverview';
 import SlotDetailModal from '../SlotDetails';
 
+//shiftINfoに頼らないように変更する
 const CreateShiftTab = ({shiftInfo, groupRequireNumberArray}) => {
     const days = ['月', '火', '水', '木', '金', '土', '日'];
     const timeSlots = ['1', '2', '3'];
