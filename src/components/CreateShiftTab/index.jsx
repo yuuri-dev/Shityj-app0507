@@ -21,7 +21,10 @@ const CreateShiftTab = ({ shiftInfo, groupRequireNumberArray }) => {
       </Button>
 
       {isEdit ? (
-        <EditShift />
+        <EditShift
+          shiftInfo={shiftInfo}
+          groupRequireNumberArray={groupRequireNumberArray}
+        />
       ) : (
         <>
           <h2 className={styles.h2}>シフト候補者一覧</h2>

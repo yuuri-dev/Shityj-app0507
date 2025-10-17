@@ -57,30 +57,6 @@ const GroupPageShow = ({ setLoading }) => {
     setValue(newValue);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    // 2秒待つ（setTimeoutをPromise化）
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    try {
-      const shiftData = await result(
-        groupRequireNumberArray,
-        shiftInfo,
-        maxDateToWork,
-        maxHoursToWork
-      );
-
-      setShiftCompleted(shiftData);
-      await router.push(`/group/${group_id}/shiftView`);
-    } catch (error) {
-      console.error('エラー:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSubmitMemberSetting = async (e) => {
     e.preventDefault();
 
@@ -165,7 +141,6 @@ const GroupPageShow = ({ setLoading }) => {
               shiftInfo={shiftInfo}
               groupRequireNumberArray={groupRequireNumberArray}
             />
-            <ButtonBlue func={handleSubmit}>シフト作成</ButtonBlue>
           </TabPanel>
 
           <TabPanel value={value} index={3}>
