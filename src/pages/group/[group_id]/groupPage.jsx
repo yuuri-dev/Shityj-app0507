@@ -138,6 +138,8 @@ const GroupPageShow = ({ setLoading }) => {
 
           <TabPanel value={value} index={2}>
             <CreateShiftTab
+              group_id={group_id}
+              currentWeekId={currentWeekId}
               shiftInfo={shiftInfo}
               groupRequireNumberArray={groupRequireNumberArray}
             />

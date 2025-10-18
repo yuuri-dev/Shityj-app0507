@@ -4,11 +4,17 @@ import ShiftOverview from '../ShiftOverview';
 import ButtonBlue from '../ButtonBlue';
 import { result } from 'src/hooks/result';
 import SlotEditModal from '../SlotEditModal';
+import { supabase } from 'src/lib/supabase_client';
 
 const maxDateToWork = 5;
 const maxHoursToWork = 8;
 
-const EditShift = ({ shiftInfo, groupRequireNumberArray }) => {
+const EditShift = ({
+  group_id,
+  currentWeekId,
+  shiftInfo,
+  groupRequireNumberArray,
+}) => {
   const days = ['月', '火', '水', '木', '金', '土', '日'];
   const timeSlots = ['1', '2', '3'];
   const [selectedSlotInfo, setSelectedSlotInfo] = useState(null);
@@ -103,7 +109,52 @@ const EditShift = ({ shiftInfo, groupRequireNumberArray }) => {
       required,
     });
   };
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    const sendCompleted = async () => {
+      try {
+        if (!group_id || !currentWeekId) {
+          alert('グループIDまたは週IDが取得できません');
+          return;
+        }
+        const insertRows = [];
+        editableShiftInfo.forEach((user) => {
+          for (let day = 0; day < 7; day++) {
+            for (let slot = 0; slot < 3; slot++) {
+              if (user.shiftArray[day][slot]) {
+                insertRows.push({
+                  group_id,
+                  week_id: currentWeekId,
+                  user_id: user.id, // or user.user_id
+                  day_index: day,
+                  time_slot: slot,
+                  is_assigned: true,
+                });
+              }
+            }
+          }
+        });
+        const { data, error } = await supabase
+          .from('shift_completed')
+          .upsert(insertRows, {
+            onConflict: [
+              'group_id',
+              'week_id',
+              'user_id',
+              'day_index',
+              'time_slot',
+            ],
+          });
+
+        if (error) throw error;
+        console.log('シフト確定データ送信成功:', data);
+        alert('シフトを保存しました！');
+      } catch (err) {
+        console.error(err);
+        alert('シフトの送信に失敗しました');
+      }
+    };
+    sendCompleted();
+  };
 
   useEffect(() => {
     const cloned = shiftInfo.map((user) => ({

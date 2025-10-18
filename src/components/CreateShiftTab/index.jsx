@@ -7,7 +7,7 @@ import PageTitle from '../PageTitle';
 import EditShift from '../EditShift';
 
 //shiftINfoに頼らないように変更する
-const CreateShiftTab = ({ shiftInfo, groupRequireNumberArray }) => {
+const CreateShiftTab = ({ group_id, currentWeekId,shiftInfo, groupRequireNumberArray }) => {
   const days = ['月', '火', '水', '木', '金', '土', '日'];
   const timeSlots = ['1', '2', '3'];
   const [selectedSlotInfo, setSelectedSlotInfo] = useState(null);
@@ -22,6 +22,8 @@ const CreateShiftTab = ({ shiftInfo, groupRequireNumberArray }) => {
 
       {isEdit ? (
         <EditShift
+          group_id={group_id}
+          currentWeekId={currentWeekId}
           shiftInfo={shiftInfo}
           groupRequireNumberArray={groupRequireNumberArray}
         />
