@@ -5,7 +5,6 @@
 
 import { firstConfirm } from './func/step/firstConfirm.js';
 import { required0 } from './func/step/required0.js';
-import { input1, input2, input3, input4 } from './test_data.js';
 import { one_cycle } from './func/one_cycle/one_cycle.js';
 import { random } from './func/step/random.js';
 import { isAllTrue } from './func/isAllTrue.js';
@@ -121,9 +120,6 @@ export const result = async (input1, input2, input3, input4) => {
   //---------------------------------------------
   return outputArray;
 };
-
-
- result(input1, input2, input3, input4);
 
 //この後の改良点
 

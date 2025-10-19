@@ -1,0 +1,27 @@
+.description {
+  font-size: 17px;
+  text-align: center;
+  color:rgb(108, 108, 108)
+}
+
+.weekSelector{
+  max-width: 300px;
+  margin: 25px auto;
+  font-size: x-large;
+}
+
+.select {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fafafa;
+  transition: border-color 0.2s ease;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #fff;
+}
