@@ -140,8 +140,10 @@ const GroupPageShow = ({ setLoading }) => {
             <CreateShiftTab
               group_id={group_id}
               currentWeekId={currentWeekId}
+              setCurrentWeekId={setCurrentWeekId}
               shiftInfo={shiftInfo}
               groupRequireNumberArray={groupRequireNumberArray}
+              recruitingWeeks={recruitingWeeks}
             />
           </TabPanel>
 
