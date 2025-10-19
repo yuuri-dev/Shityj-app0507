@@ -2,22 +2,17 @@
   必要人数を設定するコンポーネント 
 */
 
-import React, {useContext } from 'react';
-import { GroupContext } from 'src/contexts/GroupContext';
+import React from 'react';
 import ShiftInputEachDay from '../ShiftInputEachDay';
-import styles from "./RequiredNumberSetting.module.css"
+import styles from './RequiredNumberSetting.module.css';
 
-const Index = () => {
+const Index = ({ groupRequireNumberArray, setGroupRequireNumberArray }) => {
   const days = ['月', '火', '水', '木', '金', '土', '日'];
-  const timeSlots = ['9:00~12:00', '12:00~15:00', '15:00~18:00'];
-
-  const { groupRequireNumberArray, setGroupRequireNumberArray } =
-    useContext(GroupContext);
-
+  const timeSlots = ['1コマ目', '2コマ目', '3コマ目'];
 
   return (
     <div className={styles.contents}>
-      {days.map((day,dayIndex) => {
+      {days.map((day, dayIndex) => {
         return (
           <ShiftInputEachDay
             key={day}

@@ -1,16 +1,14 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './new.module.css';
-import { GroupContext } from 'src/contexts/GroupContext';
+import { supabase } from 'src/lib/supabase_client';
 import PageTitle from '@/components/PageTitle';
 import AddMember from '@/components/AddMember';
-
-import { supabase } from 'src/lib/supabase_client';
 import Login from '@/components/Login';
 
 function New() {
-  const { groupName, setGroupName, shiftInfo, setShiftInfo } =
-    useContext(GroupContext);
+  const [groupName, setGroupName] = useState('');
+  const [groupMembers, setGroupMembers] = useState([]);
 
   const [isLoginModal, setIsLoginModal] = useState(false);
 
@@ -19,8 +17,8 @@ function New() {
   const handleCreateGroup = useCallback(
     async (e) => {
       e.preventDefault();
-
-      if (!groupName && shiftInfo.length <= 2) {
+      //バリデーション
+      if (!groupName && groupMembers.length <= 2) {
         alert(
           'グループ名を入力してください\nメンバーを二名以上追加してください'
         );
@@ -28,14 +26,15 @@ function New() {
       } else if (!groupName) {
         alert('グループ名を入力してください');
         return;
-      } else if (shiftInfo.length <= 1) {
+      } else if (groupMembers.length <= 1) {
         alert('メンバーを二名以上追加してください');
         return;
       }
 
-      const { data: existingGroups, error: fetchError } = await supabase
+      //すでにグループが存在しているかチェック
+      const { data: existingGroup, error: fetchError } = await supabase
         .from('groups')
-        .select('group_id')
+        .select('group_name')
         .eq('group_name', groupName);
 
       if (fetchError) {
@@ -43,39 +42,46 @@ function New() {
         console.error(fetchError);
         return;
       }
-
-      if (existingGroups.length > 0) {
+      if (existingGroup.length > 0) {
         alert('そのグループ名はすでに使われています');
         return;
       }
 
+      // グループ新規作成
       const { data, error } = await supabase
         .from('groups')
-        .insert([{ group_name: groupName }]);
-
-      if (error) {
-        alert('supabaseでエラー');
-        console.log(error);
-      } else {
-        console.log(data);
-      }
-
-      //URL
-      const { data: groupData, fetch_uuid_error } = await supabase
-        .from('groups')
+        .insert([{ group_name: groupName }])
         .select('group_id')
-        .eq('group_name', groupName)
         .single();
 
-      if (fetch_uuid_error) {
-        console.log('error');
-        console.log(fetch_uuid_error);
+      if (error) {
+        console.error('グループ作成エラー:', error);
+        alert('グループ作成に失敗しました');
+        return;
       }
-      const groupId = groupData?.group_id;
+
+      const groupId = data?.group_id;
+
+      //グループメンバーをDBに追加
+      if (groupMembers.length > 0) {
+        const membersData = groupMembers.map((name, index) => ({
+          group_id: groupId,
+          user_id: index,
+          name,
+        }));
+
+        const { error: membersError } = await supabase
+          .from('users_table')
+          .insert(membersData);
+
+        if (membersError) {
+          console.error('メンバー登録失敗:', membersError);
+        }
+      }
 
       router.push(`/group/${groupId}/groupPage`);
     },
-    [groupName, router, shiftInfo]
+    [groupName, router, groupMembers]
   );
 
   return (
@@ -93,7 +99,7 @@ function New() {
               onChange={(e) => setGroupName(e.target.value)}
             />
           </div>
-          <AddMember />
+          <AddMember groupMembers={groupMembers} setGroupMembers={setGroupMembers} />
 
           <button
             type="button"
@@ -111,9 +117,7 @@ function New() {
           </button>
         </form>
       </div>
-      {isLoginModal && (
-        <Login setIsLoginModal={setIsLoginModal} setGroupName={setGroupName} />
-      )}
+      {isLoginModal && <Login setIsLoginModal={setIsLoginModal} />}
     </div>
   );
 }

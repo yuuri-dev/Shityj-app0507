@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { GroupContext } from 'src/contexts/GroupContext';
 import styles from './groupPage.module.css';
 
 import PageTitle from '@/components/PageTitle';
@@ -22,132 +21,40 @@ import Box from '@mui/material/Box';
 import TabPanel from '@/components/TabPanel';
 import UsageGuide from '@/components/UsageGuide';
 import ShiftSubmitState from '@/components/ShiftSubmitState';
+import { useShiftInfo } from 'src/hooks/useShiftInfo';
+import { useGroupData } from 'src/hooks/useGroupData';
+
+const maxDateToWork = 8;
+const maxHoursToWork = 5;
 
 const GroupPageShow = ({ setLoading }) => {
-  const {
-    groupName,
-    groupRequireNumberArray,
-    shiftInfo,
-    setShiftCompleted,
-    maxDateToWork,
-    maxHoursToWork,
-  } = useContext(GroupContext);
-
   const router = useRouter();
   const { group_id } = router.query;
 
-  const loadingGroupName = useGroupName(group_id);
+  const [groupName, setGroupName] = useState('');
+  const loadingGroupName = useGroupName(group_id, groupName, setGroupName); //グループ名取得
 
-  const [selectedMember, setSelectedMember] = useState(null); // ← 追加
+  const [selectedMember, setSelectedMember] = useState(null);
   const [value, setValue] = useState(0); //タブ用
-  const [recruitingWeeksArray, setRecruitingWeeksArray] = useState([]);
-  const [submitStatus, setSubmitStatus] = useState([]);
 
-  useEffect(() => {
-    //あとでhooksに書き出す
-    const fetchRecruitingWeeks = async () => {
-      if (!group_id) return;
-      const { data, error } = await supabase
-        .from('weeks')
-        .select('*')
-        .eq('group_id', group_id)
-        .eq('status', 'recruiting')
-        .order('week_start_date', { ascending: true });
+  const {
+    loading: loadingGroupData,
+    error: groupDataError,
+    recruitingWeeks,
+    currentWeekId,
+    setCurrentWeekId,
+    groupMembers,
+    setGroupMembers,
+    usersRows,
+    submitStatus,
+    groupRequireNumberArray,
+  } = useGroupData(group_id);
 
-      if (error) {
-        console.log('error: ' + error);
-      } else {
-        console.log(data);
-        setRecruitingWeeksArray(data);
-      }
-    };
-    fetchRecruitingWeeks();
-  }, [group_id]);
-
-  useEffect(() => {
-    const fetchUsersWithSubmitStatus = async () => {
-      if (!group_id || recruitingWeeksArray.length === 0) return;
-
-      // (1) ユーザー一覧を取得
-      const { data: users, error: usersError } = await supabase
-        .from('users_table')
-        .select('user_id, name')
-        .eq('group_id', group_id);
-
-      if (usersError) {
-        console.error('users fetch error:', usersError.message);
-        return;
-      }
-
-      // (2) recruiting週のid一覧を取得
-      const weekIds = recruitingWeeksArray.map((w) => w.id);
-
-      const results = [];
-
-      for (const weekId of weekIds) {
-        // (3) その週に提出された shift_preferences を取得
-        const { data: prefs, error: prefsError } = await supabase
-          .from('shift_preferences')
-          .select('user_id')
-          .eq('group_id', group_id)
-          .eq('week_id', weekId);
-
-        if (prefsError) {
-          console.error(
-            `prefs fetch error for week ${weekId}:`,
-            prefsError.message
-          );
-          continue;
-        }
-
-        // (4) user ごとに提出有無を判定
-        const result = users.map((user) => {
-          const hasSubmitted = prefs.some((p) => p.user_id === user.user_id);
-          return {
-            ...user,
-            weekId,
-            hasSubmitted, // true = 提出済み, false = 未提出
-          };
-        });
-
-        results.push({
-          weekId,
-          users: result,
-        });
-      }
-      setSubmitStatus(results);
-      console.log(results);
-    };
-
-    fetchUsersWithSubmitStatus();
-  }, [group_id, recruitingWeeksArray]);
+  const { shiftInfoLoading, shiftInfoError, shiftInfo, setShiftInfo } =
+    useShiftInfo(group_id, currentWeekId, { users: usersRows });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    // 2秒待つ（setTimeoutをPromise化）
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    try {
-      const shiftData = await result(
-        groupRequireNumberArray,
-        shiftInfo,
-        maxDateToWork,
-        maxHoursToWork
-      );
-
-      setShiftCompleted(shiftData);
-      await router.push(`/group/${group_id}/shiftView`);
-    } catch (error) {
-      console.error('エラー:', error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleSubmitMemberSetting = async (e) => {
@@ -158,8 +65,8 @@ const GroupPageShow = ({ setLoading }) => {
       return;
     }
 
-    const groupMemberToUpdate = shiftInfo.map((member, index) => ({
-      name: member.name,
+    const groupMemberToUpdate = groupMembers.map((name, index) => ({
+      name: name,
       user_id: index, // グループ内の番号（0,1,2...）
       group_id: group_id,
     }));
@@ -203,7 +110,7 @@ const GroupPageShow = ({ setLoading }) => {
             {/* メンバー別のシフトのモーダル */}
             <ShiftSubmitState
               submitStatus={submitStatus}
-              recruitingWeeksArray={recruitingWeeksArray}
+              recruitingWeeksArray={recruitingWeeks}
               group_id={group_id}
             />
             <MemberModal
@@ -222,15 +129,22 @@ const GroupPageShow = ({ setLoading }) => {
           </TabPanel>
 
           <TabPanel value={value} index={1}>
-            <MemberEdit handleSubmitMemberSetting={handleSubmitMemberSetting} />
+            <MemberEdit
+              handleSubmitMemberSetting={handleSubmitMemberSetting}
+              groupMembers={groupMembers}
+              setGroupMembers={setGroupMembers}
+            />
           </TabPanel>
 
           <TabPanel value={value} index={2}>
             <CreateShiftTab
+              group_id={group_id}
+              currentWeekId={currentWeekId}
+              setCurrentWeekId={setCurrentWeekId}
               shiftInfo={shiftInfo}
               groupRequireNumberArray={groupRequireNumberArray}
+              recruitingWeeks={recruitingWeeks}
             />
-            <ButtonBlue func={handleSubmit}>シフト作成</ButtonBlue>
           </TabPanel>
 
           <TabPanel value={value} index={3}>
