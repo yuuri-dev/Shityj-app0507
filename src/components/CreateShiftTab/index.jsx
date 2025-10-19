@@ -1,42 +1,64 @@
-import React, { useState } from 'react'
-import styles from './'
-import ShiftOverview from '../ShiftOverview';
-import SlotDetailModal from '../SlotDetails';
+import React, { useState } from 'react';
+import styles from './CreateShiftTab.module.css';
+import EditShift from '../EditShift';
 
 //shiftINfoに頼らないように変更する
-const CreateShiftTab = ({shiftInfo, groupRequireNumberArray}) => {
-    const days = ['月', '火', '水', '木', '金', '土', '日'];
-    const timeSlots = ['1', '2', '3'];
-    const [selectedSlotInfo, setSelectedSlotInfo] = useState(null);
-    
+const CreateShiftTab = ({
+  group_id,
+  currentWeekId,
+  setCurrentWeekId,
+  shiftInfo,
+  groupRequireNumberArray,
+  recruitingWeeks,
+}) => {
+
+  const handleWeekChange = (e) => {
+    setCurrentWeekId(e.target.value);
+  };
+
   return (
     <div>
-      <h2 className={styles.h2}>シフト候補者一覧</h2>
-      <ShiftOverview
-        days={days}
-        timeSlots={timeSlots}
+      <p className={styles.description}>
+        シフトを編集・保存することができます。
+      </p>
+      <p className={styles.description}>自動で作成することもできます</p>
+
+      <div className={styles.weekSelector}>
+        <label htmlFor="week">対象週を選択：</label>
+        <select
+          id="week"
+          value={currentWeekId || ''}
+          onChange={handleWeekChange}
+          className={styles.select}
+        >
+          {recruitingWeeks.map((week) => {
+            const start = new Date(week.week_start_date);
+            const end = new Date(start);
+            end.setDate(start.getDate() + 6); // 6日後を計算
+
+            const format = (d) =>
+              `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+                2,
+                '0'
+              )}-${String(d.getDate()).padStart(2, '0')}`;
+
+            return (
+              <option key={week.id} value={week.id}>
+                {format(start)} 〜 {format(end)}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+
+      <EditShift
+        group_id={group_id}
+        currentWeekId={currentWeekId}
         shiftInfo={shiftInfo}
         groupRequireNumberArray={groupRequireNumberArray}
-        onClickSlot={(dayIndex, slotIndex, members, required) => {
-          setSelectedSlotInfo({
-            day: days[dayIndex],
-            slot: timeSlots[slotIndex],
-            members,
-            required,
-          });
-        }}
       />
-      {selectedSlotInfo && (
-        <SlotDetailModal
-          day={selectedSlotInfo.day}
-          slot={selectedSlotInfo.slot}
-          members={selectedSlotInfo.members}
-          required={selectedSlotInfo.required}
-          onClose={() => setSelectedSlotInfo(null)}
-        />
-      )}
     </div>
   );
-}
+};
 
-export default CreateShiftTab
+export default CreateShiftTab;
