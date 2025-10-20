@@ -4,17 +4,17 @@ import { supabase } from 'src/lib/supabase_client';
 
 const WeekDetail = () => {
   const router = useRouter();
-  const week_id_num = parseInt(router.query.week_id, 10);
+  const week_id = router.query.week_id;
   const [weekData, setWeekData] = useState(null);
 
   useEffect(() => {
     if (!router.isReady) return;
     const fetchWeek = async () => {
-      if (!week_id_num) return;
+      if (!week_id) return;
       const { data, error } = await supabase
         .from('weeks')
         .select('*')
-        .eq('id', week_id_num)
+        .eq('id', week_id)
         .single();
 
       if (error) {
@@ -25,7 +25,7 @@ const WeekDetail = () => {
       }
     };
     fetchWeek();
-  }, [router.isReady, week_id_num]);
+  }, [router.isReady, week_id]);
 
   if (!weekData) return <p>Loading...</p>;
   return (
