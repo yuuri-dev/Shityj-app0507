@@ -26,24 +26,30 @@ const ShiftHistory = ({ group_id }) => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>履歴</h2>
       <p className={styles.discription}>
         日付をクリックしてそれぞれの週の情報を見ることができます。
       </p>
       {history.length === 0 ? (
         <p>データがありません</p>
       ) : (
-        history.map((item) => (
-          <div key={item.id} className={styles.week_item}>
-            <Link
-              href={`/group/${group_id}/weeks/${item.id}`}
-              className={styles.start_date}
-            >
-              <p>{item.week_start_date}</p>
-            </Link>
-            <p>{item.status}</p>
+        <div>
+          <div className={styles.week_item}>
+            <p>日付</p>
+            <p>シフト状況</p>
           </div>
-        ))
+
+          {history.map((item) => (
+            <div key={item.id} className={styles.week_item}>
+              <Link
+                href={`/group/${group_id}/weeks/${item.id}`}
+                className={styles.start_date}
+              >
+                <p>{item.week_start_date}</p>
+              </Link>
+              <p>{item.status == 'recruiting' ? '募集中' : '完成済み'}</p>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
